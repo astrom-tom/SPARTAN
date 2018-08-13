@@ -79,6 +79,7 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_logo = "logo/transparent.png"
 
 
 # Theme options are theme-specific and customize the look and feel of a theme

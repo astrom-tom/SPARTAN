@@ -1,1 +1,1 @@
-*See [here](https://astrom-tom.github.io/Photon/build/html/index.html) to display the documentation.*
+*See [here](https://astrom-tom.github.io/SPARTAN/) to display the documentation.*

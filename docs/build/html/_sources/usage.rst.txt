@@ -84,9 +84,11 @@ The command line interface is made using the argparse library (part of the stand
 
 Terminal Use Interface
 ^^^^^^^^^^^^^^^^^^^^^^
+:doc:`TUI`
 
 Graphical User Interface
 ^^^^^^^^^^^^^^^^^^^^^^^^
+:doc:`GUI`
 
 
 

@@ -1,0 +1,3 @@
+[gui_scripts]
+spartan = spartan.__main__:main
+

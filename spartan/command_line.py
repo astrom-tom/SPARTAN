@@ -16,14 +16,14 @@ This file configures the Command line interface
 import argparse
 
 ####SPARTAN Modules
-from . import input_spartan_files
+from .input_spartan_files import sp_input_files as PIF
 
 
 def args():
     """
     This function creates defines the 7 main arguments of SPARTAN using the argparse module
     """
-    files = input_spartan_files.sp_input_files()
+    files = PIF()
 
     parser = argparse.ArgumentParser(description="SPARTAN V1.0, R. Thomas, 2017, ESO,\n \
             This program comes with ABSOLUTELY NO WARRANTY; and is distributed under the GPLv3.0 Licence terms. \n\
@@ -61,11 +61,6 @@ def args():
             action='store_true',\
             help="Load the SPARTAN-GUI to visualize the results,need \
                 a completed configuration file from the -f command ")
-
-    parser.add_argument("-s", "--simu",\
-            action='store_true',\
-            help="Start simulation of galaxies. A complete simulation configuration \
-                configuration file from the -f command ")
 
     parser.add_argument("--docs", action = "store_true", help="open the doc in web browser")
     parser.add_argument("--version", action = "store_true", help="display version of photon")

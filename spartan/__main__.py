@@ -19,9 +19,14 @@ from subprocess import call
 import socket
 
 ###Local modules
-from . import __info__ as info
-from . import command_line
-from . import messages as MTU
+from .              import __info__ as info
+from .              import command_line
+from .              import messages as MTU
+from .              import TUI_start as TUI
+from .config_check  import check_main
+from .Data_selector import data_selector
+from .Lib_provided  import Compil_provided_LIB as CPL
+from .              import fit_selector as fit
 
 def read_arg(args):
     """
@@ -97,22 +102,57 @@ def main():
                 ##and we stop the loop
                 sys.exit()
                 break
-
+    ####open TUI
     if args.tui:
         if os.path.isfile(args.tui):
-            print('ok')
-            #Startfit = TUI.TUI(Tuifile)
+            Startfit = TUI.TUI(args.tui)
 
         else:
             ###Display error messages if file passed to tui is not found
             MTU.Error('The template file or the file you tried to pass,\n\
                 ...to the TUI was not found...\n\t\t\t...exit..\n', 'Yes')
             sys.exit()
+        if Startfit == 'yes':
+            run_fit(args.tui)  
 
-        #if Startfit == 'yes':
-        #    print('start fit')
-            #run_fit(Tuifile)  
+    #########check config
+    if args.check:
+        if args.file is None:
+            ###Display error messages if input file is not provided
+            MTU.Error('You asked to check your configuration of SPARTAN,\n\
+            ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
+            sys.exit()
+        else:
+            MTU.Info('Checking SPARTAN file: %s\n'%args.file, 'Yes')
+            status = check_main(args.file).check_full()
 
+    ##########run fit
+    if args.run:
+        if args.file is None:
+            MTU().Error('You asked to run SPARTAN,\n\
+                ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
+            sys.exit()
+
+        else:
+            ##first we check the file that was given
+            statusconf, CONF = check_main(args.file).check_full()
+            #statusconf, CONF = check_config(args.file)
+            if statusconf == 'ok':
+                ####We start to make datacube (or load it)
+                statusdatacube = data_selector(CONF)
+                ####Then start the library (or load it)
+                if statusdatacube == 'ok':
+                    statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
+                    if statusLIB == 'Written':
+                        fit.selector(CONF)
+
+                else:
+                    MTU.Info('The datacube was not found/created', 'No')
+                
+            else:
+                MTU.Error('You asked to run SPARTAN,\n\
+                    ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                sys.exit()
 
 if __name__ == "__main__":
     main()

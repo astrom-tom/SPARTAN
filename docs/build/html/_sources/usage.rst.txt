@@ -66,29 +66,32 @@ This command will display the help of the program::
                         configuration file from the -f command
        -v, --visua      Load the SPARTAN-GUI to visualize the results,need a
                         completed configuration file from the -f command
+       --docs           Open the documentation in web browser
        --version        Display in terminal the current version of SPARTAN
 
 
-SPARTAN has 7 optionnal arguments. You can not start SPARTAN without any argument. 
+SPARTAN has 8 optionnal arguments. You **can not** start SPARTAN without any argument. 
 Few arguments can be used:	
  * -h: Display this help in the terminal.
  * -f or --file + file.conf: This is used when you already have a SPARTAN configuration file ready.  
  * -t or --tui: This will display, in the terminal, the text-based interface. This helps you to configurate a fitting project. If you do not use it with '-f', it will load an empty project file.
- * -c or -- check: To be used after '-f'. This checks the configuration of the configuration file you give with '-f'
- * -r or --run: To be used after '-f'. This tells SPARTAN to start the fit with the project file you give using the '-f' argument 
- * -v or --visua: To be used after '-f'. This open the graphical interface to display all the result of a given fit.
- * -fo or --OBJ + object ID: To be used after '-f'. This look on the result file and give you the results for a given object.
- * --verbose: Will use the verbose mode of sextractor and display information in the terminal.
-
+ * -c or -- check: **To be used after '-f'**. This checks the configuration of the configuration file you give with '-f'
+ * -r or --run: **To be used after '-f'**. This tells SPARTAN to start the fit with the project file you give using the '-f' argument 
+ * -v or --visua: **To be used after '-f'**. This open the graphical interface to display all the result of a given fit.
+ * -fo or --OBJ + object ID: **To be used after '-f'**. This look on the result file and give you the results for a given object.
+ * - -docs: Will display the documentation of SPARTAN in browser.
+ * - -verbose: Will use the verbose mode of sextractor and display information in the terminal.
 The command line interface is made using the argparse library (part of the standard python library).
 
-Terminal Use Interface
-^^^^^^^^^^^^^^^^^^^^^^
-:doc:`TUI`
+Terminal User Interface
+^^^^^^^^^^^^^^^^^^^^^^^
+
+To configure a fitting run, you have to configure it. To do so you have to choices:
+* Filling directly the configuration file
+* Using the Text Based User Interface (TUI) to help you configure it. This interface is displayted in the terminal. You can find a proper documentation in the TUI dedicated page (:doc:`TUI`).
+
 
 Graphical User Interface
 ^^^^^^^^^^^^^^^^^^^^^^^^
-:doc:`GUI`
 
-
-
+When a fitting run is done, you can visualize results using the graphical user interface that has been made for that. You can have a look at the GUI documentation page: :doc:`GUI`.

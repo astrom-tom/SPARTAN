@@ -85,7 +85,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#command-line-interface">Command Line Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#terminal-use-interface">Terminal Use Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#terminal-user-interface">Terminal User Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
 </ul>
 </li>
@@ -189,32 +189,42 @@
                   <span class="n">configuration</span> <span class="n">file</span> <span class="kn">from</span> <span class="nn">the</span> <span class="o">-</span><span class="n">f</span> <span class="n">command</span>
  <span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">--</span><span class="n">visua</span>      <span class="n">Load</span> <span class="n">the</span> <span class="n">SPARTAN</span><span class="o">-</span><span class="n">GUI</span> <span class="n">to</span> <span class="n">visualize</span> <span class="n">the</span> <span class="n">results</span><span class="p">,</span><span class="n">need</span> <span class="n">a</span>
                   <span class="n">completed</span> <span class="n">configuration</span> <span class="n">file</span> <span class="kn">from</span> <span class="nn">the</span> <span class="o">-</span><span class="n">f</span> <span class="n">command</span>
+ <span class="o">--</span><span class="n">docs</span>           <span class="n">Open</span> <span class="n">the</span> <span class="n">documentation</span> <span class="ow">in</span> <span class="n">web</span> <span class="n">browser</span>
  <span class="o">--</span><span class="n">version</span>        <span class="n">Display</span> <span class="ow">in</span> <span class="n">terminal</span> <span class="n">the</span> <span class="n">current</span> <span class="n">version</span> <span class="n">of</span> <span class="n">SPARTAN</span>
 </pre></div>
 </div>
-<p>SPARTAN has 7 optionnal arguments. You can not start SPARTAN without any argument.
+<p>SPARTAN has 8 optionnal arguments. You <strong>can not</strong> start SPARTAN without any argument.
 Few arguments can be used:</p>
 <blockquote>
 <div><ul class="simple">
 <li>-h: Display this help in the terminal.</li>
 <li>-f or –file + file.conf: This is used when you already have a SPARTAN configuration file ready.</li>
 <li>-t or –tui: This will display, in the terminal, the text-based interface. This helps you to configurate a fitting project. If you do not use it with ‘-f’, it will load an empty project file.</li>
-<li>-c or – check: To be used after ‘-f’. This checks the configuration of the configuration file you give with ‘-f’</li>
-<li>-r or –run: To be used after ‘-f’. This tells SPARTAN to start the fit with the project file you give using the ‘-f’ argument</li>
-<li>-v or –visua: To be used after ‘-f’. This open the graphical interface to display all the result of a given fit.</li>
-<li>-fo or –OBJ + object ID: To be used after ‘-f’. This look on the result file and give you the results for a given object.</li>
-<li>–verbose: Will use the verbose mode of sextractor and display information in the terminal.</li>
+<li>-c or – check: <strong>To be used after ‘-f’</strong>. This checks the configuration of the configuration file you give with ‘-f’</li>
+<li>-r or –run: <strong>To be used after ‘-f’</strong>. This tells SPARTAN to start the fit with the project file you give using the ‘-f’ argument</li>
+<li>-v or –visua: <strong>To be used after ‘-f’</strong>. This open the graphical interface to display all the result of a given fit.</li>
+<li>-fo or –OBJ + object ID: <strong>To be used after ‘-f’</strong>. This look on the result file and give you the results for a given object.</li>
+<li><ul class="first">
+<li>-docs: Will display the documentation of SPARTAN in browser.</li>
+</ul>
+</li>
+<li><ul class="first">
+<li>-verbose: Will use the verbose mode of sextractor and display information in the terminal.</li>
+</ul>
+</li>
 </ul>
 </div></blockquote>
 <p>The command line interface is made using the argparse library (part of the standard python library).</p>
 </div>
-<div class="section" id="terminal-use-interface">
-<h2>Terminal Use Interface<a class="headerlink" href="#terminal-use-interface" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a></p>
+<div class="section" id="terminal-user-interface">
+<h2>Terminal User Interface<a class="headerlink" href="#terminal-user-interface" title="Permalink to this headline">¶</a></h2>
+<p>To configure a fitting run, you have to configure it. To do so you have to choices:
+* Filling directly the configuration file
+* Using the Text Based User Interface (TUI) to help you configure it. This interface is displayted in the terminal. You can find a proper documentation in the TUI dedicated page (<a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a>).</p>
 </div>
 <div class="section" id="graphical-user-interface">
 <h2>Graphical User Interface<a class="headerlink" href="#graphical-user-interface" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="GUI.html"><span class="doc">Graphical User interface: Visualizing results</span></a></p>
+<p>When a fitting run is done, you can visualize results using the graphical user interface that has been made for that. You can have a look at the GUI documentation page: <a class="reference internal" href="GUI.html"><span class="doc">Graphical User interface: Visualizing results</span></a>.</p>
 </div>
 </div>
 

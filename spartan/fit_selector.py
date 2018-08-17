@@ -10,9 +10,9 @@ This short module select the right fit to do from the user informations
 '''
 ##SPARTAN Modules
 from .             import messages as MTU
-from fit.fit_photo import Fit_photo
-from fit.fit_spectro import Fit_spectro
-from fit.fit_combined import Fit_combined
+from .fit_photo    import Fit_photo
+#from fit.fit_spectro import Fit_spectro
+#from fit.fit_combined import Fit_combined
 #----------------------------------------------------------
 
 def selector(config):
@@ -36,6 +36,7 @@ def selector(config):
         Init = Fit_photo(config) 
         Init.main()
 
+    '''
     if config.CONF['UsePhot'].lower() == 'no' \
             and config.CONF['UseSpec'].lower() == 'yes':
 
@@ -49,3 +50,4 @@ def selector(config):
         MTU.Info('Start the fit on the COMBINED data', 'Yes')
         Init = Fit_combined(config)
         Init.main()
+    '''

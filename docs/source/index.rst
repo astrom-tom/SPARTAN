@@ -49,6 +49,7 @@ Contents
 
    Home <self>
    usage
+   Conferences
 
 
 News

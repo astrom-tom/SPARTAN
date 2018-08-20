@@ -127,7 +127,6 @@ class Fit_photo:
 
             ##4-Now we save the results
             MTU.Info('Now we Save results!', 'No')
-            #time.sleep(10)
             for gal in Results_pool:
                 if gal.status == 'Fitted':
                     save.save_phot(self.Resfile, gal, self.CONF)
@@ -143,9 +142,9 @@ class Fit_photo:
                 MTU.Info('%s objects left'%(len(sample)-i), 'No')
 
 
-        Cat.final(self.CONF, self.Resfile)
         MTU.Info('Full sample fitted in %s seconds'%( time.time() - Time_INITIAL), 'Yes')
         MTU.Info('Start creation of the final catalog', 'Yes')
+        Cat.final(self.CONF, self.Resfile)
     
 
 

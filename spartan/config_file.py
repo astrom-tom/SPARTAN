@@ -20,7 +20,8 @@ import numpy
 
 ##### Local imports
 from . import messages as MTU
-from . import input_spartan_files
+from .input_spartan_files import sp_input_files as PIF
+
 
 class read_config:
     """
@@ -229,7 +230,7 @@ class update_and_write_config:
         """
 
         ##Extract Empty configuration file
-        Template_conf = input_spartan_files.sp_input_files.template_conf()
+        Template_conf = PIF().template_conf()
 
         if status == 'new':
 

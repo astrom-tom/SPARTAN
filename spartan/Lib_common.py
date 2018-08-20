@@ -12,6 +12,7 @@ select templates of the right age, and put it at z
 ##Python LIB
 import os
 import warnings
+import time
 warnings.simplefilter(action='ignore', category=FutureWarning)
 ##############################
 
@@ -201,7 +202,7 @@ class LIB:
         ##number of IGM curves to be used
         if Ntr.size == 3:  ###one curve, 3 transmission
             Ncurve_igm = 1
-        else:  #####Ncurve = 5 Ntr.size = 3trans * 5curves = 15
+        else:  #####Ncurve = 7; Ntr.size = 3; trans * 7curves = 21
             Ncurve_igm = len(Ntr)
 
         ##number of IGM template (alpha, beta, gamma transmissions)
@@ -220,7 +221,6 @@ class LIB:
         for i in range(Ncurve_igm):
             array_update[i*ntemp:(i+1)*ntemp, :npar] = arraydust 
         
-
         ##and add igm parameters
         ####add ebv values
         igms = numpy.empty((Ntemp_update, Npar_igm))
@@ -231,7 +231,12 @@ class LIB:
                 igms[i*ntemp : (i+1)*ntemp] = Ntr[i] 
 
         ##and add it to the array of parameters
-        array_update.T[npar:] = igms.T
+        array_update[:,npar:] = igms
+
+        #for i in range(int(Ntemp_update/ntemp)):
+            ###all these rows must be the same except 3 last columns
+            #print(i*ntemp+300, i, ntemp, array_update[i*ntemp+300])  
+ 
         self.Names.append('TrLya')
         self.Names.append('TrLyb')
         self.Names.append('TrLyg')
@@ -261,7 +266,7 @@ class LIB:
         ntemp, npar = self.Cosmo_param.shape
         if ndust_curve != 0:
             ##1 for the curves and 1 for the ebv
-            par_add = 2        
+            par_add = 1 #2        
              
         ###create new array
         NTEMP = ntemp*ndust_curve*ndust_values
@@ -269,14 +274,20 @@ class LIB:
         for i in range(int(NTEMP/ntemp)):
             array[i*ntemp:(i+1)*ntemp, :npar] = self.Cosmo_param 
         
+        #for i in range(int(NTEMP/ntemp)):
+        #    print(array[i*ntemp+300])  ###all these rows must be the same
+        
+
         ####add curve identificator
-        curve_para = numpy.empty((NTEMP))  
-        for i in range(ndust_curve):
-            curve_para[i*int(NTEMP/ndust_curve):(i+1)*int(NTEMP/ndust_curve)] = i
+        #curve_para = numpy.empty((NTEMP))  
+        #for i in range(ndust_curve):
+        #    curve_para[i*int(NTEMP/ndust_curve):(i+1)*int(NTEMP/ndust_curve)] = i
 
         #and add it to the array of parameter 
-        array.T[npar] = curve_para
-        
+        #array.T[npar] = curve_para
+ 
+
+
         ####add ebv values
         ebvs = numpy.empty((NTEMP))
         N = 0
@@ -286,8 +297,13 @@ class LIB:
                 N += 1
 
         ##and add it to the array of parameters
-        array.T[npar+1] = ebvs
-        self.Names.append('Dust_curve')
+        array.T[npar] = ebvs
+
+#        for i in range(int(NTEMP/ntemp)):
+#            print(array[i*ntemp+300])  ###all these rows must be the same       
+#        time.sleep(1000)
+
+        #self.Names.append('Dust_curve')
         self.Names.append('EBV')
         return array
 

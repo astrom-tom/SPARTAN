@@ -41,9 +41,7 @@ def main(Parameter, Name, Proba, Norm, CONF, paramBF, Redshift):
     ## every parameter that have to be computed in log must 
     ## be transformed
     result = {}
-
     for i in range(len(Name)):
-        print(Name[i])
         if Name[i] in ['M*', 'SFR']:
             a = Parameter.T[i]*Norm
             nonzero = numpy.where(a!=0)
@@ -52,7 +50,6 @@ def main(Parameter, Name, Proba, Norm, CONF, paramBF, Redshift):
             Xc, plusc, minusc, gridc, PDFc, CDFc = continuous_param(A, Proba, Name[i])
             ## 3- and save them in results
             result[Name[i]] = (Xc, +plusc, minusc, gridc, PDFc, CDFc)
-            print(Name[i], Xc, plusc, minusc)
         
 
         ####if mean IGM the transmission are fixed no error computation
@@ -77,7 +74,6 @@ def main(Parameter, Name, Proba, Norm, CONF, paramBF, Redshift):
             A = Parameter.T[i]
             Xd, plusd, minusd, gridd, PDFd, CDFd = discrete_param(A,Proba)
             result[Name[i]] = (Xd, plusd, minusd, gridd, PDFd, CDFd)
-            print(Name[i], Xd, plusd, minusd)
         
     return result
 
@@ -88,9 +84,13 @@ def discrete_param(param_list, proba):
     distribution
     '''
     rawgrid = numpy.unique(param_list)
+    ##we copute the bin
+    ##to do so we create an array where all the elements are shifted by one position
+    ##and compute the difference between the original array
     raw_roll = numpy.roll(rawgrid,1)
     dif = rawgrid-raw_roll
     meanbin = numpy.mean(dif[numpy.where(dif>0)[0]])
+
     ##we add an extra bin at the end and at the beginning
     if min(rawgrid)-meanbin < 0:
         Xgrid = [0]
@@ -144,8 +144,6 @@ def discrete_param(param_list, proba):
     plt.show()
     '''
     
-
-
     return float(X), float(plus), float(minus), Xgrid, values_PDF, CDF
 
 

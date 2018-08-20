@@ -19,6 +19,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 import numpy
 import h5py
 from   scipy import interpolate
+import matplotlib.pyplot as plt
 ######################################
 
 ####Local Modules#########################
@@ -232,6 +233,7 @@ class IGMlib:
             Wave = numpy.array(IGM['Wavelength/Wave'])
             Tr = numpy.array(IGM['%s/Transmissions'%str(redshift)])
 
+        #print(Wave, wave_model)
         if self.type == 'free':
             ##if the user uses the free prescription
             ## so 5
@@ -249,7 +251,31 @@ class IGMlib:
             Tr = Tr[3]
             
         ###check plot:
-        #plot().IGM_curves(To_Use, wave_model, Curves, Wave, redshift)
+        '''
+        fig = plt.figure()
+        aa = fig.add_subplot(111)
+        ##plot curves
+        for i in To_Use:
+            print(i)
+            aa.plot(wave_model, i, color='b')
+
+        for i in Curves:
+            aa.scatter(Wave, i, s= 3, color='r')
+
+        ##fake curves for label
+        aa.plot([100,110], [100,110], 'b', label='Curves used for the fit')
+        aa.scatter([100,110], [100,110], color='r', label='Curves given by SPARTAN')
+
+
+        ## plot properties
+        #aa.axis([500, 1300, -0.05, 1.05])
+        aa.minorticks_on()
+        aa.legend(loc=2, fontsize=8)
+        aa.set_xlabel('Restframe wavelength (AA)')
+        aa.set_ylabel('IGM transmission')
+        aa.text(600,0.5, 'z=%s'%redshift)
+        plt.show()
+        '''
 
         return To_Use, Tr
 
@@ -266,7 +292,5 @@ class IGMlib:
         igmtemplates    numpy.array, with igm-applied templates
         '''
         igmtemplates = templates * igmcurve
-        #N=100
-        #plotigm.plot(wave, templates[N], igmcurve, igmtemplates[N])
         return igmtemplates
 

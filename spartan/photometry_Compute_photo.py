@@ -103,8 +103,12 @@ def integ(Templates_hz, TranfreqNormed, freqTemp):
     '''
     
     A = Templates_hz*TranfreqNormed 
+    if len(A) < 100:
+        N = 10
+    else:
+        N = 100
     if len(A) > 10:
-        a = [A[i:i + int(len(A)/100)] for i in range(0, len(A), int(len(A)/100))]
+        a = [A[i:i + int(len(A)/N)] for i in range(0, len(A), int(len(A)/N))]
         integ = []
         for i in range(len(a)):
             integ.append(numpy.trapz(a[i], freqTemp[::-1]) )   

@@ -256,8 +256,6 @@ class indiv_obj:
             self.bestfit_index = index
 
 
-
-
     def create_observable(self, Photofit, fit_type):
         '''
         Method that create the observable attributes of the galaxy
@@ -369,9 +367,8 @@ class indiv_obj:
         ----------
         chi2param dict, of chi2 parameters
         '''
-
-        self.chi2p = PDF.main(lib.array_param, lib.Names, Proba, Norm, CONF, \
-                self.BFparam, self.Redshift)
+        self.chi2p = PDF.main(lib.array_param, lib.Names, \
+                numpy.exp(-(1/2)*(Proba-self.bestchi2red)), Norm, CONF, self.BFparam, self.Redshift)
 
     def magabs(self, CONF,COSMOS):
         '''

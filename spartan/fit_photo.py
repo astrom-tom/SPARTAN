@@ -20,6 +20,7 @@ import copy
 ###third party#####
 import numpy
 import tqdm
+import matplotlib.pyplot as plt
 ####################
 
 ##Local Modules########################
@@ -91,13 +92,13 @@ class Fit_photo:
         MTU.Info('Addition of Emission line', 'No')
         Templates_emLine = Emline.Apply(Library, self.CONF, toskip = []).Template
 
+
         ##prepare dust extinction
         MTU.Info('Preparation of the Dust extinction', 'No')
         DUST  = extinction.Dust(self.CONF, Library.Wave_final) 
 
         ##We open the datafile to extract ID list and Nobj
         sample = Data_for_fit.sample_to_fit(self.Datafile, self.Resfile, self.CONF.FIT['OverFit'])
-
 
         ##start the main loop
         i = 0
@@ -203,7 +204,7 @@ class Fit_photo:
             ######################################
             ### We check if we will use some IGM and if Yes, we prepare it
             IGM= extinction.IGMlib(CONF, galaxy, lib)
-
+            
             #####################################
             ##### Adjust for cosmology ##########
             #####################################
@@ -219,8 +220,10 @@ class Fit_photo:
             ######final parameter array########
             ####################################
             lib.adjust_par_ext(DUST, IGM)
+            #print(lib.array_param.shape)
+            #print(lib.array_param[:,7:].shape, lib.array_param[:,7:][9000])
+            #numpy.save('param_v1.npy', lib.array_param)
             NTEMP = len(lib.array_param)
-
 
             #####################################
             ##### Term Communication ############
@@ -250,23 +253,20 @@ class Fit_photo:
             if DUST.use == 'Yes' and IGM.dict['Use'] == 'Yes':
                 for i in range(len(DUST.Dustfile_list)): 
                     curve = DUST.coef[i]
-                    for ebv in DUST.values:
-                        ###apply the extinction
-                        temp_with_dust = DUST.Make_dusted_template(lib.Temp_at_z,curve,ebv)       
-                        for igm in IGM.dict['Curves']:
-                             
-                            ###apply IGM
-                            temp_with_ext = IGM.Make_IGM_library(temp_with_dust, \
+                    for igm in IGM.dict['Curves']:
+                        temp_with_igm = IGM.Make_IGM_library(lib.Temp_at_z, \
                                     igm, lib.Wave_at_z)
+     
+                        for ebv in DUST.values:
+                            temp_with_ext = DUST.Make_dusted_template(temp_with_igm,curve,ebv)
 
                             ##and process them
                             M_final, Norm, Flux_mag_all_template, CHI2, index_chi \
                                 = self.process_template(lib, Photofit, temp_with_ext)
-                            print(galaxy.bestchi2red)
+
                             ##populate arrays
                             CHI2min = CHI2[index_chi]
                             CHI2array[n*ntemp:(n+1)*ntemp] = CHI2
-                            Probarray[n*ntemp:(n+1)*ntemp] = numpy.exp(-CHI2/2)
                             Normarray[n*ntemp:(n+1)*ntemp] = Norm 
                             ##update the results
                             if CHI2min<galaxy.bestchi2red:
@@ -332,7 +332,6 @@ class Fit_photo:
                     
                     n += 1
         
-            
             if DUST.use == 'No' and IGM.dict['Use'] == 'No':
                     ###no extinction is used, we go directly with the 'naked'
                     ###library of template
@@ -359,15 +358,11 @@ class Fit_photo:
             if 'BFparam' not in list(galaxy.__dict__.keys()):
                 galaxy.status = 'FAIL'
                 return  galaxy
-
+            numpy.save('CHI2v1.npy',CHI2array)
             galaxy.create_observable(Photofit, fit_type='mag') 
-            galaxy.chi2param(lib, Probarray, Normarray, CONF)
+            galaxy.chi2param(lib, CHI2array, Normarray, CONF)
             galaxy.magabs(CONF.PHOT['Photo_config'], COSMO_obj)
             galaxy.status = 'Fitted'
-            #print(galaxy.__dict__.keys())
-            #print(galaxy.bestchi2red)
-            #print(galaxy.BFparam)
-            #time.sleep(20)
             #plot(galaxy.template_wave, galaxy.besttemplate, \
             #       galaxy.waveband, galaxy.obsflux, galaxy.bestfit_flux, galaxy.ID)
 

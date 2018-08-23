@@ -23,6 +23,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 ########python third party
 import h5py
 import numpy
+import tqdm
 ###########################
 
 ###local libraries#####################
@@ -96,7 +97,7 @@ def check_sample(IDs, resfile, Overfit):
     Tobefitted  list,   of ID to be fitted
     '''
     Tobefitted = []
-    for i in IDs:
+    for i in tqdm.tqdm(IDs, desc= 'Check sample    '):
         tofit = check_results(i, resfile, Overfit)
         if tofit == 'YES':
             Tobefitted.append(i)
@@ -243,8 +244,9 @@ class indiv_obj:
         if fittype == 'spec':
             self.bestchi2red = chi2
             self.besttemplate =  besttemp
-            self.besttemplate_wave = wave
-            self.regrid_template = bestfitmag 
+            self.besttemplate_wave = wave[0]
+            self.regrid_template = bestfitmag[0]
+            self.regrid_wave = wave[1]
             self.bestfit_index = index
 
         if fittype == 'comb':
@@ -286,24 +288,23 @@ class indiv_obj:
             
 
 
-    def create_observable_spec(self,):
+    def create_observable_spec(self, Photofit):
         '''
         Method that create the observable attributes of the galaxy
 
-        Parameter
-        ---------
-        Photofit    obj, photometry for fit
-
-        New attributes
-        --------------
-        obsmag      observed mags
-        obserr      observed magnitude errors
-        obsflux     obsserved flux
-        obsfluxerr  observed error in flux unit
-        Nband       number of observed band use for the fit
-        waveband    wavelength of the bands
+        New attributes(for each spectrum given)
+        ---------------------------------------
+        specwave      spectral wavelength
+        specflux      spectrum flux
+        specerr       spectrum errors
+        mags          normalisation magtnitudes 
         '''
-        
+
+        #print(Photofit.__dict__.keys()) 
+        #print(Photofit.Names)
+        #print(Photofit.photo_conf)
+        #print(Photofit.allbands)
+
         for i in self.SPECS.keys():
             mags = self.SPECS[i][:3]
             if mags[0] != 'door':
@@ -315,6 +316,12 @@ class indiv_obj:
             setattr(self, 'specwave_%s'%i, specwave )
             setattr(self, 'specflux_%s'%i, specflux)
             setattr(self, 'specerr_%s'%i, specerr)
+            for j in range(len(Photofit.Names)):
+                if Photofit.Names[j] == mags[0] or Photofit.Names[j] == 'door':
+                    setattr(self, 'mags_Tran_%s'%i, Photofit.allbands[j]['Tran'][:-1])
+                    setattr(self, 'mags_Leff_%s'%i, Photofit.Leff_all_bands[j])
+                    setattr(self, 'mags_flux_%s'%i, Photofit.allbands[j]['Flux'])
+                    
 
 
 

@@ -250,33 +250,6 @@ class IGMlib:
             To_Use.append(numpy.interp(wave_model, Wave, Curves[3]))
             Tr = Tr[3]
             
-        ###check plot:
-        '''
-        fig = plt.figure()
-        aa = fig.add_subplot(111)
-        ##plot curves
-        for i in To_Use:
-            print(i)
-            aa.plot(wave_model, i, color='b')
-
-        for i in Curves:
-            aa.scatter(Wave, i, s= 3, color='r')
-
-        ##fake curves for label
-        aa.plot([100,110], [100,110], 'b', label='Curves used for the fit')
-        aa.scatter([100,110], [100,110], color='r', label='Curves given by SPARTAN')
-
-
-        ## plot properties
-        #aa.axis([500, 1300, -0.05, 1.05])
-        aa.minorticks_on()
-        aa.legend(loc=2, fontsize=8)
-        aa.set_xlabel('Restframe wavelength (AA)')
-        aa.set_ylabel('IGM transmission')
-        aa.text(600,0.5, 'z=%s'%redshift)
-        plt.show()
-        '''
-
         return To_Use, Tr
 
     def Make_IGM_library(self, templates, igmcurve, wave):

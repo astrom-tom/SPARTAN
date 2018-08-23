@@ -249,7 +249,7 @@ class check:
 
         if Dico['Norm'] == 'region':
             regions  = Dico['Norm_reg'].split(';')
-            if float(Nspec) != len(regions):
+            if float(Nspec) != len(regions) or regions == ['']:
                 return 'Nregions != NSpec'
             else:
                 for i in range(len(regions)):

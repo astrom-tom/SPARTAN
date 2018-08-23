@@ -73,13 +73,6 @@ class LIB:
         self.Templates_final = Templates[:, Physical_index+1:]
         self.Parameter_array = Templates[:, :Physical_index+1]
         self.Names = Names_str
-        ### preparation of other attributes
-        #self.good_resolution = []  
-        #self.good_resolution_wave = [] 
-        #self.Cosmo_templates = []
-        #self.Cosmo_param = []
-        #self.Wave_at_z = []
-        #self.Temp_at_z = []
 
     def Make_cosmological_Lib(self, Cosmo_obj, T_emline, COSMO_conf):
         '''
@@ -308,7 +301,7 @@ class LIB:
         return array
 
 
-    def change_resolution(self, CONF, galaxy):
+    def change_resolution(self, CONF, galaxy, template):
         '''
         This method adjust the resolution of the model to the resolution
         of the spectra.
@@ -326,14 +319,15 @@ class LIB:
 
         Parameters:
         ----------
-        Redshift        float, redshift of the observation
-        CONF            dict, of the user configuration
+        Redshift            float, redshift of the observation
+        CONF                dict, of the user configuration
+        Template_emline     numpy.array, templates with emission lines
             
         Return
         ------
         '''
         ###new array initialization
-        #Template_res = numpy.copy(template)
+        Template_res = numpy.copy(template)
         R = self.model_res(CONF.LIB['BaseSSP'])
 
         ###loop over each spectrum
@@ -396,19 +390,20 @@ class LIB:
 
                     ###here comes the 'trick'. My guess is that the gaussian_filter function
                     ###in scipy works well only if the grid of wavelength is binned with 1A
-                    ###gaps. Tried with 20AA grid and it everything was washed out.
+                    ###gaps. Tried with 20AA grid and everything was washed out.
                     ###therefore, here, for each template, we regrid the region of interest
                     ###to one angstrom, then we smooth it, and finally we re-regrid it to
                     ###the orginal grid---> might be faster way but this is that one for the
                     ###moment
                     waveset = self.Wave_final[index_min: index_max]
                     waveinterp = numpy.arange(self.Wave_final[index_min], self.Wave_final[index_max], 1)                    
-                    for i in range(len(self.Templates_final)):
-                        temp = numpy.interp(waveinterp, waveset,\
-                                self.Templates_final[i][index_min:index_max])
+                    for i in range(len(Template_res)):
+                        temp = numpy.interp(waveinterp, waveset, Template_res[i][index_min:index_max])
                         smoothed = gaussian_filter(temp, smooth)
-                        self.Templates_final[i][index_min:index_max] = numpy.interp(waveset, \
-                                waveinterp, smoothed)
+                        Template_res[i][index_min:index_max] = numpy.interp(waveset, waveinterp, \
+                                smoothed)
+
+        self.Template_res = Template_res
 
 
     def model_res(self, baseSSP):

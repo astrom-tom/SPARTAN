@@ -10,6 +10,7 @@ This module save results in the disk
 '''
 ##Python LIB
 import os
+import sys
 ##############
 
 ###Third party
@@ -53,10 +54,7 @@ def save_phot(Results, galaxy, CONF):
     Parameter
     ---------
     Results     dict, of the results
-    ID          str, ID of the objet
-    resfile     str, path/and/name of the result file
-    Npoints     flt, number of points used for the fit 
-    Magabs      array, of absolute magnitude
+    galaxy      objct, galaxy object with results
     CONF        dict, configuration of the user
 
     Return
@@ -134,3 +132,89 @@ def save_phot(Results, galaxy, CONF):
             M = galaxy.MagAbs['Meas'][i]
             Magabs.create_dataset(galaxy.MagAbs['Name'][i], data = numpy.array(M))
         #[print(numpy.array(Magabs[i])) for i in list(Magabs.keys())]
+
+
+def save_spec(Results, galaxy, CONF):
+    '''
+    This function saves the results of the studied objet
+    into the result file
+    Parameter
+    ---------
+    Results     dict, of the results
+    galaxy      obj, galaxy object with results
+    CONF        dict, configuration of the user
+
+    Return
+    ------
+    '''
+
+    ###first we have to check if some data where already in the result file
+    deleted = 0
+    with h5py.File(Results, 'a') as Res:
+        ## we look for the fitting status
+        Fitted = str(numpy.array(Res['%s/General/Fitted'%galaxy.ID]))[2:-1]
+        ## We update the result file accordingly to the status reported
+        ## in the result file and the overfit choice.
+        if galaxy.status == 'Fitted' and CONF.FIT['OverFit'].lower() == 'yes':
+            del Res['%s'%galaxy.ID]
+            deleted = 1
+
+    ##open the result file and save the results
+    with h5py.File(Results) as Res:
+       
+        if deleted == 0:
+            del Res['%s'%galaxy.ID]
+
+        #-1-# general information
+        obj = Res.create_group(galaxy.ID)
+        gen = Res.create_group('%s/General'%galaxy.ID)
+        gen.create_dataset('Fitted', data=numpy.string_(galaxy.status))
+
+        #-2-# Observable directory
+        Obs = Res.create_group('%s/Observable'%galaxy.ID)
+        Obs.create_dataset('Redshift', data = numpy.array(galaxy.Redshift))
+        Obs.create_dataset('Nspec', data = numpy.array(int(CONF.CONF['NSpec'])))
+
+        specs = ['specwave', 'specflux', 'specerr', 'mags', 'mags_flux', 'mags_Leff', 'mags_Tran'] 
+        for i in galaxy.SPECS.keys():
+            for j in specs:
+                if j == 'mags':
+                    Obs.create_dataset('%s_%s'%(j,i),\
+                            data = [numpy.string_(i) for i \
+                            in numpy.array(galaxy.__dict__['%s_%s'%(j,i)])]) 
+                else:
+                    Obs.create_dataset('%s_%s'%(j,i), \
+                            data = numpy.array(galaxy.__dict__['%s_%s'%(j,i)]))
+
+            ###number of point / spec
+            Obs.create_dataset('Npoints_%s'%i, \
+                    data = numpy.array(len(numpy.array(galaxy.__dict__['specwave_%s'%(i)]))))
+
+        #-3-# BF Parameter directory 
+        ParametersBF = Res.create_group('%s/Parameters_BF'%galaxy.ID) 
+        for i in list(galaxy.BFparam.keys()):
+            ParametersBF.create_dataset(i, data = numpy.array(galaxy.BFparam[i]))
+
+
+        #-2-# Template directory 
+        Temp = Res.create_group('%s/Template'%galaxy.ID)
+        Temp.create_dataset('Bestchi2', data = galaxy.bestchi2red) 
+        Temp.create_dataset('Best_template_full', data = galaxy.besttemplate)
+        Temp.create_dataset('Best_template_wave', data = galaxy.besttemplate_wave)
+        Temp.create_dataset('Bestfit_newgrid', data = galaxy.regrid_template)
+        Temp.create_dataset('Bestfit_newgrid_wave', data = galaxy.regrid_wave)
+
+        #-4-# PDF Parameter directory 
+        ParametersPDF = Res.create_group('%s/Parameters_PDF'%galaxy.ID) 
+        PDFCDF = Res.create_group('%s/PDF_CDF'%galaxy.ID) 
+
+        for i in list(galaxy.chi2p.keys()):
+            m   = galaxy.chi2p[i][0]
+            m1  = galaxy.chi2p[i][2]
+            p1  = galaxy.chi2p[i][1]
+            #print(m, m1, p1)
+            grid = galaxy.chi2p[i][3]
+            pdf = galaxy.chi2p[i][4]
+            cdf = galaxy.chi2p[i][5]
+            ParametersPDF.create_dataset(i, data = numpy.array([m, m1, p1]))
+            PDFCDF.create_dataset(i, data = numpy.array([pdf, cdf, grid]))

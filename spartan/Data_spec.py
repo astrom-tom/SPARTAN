@@ -14,6 +14,7 @@
 '''
 
 ####Python Standard Libraries###################################
+import sys
 import os
 import time
 import warnings
@@ -99,7 +100,7 @@ def file_spec(CONF):
             c+=3
 
         for i in tqdm.tqdm(range(len(ID))):
-            try:
+            #try:
                 if Dat == 0:
                     ###then we create the list of magnitude
                     ###Each entry of the list is [magname, measure, error]
@@ -118,35 +119,36 @@ def file_spec(CONF):
                             data_dico.append([mag_name, mag_meas, mag_err])
 
                     else:
-                        ##first we check if we have to skip edges, this is
-                        ##for later
                         for j,k in zip(range(len(Magfile)), range(len(spec_cols))):
                             if Magfile[j][2].lower() == 'yes':
-                                mag_name = numpy.string_(Magfile[0])
+                                mag_name = numpy.string_(Magfile[j][0])
                                 if system == 'AB':
-                                    mag_meas = numpy.string_(Cat[Nspec+2][i])
-                                    mag_err = numpy.string_(Cat[Nspec+3][i])
-                
+                                    mag_meas = Cat[spec_cols[k]+1][i]
+                                    mag_err = Cat[spec_cols[k]+2][i]
                                 else:
-                                    mag_meas, mag_err = systemphot.Jy_to_AB(Cat[Nspec+2][i], \
-                                            Cat[Nspec+3][i], 'yes') 
+                                    mag_meas, mag_err = systemphot.Jy_to_AB(Cat[spec_cols[k]+1][i], \
+                                            Cat[spec_cols[k]+2][i], 'yes')  
+
                                 ####nad save it
                                 data_dico.append([mag_name, mag_meas, mag_err])
-
+                            
                     ###gather the names of spectrum files
                     spec_names = []
                     for k in spec_cols:
                         spec_names.append(Cat[k][i])
 
-
-
                     # we create the group
                     savedata = h5fdat.create_group(ID[i])
 
                     s = 1
+                    #print(data_dico)
+                    gal = indiv(ID[i])
                     for ll, jj in zip(spec_names, data_dico):
                         ###create object and get photo bands
-                        gal = indiv(CONF.PHOT['Photo_config'], ID[i], jj)
+                        #gal = indiv(CONF.PHOT['Photo_config'], ID[i], jj)
+                        #print(jj[0], jj)
+                        jj[0] = str(jj[0])[2:-1] 
+                        gal.Magnitudes_spec = [jj]
 
                         if float(jj[1]) < 0 :
                             gal.__dict__['Magnitudes_spec'][0][1] = 20
@@ -188,7 +190,7 @@ def file_spec(CONF):
                         print(ll, F, M, jj) #--> M must be equal to jj[1]
                         '''
                         savedata.create_dataset('spec%s'%s, data=Final_spec)
-                        savedata.create_dataset('Mag%s'%s, data=numpy.array(data_dico).astype(numpy.string_))
+                        savedata.create_dataset('Mag%s'%s, data=numpy.array([jj]).astype(numpy.string_))
                         s+=1
                         
 
@@ -206,9 +208,9 @@ def file_spec(CONF):
                     #except:
                     #    MTU.Error('Could not create dataset in result file')
                     #    pass
-            except:
-                MTU.Error('Could not create dataset in result file for %s'%ID[i], 'No')
-                pass
+            #except:
+            #    MTU.Error('Could not create dataset in result file for %s'%ID[i], 'No')
+            #    pass
 
         #then we close them
         if Res == 0:
@@ -224,7 +226,6 @@ class indiv:
     '''
     Thi class is used to make an object from a galaxy
     '''
-    def __init__(self, conf_phot, ID, mag):
+    def __init__(self, ID):
         self.ID = ID
-        mag[0] = str(mag[0])[2:-1]
-        self.Magnitudes_spec = [mag]
+        self.Magnitudes_spec = ''

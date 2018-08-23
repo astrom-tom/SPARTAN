@@ -34,6 +34,7 @@ spartan/cosmo.py
 spartan/filters.py
 spartan/fit_photo.py
 spartan/fit_selector.py
+spartan/fit_spectro.py
 spartan/input_spartan_files.py
 spartan/length.py
 spartan/messages.py
@@ -42,7 +43,10 @@ spartan/photometry_Compute_photo.py
 spartan/photometry_Mag_abs.py
 spartan/photometry_filters.py
 spartan/photometry_prepare_photo_fit.py
+spartan/plot_specfit.py
 spartan/read_data_file.py
+spartan/spectroscopy_clean_regions.py
+spartan/spectroscopy_emission_lines_first_guesses.py
 spartan/spectroscopy_extract_data_spec.py
 spartan/spectroscopy_extract_spectra.py
 spartan/units.py

@@ -19,7 +19,6 @@ import copy
 
 ###third party#####
 import numpy
-import tqdm
 import matplotlib.pyplot as plt
 ####################
 
@@ -98,6 +97,7 @@ class Fit_photo:
         DUST  = extinction.Dust(self.CONF, Library.Wave_final) 
 
         ##We open the datafile to extract ID list and Nobj
+        MTU.Info('Checking sample to fit (might take a while)', 'No')
         sample = Data_for_fit.sample_to_fit(self.Datafile, self.Resfile, self.CONF.FIT['OverFit'])
 
         ##start the main loop
@@ -357,7 +357,7 @@ class Fit_photo:
             if 'BFparam' not in list(galaxy.__dict__.keys()):
                 galaxy.status = 'FAIL'
                 return  galaxy
-            numpy.save('CHI2v1.npy',CHI2array)
+
             galaxy.create_observable(Photofit, fit_type='mag') 
             galaxy.chi2param(lib, CHI2array, Normarray, CONF)
             galaxy.magabs(CONF.PHOT['Photo_config'], COSMO_obj)

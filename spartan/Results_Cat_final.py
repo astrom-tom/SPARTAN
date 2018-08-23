@@ -56,6 +56,7 @@ def final(CONF, Res):
     
     #for each object we look at the parameters
     #in each group
+    print(CONF.CONF['UseSpec'], CONF.CONF['UsePhot'])
     for i in R:
         obj = R[i]
         Fitted = str(numpy.array(obj['General/Fitted']))[2:-1].lower() 
@@ -73,14 +74,23 @@ def final(CONF, Res):
                 if 'Bestchi2' in obj['Template']:
                     all_Template.append('Bestchi2')
             if 'Observable' in list(obj1.keys()):
+                ###redshift
                 if 'Redshift' in obj['Observable']:
                     all_Observable.append('Redshift')
-                if CONF.CONF['UseSpec'] == 'yes' and CONF.CONF['UsePhot'] == 'yes':
+                ###Npoints
+                if CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'yes':
                     if 'Npoints_spec' in obj['Observable']:
                         all_Observable.append('Npoints_spec')
                     if 'Npoints_mags' in obj['Observable']:
                         all_Observable.append('Npoints_mags')
-                else:
+
+                if CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'no':
+                    nspec = numpy.array(obj['Observable/Nspec'])
+                    for i in range(nspec):
+                        if 'Npoints_%s'%(i+1) in obj['Observable']:
+                            all_Observable.append('Npoints_%s'%(i+1))
+
+                if CONF.CONF['UseSpec'].lower() == 'no' and CONF.CONF['UsePhot'].lower() == 'yes':
                     if 'Npoints' in obj['Observable']:
                         all_Observable.append('Npoints')
 
@@ -145,6 +155,13 @@ def final(CONF, Res):
                 Npoints_spec = int(float(numpy.array(obj['Observable/Npoints_spec'])))
                 Npoints_mags = int(float(numpy.array(obj['Observable/Npoints_mags'])))
                 line = '%s\t%s\t%s\t%s\t'%(i, Redshift, Npoints_spec, Npoints_mags)
+
+            elif CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'no':
+                    nspec = numpy.array(obj['Observable/Nspec'])
+                    Np = 0
+                    for f in range(nspec):
+                        Np += int(numpy.array(obj['Observable/Npoints_%s'%(f+1)]))
+                    line  = '%s\t%s\t%s\t'%(i, Redshift, Np)
             else:
                 Npoints = int(float(numpy.array(obj['Observable/Npoints'])))
                 line = '%s\t%s\t%s\t'%(i, Redshift, Npoints)

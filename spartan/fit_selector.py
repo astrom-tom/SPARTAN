@@ -11,6 +11,7 @@ This short module select the right fit to do from the user informations
 ##SPARTAN Modules
 from .             import messages as MTU
 from .fit_photo    import Fit_photo
+from .fit_spectro  import Fit_spectro
 #from fit.fit_spectro import Fit_spectro
 #from fit.fit_combined import Fit_combined
 #----------------------------------------------------------
@@ -36,7 +37,6 @@ def selector(config):
         Init = Fit_photo(config) 
         Init.main()
 
-    '''
     if config.CONF['UsePhot'].lower() == 'no' \
             and config.CONF['UseSpec'].lower() == 'yes':
 
@@ -44,6 +44,7 @@ def selector(config):
         Init = Fit_spectro(config)
         Init.main()
 
+    '''
     if config.CONF['UsePhot'].lower() == 'yes' \
             and config.CONF['UseSpec'].lower() == 'yes':
 

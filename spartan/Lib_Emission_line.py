@@ -89,8 +89,8 @@ class Apply:
             ################################
 
             ###equivalent width and line flux computation
-            EW, lumi, Name, lambdal, pos_line, l_line = self.EW_calcul(LCP, \
-                    fgas, Metlist, Library.Wave_final, Library.Templates_final, Nebular_cont, toskip, CONF)
+            EW, lumi, Name, lambdal, pos_line, l_line = self.EW_calcul(LCP, fgas, Metlist, \
+                    Library.Wave_final, Library.Templates_final, Nebular_cont, toskip, CONF)
 
             ###and create the lines on the flux
 

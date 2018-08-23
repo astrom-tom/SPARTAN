@@ -307,6 +307,7 @@ class update_and_write_config:
         config.set('Spectroscopy', 'Bad_Regions', CONF.SPEC['UseBR'])
         config.set('Spectroscopy', 'BAD_Regions_list', CONF.SPEC['BR'])
         config.set('Spectroscopy', 'Normalisation_type', CONF.SPEC['Norm'])
+        config.set('Spectroscopy', 'Norm_region', CONF.SPEC['Norm_reg'])
         config.set('Spectroscopy', 'Multi_spec_calibration', CONF.SPEC['Calib'])
 
 

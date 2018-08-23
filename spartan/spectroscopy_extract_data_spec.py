@@ -32,8 +32,7 @@ def extract_datasets(datasets, obj, CONF, redshift):
     obj         hdf5 group, corresponfing to the object
     CONF        dict, CONF by the user
     '''
-
-
+ 
     ##create empty array
     Mags = []
     specs = []
@@ -113,11 +112,14 @@ def extract_datasets(datasets, obj, CONF, redshift):
                             Meas = float(obj[j][0][1])
                             errm =  float(obj[j][0][2])
 
-       
-                    #else:
-                    #    regions = numpy.genfromtxt(fileregion)
-                    #    wave_reg = regions[i-1]
-                    #    name, Meas, errm = self.emission_line_free(obj[j], wave_reg, wavespec, fluxspec)
+                    else:
+                        regions = numpy.array(CONF.SPEC['Norm_reg'].split(';')[i-1].split('-')).astype('float')
+                        name, Meas, errm = emission_line_free(obj[j], regions, wavespec, fluxspec,\
+                                redshift)
+                        if Meas < 0.0:
+                            name = str(obj[j][0][0])
+                            Meas = float(obj[j][0][1])
+                            errm =  float(obj[j][0][2])
 
         ##finally save into the dictionnary
         data[i] = [name, Meas, errm, wavespec, fluxspec, errfspec, Nor]    

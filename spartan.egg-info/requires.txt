@@ -1,6 +1,8 @@
 PyQt5>=v5.10.1
+npyscreen>=4.10.5
 scipy>=1.0.1
 numpy>=1.14.2
-matplotlib>=2.2.2
+h5py>=2.8.0
+tqdm>=4.23.4
 astropy>=3.0.2
-Pillow>=5.1.0
+matplotlib>=2.2.2

@@ -2,7 +2,6 @@ LICENSE
 MANIFEST.in
 README.md
 setup.py
-spartan/Compute_photo.py
 spartan/Data_comb.py
 spartan/Data_for_fit.py
 spartan/Data_phot.py

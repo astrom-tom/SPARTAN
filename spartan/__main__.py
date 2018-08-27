@@ -112,8 +112,28 @@ def main():
             MTU.Error('The template file or the file you tried to pass,\n\
                 ...to the TUI was not found...\n\t\t\t...exit..\n', 'Yes')
             sys.exit()
+
         if Startfit == 'yes':
-            run_fit(args.tui)  
+            ##first we check the file that was given
+            statusconf, CONF = check_main(args.tui).check_full()
+            #statusconf, CONF = check_config(args.file)
+            if statusconf == 'ok':
+                ####We start to make datacube (or load it)
+                statusdatacube = data_selector(CONF)
+                ####Then start the library (or load it)
+                if statusdatacube == 'ok':
+                    statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
+                    if statusLIB == 'Written':
+                        fit.selector(CONF)
+
+                else:
+                    MTU.Info('The datacube was not found/created', 'No')
+                
+            else:
+                MTU.Error('You asked to run SPARTAN,\n\
+                    ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                sys.exit()
+
 
     #########check config
     if args.check:

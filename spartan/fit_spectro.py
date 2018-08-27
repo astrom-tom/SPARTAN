@@ -357,8 +357,8 @@ class Fit_spectro:
         #print(galaxy.bestchi2red)
         #print(galaxy.BFparam)
         ###########on the flu visualisation
-        #plot_specfit.specfit(galaxy.besttemplate_wave, galaxy.besttemplate, galaxy.regrid_template \
-        #         ,galaxy.SPECS)
+        plot_specfit.specfit(galaxy.besttemplate_wave, galaxy.besttemplate, galaxy.regrid_template \
+                 ,galaxy.SPECS)
  
         fit_end = time.time()
         MTU.Info('Galaxy %s fitted in %s seconds'%(galaxy.ID, fit_end-fit_start), 'No')

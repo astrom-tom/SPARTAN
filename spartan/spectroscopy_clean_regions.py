@@ -40,6 +40,12 @@ def main(galaxy, CONF):
     
 def edges(galaxy, edges, NSpec):
     '''
+    This function cleans the spectrum from the edges.
+    Parameters
+    ----------
+    galaxy  obj, galaxy object with spectrum
+    edges   string, size to skip in Angstrom
+    Nspec   int, number of spectrum
     '''
     if NSpec == 1:
         wave = galaxy.SPECS[1][3] 
@@ -61,7 +67,27 @@ def edges(galaxy, edges, NSpec):
 
 
     else:
-        pass
+        for i in galaxy.SPECS.keys():
+            edge = float(edges.split(';')[i-1])
+            
+            wave = galaxy.SPECS[i][3] 
+            flux = galaxy.SPECS[i][4]
+            err = galaxy.SPECS[i][5]
+
+            ###select right indexes
+            idx = numpy.where(numpy.logical_and(numpy.greater_equal(wave, wave[0]+edge), \
+                numpy.less_equal(wave, wave[-1]-edge)))
+
+            new_wave = wave[idx]
+            new_flux = flux[idx]
+            new_err = err[idx]
+
+            ##and replace in the spectrum
+            galaxy.SPECS[i][3] = new_wave 
+            galaxy.SPECS[i][4] = new_flux
+            galaxy.SPECS[i][5] = new_err
+     
+            
 
 
 def bad_regions(galaxy, BR):
@@ -79,7 +105,6 @@ def bad_regions(galaxy, BR):
     for i in BR_first:
         BR_final.append(list(map(float, i.split('-'))))
 
-
     ###remove them from the spectra
     for i in galaxy.SPECS.keys():
         for j in BR_final:
@@ -87,19 +112,20 @@ def bad_regions(galaxy, BR):
             flux = galaxy.SPECS[i][4]
             err  = galaxy.SPECS[i][5]
             ###update the BR applying the redshift
-            j[0] = j[0] * (1+galaxy.Redshift)
-            j[1] = j[1] * (1+galaxy.Redshift)
+            brmin = j[0] * (1+galaxy.Redshift)
+            brmax = j[1] * (1+galaxy.Redshift)
             ####if the regions is not in the spectrum we go to 
             ####the next region
-            if j[1] < wave[0] or j[0] > wave[-1]:
+            if brmax < wave[0] or brmin > wave[-1]:
                 continue
             else:
                 ###if we have part of the region is in the spectrum
+                print(i,j, brmin, brmax)
                 idx = []
                 for k in range(len(wave)):
-                    if wave[k] < j[0] or wave[k] > j[1]:
+                    if wave[k] < brmin or wave[k] > brmax:
                         idx.append(k)
 
-                galaxy.SPECS[1][3] = wave[idx] 
-                galaxy.SPECS[1][4] = flux[idx]
-                galaxy.SPECS[1][5] = err[idx]
+                galaxy.SPECS[i][3] = wave[idx] 
+                galaxy.SPECS[i][4] = flux[idx]
+                galaxy.SPECS[i][5] = err[idx]

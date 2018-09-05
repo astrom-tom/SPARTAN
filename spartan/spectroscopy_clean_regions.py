@@ -120,7 +120,6 @@ def bad_regions(galaxy, BR):
                 continue
             else:
                 ###if we have part of the region is in the spectrum
-                print(i,j, brmin, brmax)
                 idx = []
                 for k in range(len(wave)):
                     if wave[k] < brmin or wave[k] > brmax:

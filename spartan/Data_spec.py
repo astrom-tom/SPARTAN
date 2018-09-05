@@ -150,15 +150,17 @@ def file_spec(CONF):
                         jj[0] = str(jj[0])[2:-1] 
                         gal.Magnitudes_spec = [jj]
 
+                        ###extract data from the spectrum file
+                        Final_spec = ascii_spec.extract_ascii_spectra(ll, SpecDir)
+ 
                         if float(jj[1]) < 0 :
                             gal.__dict__['Magnitudes_spec'][0][1] = 20
                             gal.__dict__['Magnitudes_spec'][0][2] = 20
                             prepare_data = prepare.Photo_for_fit(CONF.PHOT['Photo_config'], 0, 'spec')
                             prepare_data.match(gal)
                             freq, Specfreq = Comp_phot.convert_wave_to_freq(Final_spec[0], Final_spec[1])
-                            F, M = Comp_phot.array_template_to_phot_init(prepare_data.allbands, [Specfreq], \
-                                                    Final_spec[0], freq)
-
+                            F, M = Comp_phot.array_template_to_phot_init(prepare_data.allbands, \
+                                    [Specfreq], Final_spec[0], freq)
                             gal.__dict__['Magnitudes_spec'][0][1] = M[0][0]
                             gal.__dict__['Magnitudes_spec'][0][2] = 4
                             MTU.Warning('For object %s: No valid magnitude was given for'%ID[i], 'No')
@@ -167,8 +169,6 @@ def file_spec(CONF):
  
                         prepare_data = prepare.Photo_for_fit(CONF.PHOT['Photo_config'], 0, 'spec')
                         prepare_data.match(gal)
-                        ###extract data from the spectrum file
-                        Final_spec = ascii_spec.extract_ascii_spectra(ll, SpecDir)
                         ###normalise the spectrum to the corresponding photometric point
                         freq, Specfreq = Comp_phot.convert_wave_to_freq(Final_spec[0], Final_spec[1])
                         ###compute the magnitude of the spectrum in the band given by the user

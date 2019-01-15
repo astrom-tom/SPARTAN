@@ -139,14 +139,21 @@ class Compil_provided_LIB:
         '''
         Name_LIB = os.path.join(project_conf['PDir'], project_conf['PName']+'_LIB.hdf5')
 
+        lib_question = 'no'
         ##check if the file exists
         if os.path.isfile(Name_LIB):
-            ##If yes
             MTU.Info('Library already exists.....', 'Yes')
-            return 'Written'
-        else:
+            ##If yes, ask the user if he wants to keep it or not
+            lib_question = input('Do you want to recompile the library?\n'+\
+                    '[Press enter to skip compilation, any other key+Enter to recompile]')
+            if lib_question == '':
+                return 'Written'
+            else:
+                os.remove(Name_LIB)
+
+        if not os.path.isfile(Name_LIB):
             ##if not
-            MTU.Info('Library does not exist...Creation...', 'No')
+            MTU.Info('Library does not exist or have been deleted...Creation...', 'No')
             #### We must create it
             ##1-Get the parameters from the user
             Base_SSP_name = Lib_conf['BaseSSP']

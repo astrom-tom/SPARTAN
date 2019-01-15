@@ -27,6 +27,8 @@ from .config_check  import check_main
 from .Data_selector import data_selector
 from .Lib_provided  import Compil_provided_LIB as CPL
 from .              import fit_selector as fit
+from .              import GUI_main as gui
+
 
 def read_arg(args):
     """
@@ -77,11 +79,10 @@ def main():
     CheckArgs = read_arg(args)
 
     if args.version == True:
-        print('SPARTAN version %s'%info.__version__)
+        MTU.Info('SPARTAN version %s'%info.__version__, 'No')
         sys.exit()
 
     if args.docs == True:
-
         ##check if there is any internet connection
         try:
             socket.setdefaulttimeout(3)
@@ -102,38 +103,41 @@ def main():
                 ##and we stop the loop
                 sys.exit()
                 break
+    
     ####open TUI
     if args.tui:
-        if os.path.isfile(args.tui):
-            Startfit = TUI.TUI(args.tui)
+        try:
+            if os.path.isfile(args.tui):
+                Startfit = TUI.TUI(args.tui)
 
-        else:
-            ###Display error messages if file passed to tui is not found
-            MTU.Error('The template file or the file you tried to pass,\n\
-                ...to the TUI was not found...\n\t\t\t...exit..\n', 'Yes')
-            sys.exit()
-
-        if Startfit == 'yes':
-            ##first we check the file that was given
-            statusconf, CONF = check_main(args.tui).check_full()
-            #statusconf, CONF = check_config(args.file)
-            if statusconf == 'ok':
-                ####We start to make datacube (or load it)
-                statusdatacube = data_selector(CONF)
-                ####Then start the library (or load it)
-                if statusdatacube == 'ok':
-                    statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
-                    if statusLIB == 'Written':
-                        fit.selector(CONF)
-
-                else:
-                    MTU.Info('The datacube was not found/created', 'No')
-                
             else:
-                MTU.Error('You asked to run SPARTAN,\n\
-                    ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                ###Display error messages if file passed to tui is not found
+                MTU.Error('The template file or the file you tried to pass,\n\
+                    ...to the TUI was not found...\n\t\t\t...exit..\n', 'Yes')
                 sys.exit()
 
+            if Startfit == 'yes':
+                ##first we check the file that was given
+                statusconf, CONF = check_main(args.tui).check_full()
+                #statusconf, CONF = check_config(args.file)
+                if statusconf == 'ok':
+                    ####We start to make datacube (or load it)
+                    statusdatacube = data_selector(CONF)
+                    ####Then start the library (or load it)
+                    if statusdatacube == 'ok':
+                        statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
+                        if statusLIB == 'Written':
+                            fit.selector(CONF)
+
+                    else:
+                        MTU.Info('The datacube was not found/created', 'No')
+                    
+                else:
+                    MTU.Error('You asked to run SPARTAN,\n\
+                        ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                    sys.exit()
+        except KeyboardInterrupt:
+            MTU.Info('Quitting SPARTAN...', 'Yes')
 
     #########check config
     if args.check:
@@ -148,31 +152,84 @@ def main():
 
     ##########run fit
     if args.run:
-        if args.file is None:
-            MTU().Error('You asked to run SPARTAN,\n\
-                ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
-            sys.exit()
-
-        else:
-            ##first we check the file that was given
-            statusconf, CONF = check_main(args.file).check_full()
-            #statusconf, CONF = check_config(args.file)
-            if statusconf == 'ok':
-                ####We start to make datacube (or load it)
-                statusdatacube = data_selector(CONF)
-                ####Then start the library (or load it)
-                if statusdatacube == 'ok':
-                    statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
-                    if statusLIB == 'Written':
-                        fit.selector(CONF)
-
-                else:
-                    MTU.Info('The datacube was not found/created', 'No')
-                
-            else:
+        try:
+            if args.file is None:
                 MTU.Error('You asked to run SPARTAN,\n\
-                    ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                    ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
                 sys.exit()
+
+            else:
+                ##first we check the file that was given
+                statusconf, CONF = check_main(args.file).check_full()
+                if statusconf == 'ok':
+                    ####We start to make datacube (or load it)
+                    statusdatacube = data_selector(CONF)
+                    ####Then start the library (or load it)
+                    if statusdatacube == 'ok':
+                        statusLIB = CPL().Load_config(CONF.LIB, CONF.CONF)
+                        if statusLIB == 'Written':
+                            fit.selector(CONF)
+
+                    else:
+                        MTU.Info('The datacube was not found/created', 'No')
+                    
+                else:
+                    MTU.Error('You asked to run SPARTAN,\n\
+                        ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                    sys.exit()
+
+        except KeyboardInterrupt:
+            MTU.Info('Quitting SPARTAN...', 'Yes')
+
+    if args.visua:
+        try:
+            if args.file is None:
+                MTU.Error('You asked to visualize SPARTAN results,\n\
+                    ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
+                sys.exit()
+
+            else:
+                ##first we check the file that was given
+                statusconf, CONF = check_main(args.file).check_full()
+                if statusconf == 'ok':
+                    Resfile = os.path.join(CONF.CONF['PDir'],CONF.CONF['PName']+'_Res.hdf5')
+                    if os.path.isfile(Resfile):
+                        MTU.Info('Result file found, opening GUI', 'Yes')
+                        MTU.Info('Load SPARTAN GUI with %s'%args.file, 'No')
+                        gui.start_gui(CONF, Resfile)
+
+                    else:
+                        MTU.Error('Results file not found...exit...', 'Yes')
+                else:
+                    MTU.Error('You asked to visualize SPARTAN results,\n\
+                        ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                    sys.exit()
+
+        except KeyboardInterrupt:
+            MTU.Info('Quitting SPARTAN...', 'Yes')
+
+    if args.OBJ:
+        try:
+            if args.file is None:
+                MTU.Error('You asked to extract SPARTAN results,\n\
+                    ...But did not provide a configuration file...\n\t\t\t...exit..\n', 'Yes')
+                sys.exit()
+
+            else:
+                ##first we check the file that was given
+                statusconf, CONF = check_main(args.file).check_full()
+                if statusconf == 'ok':
+                    MTU.Info('Extract SPARTAN result for object %s'%args.OBJ, 'No')
+                else:
+                    MTU.Error('You asked to extract SPARTAN results,\n\
+                        ...But the configuration is incomplete...\n\t\t\t...exit..\n', 'No')
+                    sys.exit()
+
+        except KeyboardInterrupt:
+            MTU.Info('Quitting SPARTAN...', 'Yes')
+
+
+
 
 if __name__ == "__main__":
     main()

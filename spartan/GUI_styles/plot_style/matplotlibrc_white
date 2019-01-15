@@ -1,0 +1,189 @@
+### MATPLOTLIBRC FORMAT
+
+# This is a sample matplotlib configuration file - you can find a copy
+# of it on your system in
+# site-packages/matplotlib/mpl-data/matplotlibrc.  If you edit it
+# there, please note that it will be overwritten in your next install.
+# If you want to keep a permanent local copy that will not be
+# overwritten, place it in the following location:
+# unix/linux:
+#     $HOME/.config/matplotlib/matplotlibrc or
+#     $XDG_CONFIG_HOME/matplotlib/matplotlibrc (if $XDG_CONFIG_HOME is set)
+# other platforms:
+#     $HOME/.matplotlib/matplotlibrc
+#
+# See http://matplotlib.org/users/customizing.html#the-matplotlibrc-file for
+# more details on the paths which are checked for the configuration file.
+#
+# This file is best viewed in a editor which supports python mode
+# syntax highlighting. Blank lines, or lines starting with a comment
+# symbol, are ignored, as are trailing comments.  Other lines must
+# have the format
+#    key : val # optional comment
+#
+# Colors: for the color values below, you can either use - a
+# matplotlib color string, such as r, k, or b - an rgb tuple, such as
+# (1.0, 0.5, 0.0) - a hex string, such as ff00ff - a scalar
+# grayscale intensity such as 0.75 - a legal html color name, e.g., red,
+# blue, darkslategray
+
+#### CONFIGURATION BEGINS HERE
+# If you are using the Qt4Agg backend, you can choose here
+# to use the PyQt4 bindings or the newer PySide bindings to
+# the underlying Qt4 toolkit.
+backend.qt5 : PyQt5        # PyQt4 | PySide
+
+# When True, the figures rendered in the nbagg backend are created with
+# a transparent background.
+nbagg.transparent : True
+
+# if you are running pyplot inside a GUI and your backend choice
+# conflicts, we will automatically try to find a compatible one for
+# you if backend_fallback is True
+#backend_fallback: True
+
+### LINES
+# See http://matplotlib.org/api/artist_api.html#module-matplotlib.lines for more
+# information on line properties.
+lines.linewidth   : 0.5     # line width in points
+lines.markeredgewidth  : 0.0     # the line width around the marker symbol
+lines.markersize  : 3           # markersize, in points
+#lines.dash_joinstyle : miter        # miter|round|bevel
+#lines.dash_capstyle : butt          # butt|round|projecting
+#lines.solid_joinstyle : miter       # miter|round|bevel
+#lines.solid_capstyle : projecting   # butt|round|projecting
+#lines.antialiased : True         # render lines in antialiased (no jaggies)
+
+#markers.fillstyle: full # full|left|right|bottom|top|none
+
+### HATCHES
+hatch.color     : k
+hatch.linewidth : 1.0
+
+### FONT
+#
+# font properties used by text.Text.  See
+# http://matplotlib.org/api/font_manager_api.html for more
+# information on font properties.  The 6 font properties used for font
+# matching are given below with their default values.
+#
+# The font.family property has five values: 'serif' (e.g., Times),
+# 'sans-serif' (e.g., Helvetica), 'cursive' (e.g., Zapf-Chancery),
+# 'fantasy' (e.g., Western), and 'monospace' (e.g., Courier).  Each of
+# these font families has a default list of font names in decreasing
+# order of priority associated with them.  When text.usetex is False,
+# font.family may also be one or more concrete font names.
+#
+# The font.style property has three values: normal (or roman), italic
+# or oblique.  The oblique style will be used for italic, if it is not
+# present.
+#
+# The font.variant property has two values: normal or small-caps.  For
+# TrueType fonts, which are scalable fonts, small-caps is equivalent
+# to using a font size of 'smaller', or about 83%% of the current font
+# size.
+#
+# The font.weight property has effectively 13 values: normal, bold,
+# bolder, lighter, 100, 200, 300, ..., 900.  Normal is the same as
+# 400, and bold is 700.  bolder and lighter are relative values with
+# respect to the current weight.
+#
+# The font.stretch property has 11 values: ultra-condensed,
+# extra-condensed, condensed, semi-condensed, normal, semi-expanded,
+# expanded, extra-expanded, ultra-expanded, wider, and narrower.  This
+# property is not currently implemented.
+#
+# The font.size property is the default font size for text, given in pts.
+# 10 pt is the standard value.
+#
+font.family         : monospace
+font.style         : italic
+
+### TEXT
+# text properties used by text.Text.  See
+# http://matplotlib.org/api/artist_api.html#module-matplotlib.text for more
+# information on text properties
+text.color          : Black
+
+# The following settings allow you to select the fonts in math mode.
+# They map from a TeX font name to a fontconfig font pattern.
+# These settings are only used if mathtext.fontset is 'custom'.
+# Note that this "custom" mode is unsupported and may go away in the
+# future.
+#mathtext.default : regular # The default font to use for math.
+                       # Can be any of the LaTeX font names, including
+                       # the special name "regular" for the same font
+                       # used in regular text.
+
+### AXES
+# default face and edge color, default tick sizes,
+# default fontsizes for ticklabels, and so on.  See
+# http://matplotlib.org/api/axes_api.html#module-matplotlib.axes
+axes.facecolor      : white   # axes background color
+axes.edgecolor      : black   # axes edge color
+axes.linewidth      : 0.3     # edge linewidth
+axes.labelsize      : 4.5  # fontsize of the x any y labels
+axes.labelcolor     : black
+axes.labelpad       : 0
+axes.titlepad       : 1
+axes.titlesize      : 6
+
+### TICKS
+# see http://matplotlib.org/api/axis_api.html#matplotlib.axis.Tick
+xtick.top            : True   # draw ticks on the top side
+xtick.bottom         : True   # draw ticks on the bottom side
+xtick.major.size     : 2.      # major tick size in points
+xtick.minor.size     : 1      # minor tick size in points
+xtick.color          : black      # color of the tick labels
+xtick.labelsize      : 4 # fontsize of the tick labels
+xtick.direction      : in    # direction: in, out, or inout
+xtick.minor.visible  : True  # visibility of minor ticks on x-axis
+xtick.major.width    : 0.3
+xtick.minor.width    : 0.3
+
+ytick.left           : True   # draw ticks on the left side
+ytick.right          : True  # draw ticks on the right side
+ytick.major.size     : 2      # major tick size in points
+ytick.minor.size     : 1      # minor tick size in points
+ytick.color          : black      # color of the tick labels
+ytick.labelsize      : 4 # fontsize of the tick labels
+ytick.direction      : in    # direction: in, out, or inout
+ytick.minor.visible  : True  # visibility of minor ticks on y-axis
+ytick.major.width    : 0.3
+ytick.minor.width    : 0.3
+
+
+
+### Legend
+#legend.loc           : best
+legend.frameon       : False     # if True, draw the legend on a background patch
+legend.numpoints     : 1        # the number of marker points in the legend line
+legend.scatterpoints : 1        # number of scatter points
+legend.markerscale   : 0.8      # the relative size of legend markers vs. original
+legend.fontsize      : 4
+# Dimensions as fraction of fontsize:
+legend.borderpad     : 0.8     # border whitespace
+legend.labelspacing  : 0.1      # the vertical space between the legend entries
+legend.handlelength  : 1.5      # the length of the legend lines
+legend.handletextpad : 0.5      # the space between the legend line and legend text
+legend.borderaxespad : 0.2      # the border between the axes and legend edge
+
+### FIGURE
+# See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure
+figure.dpi       : 250      # figure dots per inch
+figure.facecolor : white  # figure facecolor; 0.75 is scalar gray
+figure.edgecolor : white   # figure edgecolor
+figure.subplot.left: 0.1
+### IMAGES
+image.aspect : equal             # equal | auto | a number
+
+### SCATTER PLOTS
+scatter.marker : p               # The default marker type for scatter plots.
+
+### SAVING FIGURES
+# the default savefig params can be different from the display params
+# e.g., you may want a higher resolution, or to make the figure
+# background white
+savefig.facecolor   : white    # figure facecolor when saving
+savefig.edgecolor   : white    # figure edgecolor when saving
+savefig.format      : pdf      # png, ps, pdf, svg

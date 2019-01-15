@@ -173,6 +173,7 @@ class indiv_obj:
         Magnitudes  list, of magnitude of the given object
         Redshift    float, redshift of the galaxy
         '''
+        self.tofit = 'yes'
         if fit_type == 'mag':
             with h5py.File(Datafile, 'r') as Data:
                 self.Magnitudes = numpy.array(Data['%s/Mag'%ID]).astype('str')

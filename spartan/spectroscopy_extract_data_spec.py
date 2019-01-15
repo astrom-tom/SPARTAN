@@ -80,6 +80,13 @@ def extract_datasets(datasets, obj, CONF, redshift):
                 wavespec = numpy.array(obj[j][0])
                 fluxspec = numpy.array(obj[j][1])
                 errfspec  = numpy.array(obj[j][2])
+                ###look for places where the errors are null
+                indexs = numpy.where(errfspec != 0) 
+                ###and consider only these ones for the spectrum
+                wavespec = wavespec[indexs]
+                fluxspec = fluxspec[indexs]
+                errfspec = errfspec[indexs]
+
 
         for j in datasets:
             if j[0:-1] == 'Mag' and int(j[-1]) == i:
@@ -150,7 +157,7 @@ def emission_line_free(obj, wave_reg, wave, flux, redshift):
     Meas       float,   measure of the error
     err        err,     measure of the error
     '''
-
+    
     if redshift > 0 :
         ##and create rectangular filter
         band = Retrieve_Filter_inf().rectangular(wave_reg[0]*(1+redshift),\

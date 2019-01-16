@@ -225,4 +225,4 @@ scatter.marker : p               # The default marker type for scatter plots.
 # background white
 savefig.facecolor   : black    # figure facecolor when saving
 savefig.edgecolor   : black    # figure edgecolor when saving
-savefig.format      : pdf      # png, ps, pdf, svg
+savefig.format      : eps      # png, ps, pdf, svg

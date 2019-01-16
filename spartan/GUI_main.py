@@ -19,8 +19,8 @@ from functools import partial
 ####Third party
 import  numpy
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QLabel, QComboBox,
-        QPushButton, QTabWidget)
-from PyQt5.QtGui import QIcon, QPixmap
+        QPushButton, QTabWidget, QShortcut)
+from PyQt5.QtGui import QIcon, QPixmap, QKeySequence
 import PyQt5.QtCore as QtCore
 import PyQt5.QtGui as QtGui
 
@@ -46,6 +46,8 @@ class Main_window(QWidget):
         self.resfile = resfile
         self.dico = data.ListID_dico(self.resfile)
         self.CONF = CONF
+        self.index = 0
+        self.indexmax = 0
         self.initUI() 
         self.setWindowTitle('SPARTAN Results graphical interface')
 
@@ -62,6 +64,7 @@ class Main_window(QWidget):
         label.setScaledContents(True)
         label.setPixmap(pixmap4)
         grid.addWidget(label, 0, 1, 1, 8)
+
 
         #### 2 -Individual part
         #### a - Title of the section
@@ -153,11 +156,34 @@ class Main_window(QWidget):
         #### 5 - save data for plotting
         savedata = QPushButton("Save plot data")
         grid.addWidget(savedata, 6, 7, 1, 2)
-        savedata.clicked.connect(partial(self.savedata, str(self.combo.currentText())))
+        savedata.clicked.connect(self.savedata)
 
         ### 6- space for tabs
         self.tab = QTabWidget()
         grid.addWidget(self.tab, 7, 1, 1, 8)
+
+        ### 7- set keyboard shortcuts
+        #Close tab
+        self.shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
+        self.shortcut.activated.connect(partial(self.closeTab_keyboard, self.index))
+
+        #next fit
+        self.shortcut_nextfit = QShortcut(QKeySequence("n"), self)
+        self.shortcut_nextfit.activated.connect(self.nextfit)
+
+        #next Tab
+        self.shortcut_nextTab = QShortcut(QKeySequence("Ctrl+PgDown"), self)
+        self.shortcut_nextTab.activated.connect(self.nextTab)
+
+        #next Tab
+        self.shortcut_prevTab = QShortcut(QKeySequence("Ctrl+PgUp"), self)
+        self.shortcut_prevTab.activated.connect(self.previousTab)
+
+        #save files
+        self.shortcut_savefiles = QShortcut(QKeySequence("s"), self)
+        self.shortcut_savefiles.activated.connect(self.savedata)
+
+
  
         ###icon
         icon = QtGui.QIcon()
@@ -167,6 +193,41 @@ class Main_window(QWidget):
 
     def closeTab(self, currentIndex):
         self.tab.removeTab(currentIndex)
+
+    def closeTab_keyboard(self, currentIndex):
+        self.tab.removeTab(currentIndex)
+
+    def nextTab(self):
+        '''
+        Method that allows one to change to the next tab with
+        a keyboard shortcut
+        '''
+        print(self.index, self.indexmax)
+        if self.index + 1 >= self.indexmax:
+            self.tab.setCurrentIndex(self.index+1)
+            self.index = self.indexmax
+        else:
+            self.tab.setCurrentIndex(self.index+1)
+            self.index += 1
+
+    def previousTab(self):
+        '''
+        Method that allows one to change to the next tab with
+        a keyboard shortcut
+        ''' 
+        self.tab.setCurrentIndex(self.index-1)
+        if self.index > 0:
+            self.index -= 1
+
+
+    def nextfit(self):
+        '''
+        Method that combines the next fir button and show fit button.
+        used for keyboard shortcut
+        '''
+        self.gonext()
+        self.showfit()
+
     
     def showfit(self,):
         self.nametab = 'showfit'
@@ -178,7 +239,7 @@ class Main_window(QWidget):
         a = self.tab.count()
         self.createTab(a) 
 
-    def savedata(self, ident):
+    def savedata(self):
         '''
         Method that send the data to the save_data function
         parameters:
@@ -189,7 +250,8 @@ class Main_window(QWidget):
         ------
         None
         '''
-        savedata = save_to_disk(self.CONF, ident, self.resfile)
+        obj = str(self.combo.currentText())
+        savedata = save_to_disk(self.CONF, obj, self.resfile)
         
     def general_tab(self,):
         self.nametab = 'gen'
@@ -204,23 +266,34 @@ class Main_window(QWidget):
             tab = Tabgen(self.resfile, self.dico, str(self.style.currentText()))
             tab.popIn.connect(self.addTab)
             tab.popOut.connect(self.removeTab)
-            self.tab.addTab(tab, 'General properties' ) 
+            self.index = self.tab.addTab(tab, 'General properties' ) 
+            if self.index > self.indexmax:
+                self.indexmax = self.index
+            self.tab.setCurrentIndex(self.index)
 
         if self.nametab == 'showfit':
             ident = str(self.combo.currentText())
+            MTU.Info('Show fit for %s'%ident, 'Yes')
             tab = Tabfit(self.resfile, ident, self.CONF, str(self.style.currentText()))
             tab.popIn.connect(self.addTab)
             tab.popOut.connect(self.removeTab)
-            self.tab.addTab(tab, '%s' % ident)
+            self.index = self.tab.addTab(tab, '%s' % ident)
+            if self.index > self.indexmax:
+                self.indexmax = self.index
+ 
+            self.tab.setCurrentIndex(self.index)
         
         if self.nametab == 'xvsy':
             tab = TabXvsY(self.resfile, self.dico, str(self.style.currentText()))
             tab.popIn.connect(self.addTab)
             tab.popOut.connect(self.removeTab)
-            self.tab.addTab(tab, 'X vs Y' )
+            self.index = self.tab.addTab(tab, 'X vs Y' )
+            if self.index > self.indexmax:
+                self.indexmax = self.index
+ 
+            self.tab.setCurrentIndex(self.index)
 
-
-    
+ 
     def addTab(self, widget):
         if self.tab.indexOf(widget) == -1:
             widget.setWindowFlags(QtCore.Qt.Widget)
@@ -266,12 +339,13 @@ class Main_window(QWidget):
     def gonext(self,):
         #Next button method. 
         ####update the count
-        if self.count > len(self.listID)-1:
+        if self.count >= len(self.listID)-1:
             self.count = 0
         else:
             self.count += 1
 
         ###and set the new id in the list
+        print(self.count, len(self.listID))
         a = self.combo.findText(self.listID[self.count])
         self.combo.setCurrentIndex(a)
         ###and update the status 
@@ -351,6 +425,7 @@ def save_to_disk(conf, ident, resfile):
         savefit_orig = os.path.join(savedir, 'fit.txt')
         numpy.savetxt(savefit_orig, numpy.array([BFtemp_wave, BFtemp]).T)
 
+        MTU.Info('Plotting data for %s saved in %s'%(ident, savedir), 'No')
 
     #if conf.CONF['UsePhot'].lower() == 'yes' and conf.CONF['UseSpec'].lower() == 'yes':
 

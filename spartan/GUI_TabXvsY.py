@@ -42,6 +42,9 @@ import matplotlib.gridspec as gridspec
 ##ignored warnings
 warnings.simplefilter(action='ignore', category=matplotlib.mplDeprecation)
 
+##set path
+matplotlib.rcParams["savefig.directory"] = os.getcwd()
+
 ###Local imports
 from .           import Results_extract_results as extract
 

@@ -178,9 +178,10 @@ def file_spec(CONF):
                                 [Specfreq], Final_spec[0], freq) 
                         MagFlux = Comp_phot.mag2flux(float(jj[1]), prepare_data.allbands[0]['Tran'][2])
                         #---> compute the ratio F(phot)/F(spec) --> normalisation factor
-                        #--> and apply it to the spectrum
+                        #--> and apply it to the spectrum and to the error spectrum!
                         ratio = MagFlux/F[0][0]
                         Final_spec[1] = Final_spec[1]*ratio
+                        Final_spec[2] = Final_spec[2]*ratio
                         '''
                         #####check we recompute the magnitude from the normalized spectrum
                         #####

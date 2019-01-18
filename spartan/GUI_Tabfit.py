@@ -116,35 +116,40 @@ class Tabfit(QTabWidget):
     def specplot(self, toplot):
 
         ###unpack
-        BFtemp_wave, BFtemp, BF_regrid, SPECS = toplot
+        status, BFtemp_wave, BFtemp, BF_regrid, SPECS = toplot
 
         ##and plot fit
         self.fitplot.clear()
 
 
-        mins = []
-        maxs = []
-        for i in list(SPECS.keys()):
-            if i == '1':
-                self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='deepskyblue', \
-                        lw=0.3, label='Observed')
-                self.fitplot.fill_between(SPECS[i][0], 0, SPECS[i][1], color='0.3', lw=0.0)
-                self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='Orange', lw=0.3, label='Error')
-            else:
-                self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='g', lw=0.8)
-                self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='g', lw=0.8)
+        if status == 'Fitted':
+            mins = []
+            maxs = []
+            for i in list(SPECS.keys()):
+                if i == '1':
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='deepskyblue', \
+                            lw=0.3, label='Observed')
+                    self.fitplot.fill_between(SPECS[i][0], 0, SPECS[i][1], color='0.3', lw=0.0)
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='Orange', lw=0.3, label='Error')
+                else:
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='g', lw=0.8)
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='g', lw=0.8)
 
-            mins.append(min(SPECS[i][0]))
-            maxs.append(max(SPECS[i][0]))
+                mins.append(min(SPECS[i][0]))
+                maxs.append(max(SPECS[i][0]))
 
-        self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template')
+            self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template')
 
-        self.fitplot.tick_params(labelbottom = 'off')
-        self.fitplot.axhline(0, lw=0.5, ls='--', color='yellow')
-        self.fitplot.legend(ncol = 3)
-        self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
-        self.fitplot.set_ylabel('Flux Density')
-        self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
+            #self.fitplot.tick_params(labelbottom = 'off')
+            self.fitplot.axhline(0, lw=0.5, ls='--', color='yellow')
+            self.fitplot.legend(ncol = 3)
+            self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
+            self.fitplot.set_ylabel('Flux Density')
+            self.fitplot.set_xlabel('Wavelength')
+            self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
+        else:
+            self.fitplot.text(0.25,0.5,'Failed fit')
+            self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
 
     def photplot(self, toplot):
 
@@ -195,54 +200,55 @@ class Tabfit(QTabWidget):
                     PDF.append(i[:-4])
 
 
-        BFp = extract.extract_full_obj(self.filename, self.ident, ['Redshift', 'Npoints', 'Bestchi2']+BF, 'Parameters_BF', 'BF')
-        PDFp = extract.extract_full_obj(self.filename, self.ident, ['Redshift', 'Npoints', 'Bestchi2']+PDF, 'Parameters_PDF', 'PDF') 
+        status, BFp = extract.extract_full_obj(self.filename, self.ident, ['Redshift', 'Npoints', 'Bestchi2']+BF, 'Parameters_BF', 'BF')
+        status, PDFp = extract.extract_full_obj(self.filename, self.ident, ['Redshift', 'Npoints', 'Bestchi2']+PDF, 'Parameters_PDF', 'PDF') 
 
-        ####table for parameters
-        tableWidget = QTableWidget()
-        tableWidget.setRowCount(2)
-        listp = ['Redshift', 'Npoints', 'bestChi2']+BF 
-        tableWidget.setColumnCount(len(listp))
+        if status == 'Fitted':
+            ####table for parameters
+            tableWidget = QTableWidget()
+            tableWidget.setRowCount(2)
+            listp = ['Redshift', 'Npoints', 'bestChi2']+BF 
+            tableWidget.setColumnCount(len(listp))
 
-        for i in range(len(listp)):
-            tableWidget.setItem(0, i, QTableWidgetItem(str(BFp[i])))
-            tableWidget.setItem(1, i, QTableWidgetItem(str(PDFp[i])))
-        
-        tableWidget.setHorizontalHeaderLabels(listp)
-        tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        header = tableWidget.horizontalHeader()
-        header.setStretchLastSection(True)
-        tableWidget.setVerticalHeaderLabels(['BF', 'PDF'])
-        tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        header = tableWidget.verticalHeader()
-        header.setStretchLastSection(True)
-        grid.addWidget(tableWidget, 0, 0, 3, 4)
+            for i in range(len(listp)):
+                tableWidget.setItem(0, i, QTableWidgetItem(str(BFp[i])))
+                tableWidget.setItem(1, i, QTableWidgetItem(str(PDFp[i])))
+            
+            tableWidget.setHorizontalHeaderLabels(listp)
+            tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            header = tableWidget.horizontalHeader()
+            header.setStretchLastSection(True)
+            tableWidget.setVerticalHeaderLabels(['BF', 'PDF'])
+            tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+            header = tableWidget.verticalHeader()
+            header.setStretchLastSection(True)
+            grid.addWidget(tableWidget, 0, 0, 3, 4)
 
-        #### window with plots
+            #### window with plots
 
-        ###set  number of rows and column
-        Rows = int(len(PDF)/2) + 1
-        Column = 2
+            ###set  number of rows and column
+            Rows = int(len(PDF)/2) + 1
+            Column = 2
 
-        self.figure = Figure()
-        self.win = FigureCanvas(self.figure)
-        self.figure.subplots_adjust(hspace = 1.8, wspace = 1.3)
-        self.win.draw()
-        grid.addWidget(self.win, 4, 0, 2, 4)
-        self.toolbar = NavigationToolbar(self.win, self)
-        grid.addWidget(self.toolbar, 3, 0, 1, 4)
-        
-        for i in range(len(PDF)):
-            self.pdfcdf = self.figure.add_subplot(Rows, Column, i+1)
-            gr, PDFfull, CDFfull = extract.extract_PDF_CDF(self.filename, self.ident, PDF[i])
-            self.pdfcdf.plot(gr, PDFfull/max(PDFfull), color='fuchsia')
-            self.pdfcdf.fill_between(gr,0, PDFfull/max(PDFfull), color='fuchsia', alpha=0.2, lw=0.2 )
-            self.pdfcdf.plot(gr, CDFfull, color='lime')
-            ##customize
-            #self.pdfcdf.set_xlabel(PDF[i])
-            #self.pdfcdf.set_ylabel('P')
-            self.pdfcdf.text(min(gr), 0.5, PDF[i], fontsize=5)
-        
+            self.figure = Figure()
+            self.win = FigureCanvas(self.figure)
+            self.figure.subplots_adjust(hspace = 1.8, wspace = 1.3)
+            self.win.draw()
+            grid.addWidget(self.win, 4, 0, 2, 4)
+            self.toolbar = NavigationToolbar(self.win, self)
+            grid.addWidget(self.toolbar, 3, 0, 1, 4)
+            
+            for i in range(len(PDF)):
+                self.pdfcdf = self.figure.add_subplot(Rows, Column, i+1)
+                gr, PDFfull, CDFfull = extract.extract_PDF_CDF(self.filename, self.ident, PDF[i])
+                self.pdfcdf.plot(gr, PDFfull/max(PDFfull), color='fuchsia')
+                self.pdfcdf.fill_between(gr, 0, PDFfull/max(PDFfull), color='fuchsia', alpha=0.2, lw=0.2 )
+                self.pdfcdf.plot(gr, CDFfull, color='deepskyblue', ls='--')
+                ##customize
+                #self.pdfcdf.set_xlabel(PDF[i])
+                #self.pdfcdf.set_ylabel('P')
+                self.pdfcdf.text(min(gr), 0.5, PDF[i], fontsize=5)
+            
         self.figure.tight_layout()
         tab2.setLayout(grid)
 

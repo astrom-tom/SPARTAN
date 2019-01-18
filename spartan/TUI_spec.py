@@ -148,7 +148,7 @@ class Spec_win:
                 values = ["Magnitude","Regions"],value=Norm, scroll_exit=True, labelColor='CAUTION',\
                 relx=5,rely=n+4*int((y-n)/6),max_height=int(y/15),max_width=int(x/3)) 
 
-        NormReg = self.S.add(npyscreen.TitleText, name='If Region, give l1 & l2 (rest-f ,AA).',\
+        NormReg = self.S.add(npyscreen.TitleText, name='If Region, give l1 & l2 (rest-f ,AA :l1-l2).',\
                   value=SPEC['Norm_reg'],relx=5,rely=n+5*int((y-n)/6),max_width=int(x/3),color='CAUTION') 
         
 

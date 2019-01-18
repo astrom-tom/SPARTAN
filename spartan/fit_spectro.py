@@ -42,8 +42,8 @@ from .          import Results_Cat_final as Cat
 #############################################################
 ######
 from .          import plot_specfit
-#import check_plots.cleaning as plotclean
-#Wimport check_plots.specfit as plotfit
+from .          import plot_clean
+from .          import plot_specfit as plotfit
 
 
 #----------------------------------------------------------------------
@@ -136,7 +136,7 @@ class Fit_spectro:
                     MTU.Info('Object %s: %s'%(gal.ID, gal.status), 'No')
                 else:
                     MTU.Error('Object %s could not be fitted: %s' %(gal.ID,  gal.status), 'No')
-                    save.save_to_file_fail(self.Resfile, gal, self.CONF.FIT['OverFit'])
+                    save.save_to_file_fail(self.Resfile, gal, self.CONF)
             MTU.Info('the %s objects were fitted in %s seconds'%(int(self.CONF.CONF['NCPU']),\
                     timeafter_loop-timebefore_loop), 'Yes')
 
@@ -176,9 +176,9 @@ class Fit_spectro:
             ####################################
             ###  edges and BR cleaning #########
             ####################################
+            galaxy_copy = copy.deepcopy(galaxy)
             cleaning.main(galaxy, CONF)
-
-            #plotclean.cleaning_plot(galaxy_copy, galaxy)
+            #plot_clean.cleaning_plot(galaxy_copy, galaxy)
 
             ###################################
             ###     Photometry ################
@@ -251,7 +251,6 @@ class Fit_spectro:
             galaxy.template_wave = lib.Wave_at_z
 
             n = 0 
-
 
             if DUST.use == 'Yes' and IGM.dict['Use'] == 'Yes':
                 for i in range(len(DUST.Dustfile_list)): 
@@ -345,7 +344,7 @@ class Fit_spectro:
                             [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
                     galaxy.Bf_param(lib, Norm[index_chi][0])
                 n += 1
-
+            
             if 'BFparam' not in list(galaxy.__dict__.keys()):
                 galaxy.status = 'FAIL'
                 return  galaxy

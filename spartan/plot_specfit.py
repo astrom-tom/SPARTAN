@@ -5,7 +5,7 @@
 #####      R. THOMAS
 #####        2016
 #####
-#####   photo fit plot
+#####   spec fit plot
 #####
 ###########################
 @License: GPL licence - see LICENCE.txt

@@ -148,7 +148,7 @@ class Main_window(QWidget):
 
 
         self.liststyle = os.listdir(style_path)
-        for i in self.liststyle[::-1]:
+        for i in self.liststyle:
             if i[-1] != '~':
                 self.style.addItem(i)
         grid.addWidget(self.style, 6, 3, 1, 2)
@@ -167,9 +167,19 @@ class Main_window(QWidget):
         self.shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
         self.shortcut.activated.connect(partial(self.closeTab_keyboard, self.index))
 
+        #Close tab
+        self.showcurrent = QShortcut(QKeySequence("f"), self)
+        self.showcurrent.activated.connect(self.showfit)
+
         #next fit
         self.shortcut_nextfit = QShortcut(QKeySequence("n"), self)
         self.shortcut_nextfit.activated.connect(self.nextfit)
+
+        #next fit
+        self.shortcut_prevfit = QShortcut(QKeySequence("b"), self)
+        self.shortcut_prevfit.activated.connect(self.prevfit)
+
+
 
         #next Tab
         self.shortcut_nextTab = QShortcut(QKeySequence("Ctrl+PgDown"), self)
@@ -202,7 +212,6 @@ class Main_window(QWidget):
         Method that allows one to change to the next tab with
         a keyboard shortcut
         '''
-        print(self.index, self.indexmax)
         if self.index + 1 >= self.indexmax:
             self.tab.setCurrentIndex(self.index+1)
             self.index = self.indexmax
@@ -228,7 +237,14 @@ class Main_window(QWidget):
         self.gonext()
         self.showfit()
 
-    
+    def prevfit(self):
+        '''
+        Method that combines the next fir button and show fit button.
+        used for keyboard shortcut
+        '''
+        self.goback()
+        self.showfit()
+ 
     def showfit(self,):
         self.nametab = 'showfit'
         a = self.tab.count()
@@ -273,7 +289,8 @@ class Main_window(QWidget):
 
         if self.nametab == 'showfit':
             ident = str(self.combo.currentText())
-            MTU.Info('Show fit for %s'%ident, 'Yes')
+            MTU.Info('Show fit for %s, %s/%s'%(ident, self.count+1, len(self.listID)), 'Yes')
+
             tab = Tabfit(self.resfile, ident, self.CONF, str(self.style.currentText()))
             tab.popIn.connect(self.addTab)
             tab.popOut.connect(self.removeTab)
@@ -320,10 +337,13 @@ class Main_window(QWidget):
         ------
         None
         '''
+
+        ident = str(self.combo.currentText())
+        ind = numpy.where(numpy.array(self.listID) == ident)[0]
         if self.dico[ident] == 'Fitted':
             ##if the object was fitted --> green
             self.lbl.setStyleSheet('color: green')
-            self.lbl.setText('Fitted')
+            self.lbl.setText('Fitted, %s/%s'%(ind+1, len(self.listID)))
             self.lbl.setFont(myFont)
             ###and update the count
             self.count = numpy.where(numpy.array(self.listID) == ident)[0][0]
@@ -331,7 +351,7 @@ class Main_window(QWidget):
         else:
             ##if the object was not fitted --> red
             self.lbl.setStyleSheet('color: red')
-            self.lbl.setText('NOT Fitted')
+            self.lbl.setText('NOT Fitted, %s/%s'%(ind+1, len(self.listID)))
             self.lbl.setFont(myFont)
             ###and update the count
             self.count = numpy.where(numpy.array(self.listID) == ident)[0][0]             
@@ -345,7 +365,6 @@ class Main_window(QWidget):
             self.count += 1
 
         ###and set the new id in the list
-        print(self.count, len(self.listID))
         a = self.combo.findText(self.listID[self.count])
         self.combo.setCurrentIndex(a)
         ###and update the status 
@@ -391,41 +410,46 @@ def save_to_disk(conf, ident, resfile):
 
     if conf.CONF['UsePhot'].lower() == 'no' and conf.CONF['UseSpec'].lower() == 'yes':
         ###unpack
-        BFtemp_wave, BFtemp, BF_regrid, SPECS = toplot
+        status, BFtemp_wave, BFtemp, BF_regrid, SPECS = toplot
         
-        waveall = []
-        fluxall = []
-        errall = []
-        for i in list(SPECS.keys()):
-            waveall.append(SPECS[i][0])
-            fluxall.append(SPECS[i][1])
-            errall.append(SPECS[i][2])
-        if len(waveall) != 1:
-            waveall = numpy.concatenate(waveall)
-            fluxall = numpy.concatenate(waveall)
-            errall = numpy.concatenate(waveall)
+        if status == 'Fitted':
+            waveall = []
+            fluxall = []
+            errall = []
+            for i in list(SPECS.keys()):
+                waveall.append(SPECS[i][0])
+                fluxall.append(SPECS[i][1])
+                errall.append(SPECS[i][2])
+            if len(waveall) != 1:
+                waveall = numpy.concatenate(waveall)
+                fluxall = numpy.concatenate(waveall)
+                errall = numpy.concatenate(waveall)
+            else:
+                waveall = SPECS['1'][0]
+                fluxall = SPECS['1'][1]
+                errall = SPECS['1'][2]
+
+            
+            ##check if save directory exist
+            savedir = os.path.join(conf.CONF['PDir'] , 'save_ascii_fits', ident)
+            if not os.path.isdir(savedir):
+                os.makedirs(savedir)
+
+            ##save_data
+            savedata = os.path.join(savedir, 'data.txt')
+            numpy.savetxt(savedata, numpy.array([waveall, fluxall, errall]).T)
+
+            ##save_fit
+            savefit = os.path.join(savedir, 'fit_spec_wave.txt')
+            numpy.savetxt(savefit, numpy.array([waveall, BF_regrid]).T)
+            savefit_orig = os.path.join(savedir, 'fit.txt')
+            numpy.savetxt(savefit_orig, numpy.array([BFtemp_wave, BFtemp]).T)
+
+            MTU.Info('Plotting data for %s saved in %s'%(ident, savedir), 'No')
+
         else:
-            waveall = SPECS['1'][0]
-            fluxall = SPECS['1'][1]
-            errall = SPECS['1'][2]
+            MTU.Info('Plotting data not saved for failed fit: obj %s '%(ident), 'No')
 
-        
-        ##check if save directory exist
-        savedir = os.path.join(conf.CONF['PDir'] , 'save_ascii_fits', ident)
-        if not os.path.isdir(savedir):
-            os.makedirs(savedir)
-
-        ##save_data
-        savedata = os.path.join(savedir, 'data.txt')
-        numpy.savetxt(savedata, numpy.array([waveall, fluxall, errall]).T)
-
-        ##save_fit
-        savefit = os.path.join(savedir, 'fit_spec_wave.txt')
-        numpy.savetxt(savefit, numpy.array([waveall, BF_regrid]).T)
-        savefit_orig = os.path.join(savedir, 'fit.txt')
-        numpy.savetxt(savefit_orig, numpy.array([BFtemp_wave, BFtemp]).T)
-
-        MTU.Info('Plotting data for %s saved in %s'%(ident, savedir), 'No')
 
     #if conf.CONF['UsePhot'].lower() == 'yes' and conf.CONF['UseSpec'].lower() == 'yes':
 

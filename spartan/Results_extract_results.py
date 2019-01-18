@@ -42,7 +42,7 @@ def ListID_dico(fileres):
     with h5py.File(fileres) as ff:
         l = list(ff.keys())
         for i in l:
-            dicoID[i] = list(ff['%s/General'%i].keys())[0]
+            dicoID[i] = str(numpy.array(ff['%s/General/Fitted'%i]))[2:-1]
     return dicoID
 
 
@@ -172,17 +172,19 @@ def extract_full_obj(filename, ident, param, dire, typ):
     allp = []
     with h5py.File(filename) as ff:
         ffi = ff[ident]
-        for i in param:
-            if i  in ['Redshift', 'Npoints']:
-                p = extract_param_indiv(ffi, i, 'Observable')
-                allp.append(p)
-            elif i in ['Bestchi2']:
-                p = extract_param_indiv(ffi, i, 'Template')
-                allp.append(p)
-            else:
-                p = extract_param_indiv(ffi, i, dire)
-                allp.append(p)
-    return tuple(allp)
+        status = str(numpy.array(ffi['General/Fitted']))[2:-1]
+        if status == 'Fitted':
+            for i in param:
+                if i  in ['Redshift', 'Npoints']:
+                    p = extract_param_indiv(ffi, i, 'Observable')
+                    allp.append(p)
+                elif i in ['Bestchi2']:
+                    p = extract_param_indiv(ffi, i, 'Template')
+                    allp.append(p)
+                else:
+                    p = extract_param_indiv(ffi, i, dire)
+                    allp.append(p)
+        return status ,tuple(allp)
 
 def extract_param_indiv(ffi, X, dire):
 
@@ -306,28 +308,36 @@ def extract_spec(filename, ident, Nspec):
     with h5py.File(filename) as ff:
         obj = ff[ident]
 
-        ##extract the observable
-        Obs = obj['Observable']
-        
-        SPECS = {}
-        for i in range(Nspec):
-            sp = []
-            for j in list(Obs.keys()):
-                if j[0:4] == 'spec':
-                    out = numpy.array(Obs[j])
-                    sp.append(out)
+        status = str(numpy.array(obj['General/Fitted']))[2:-1]
+        if status == 'Fitted':
+            ##extract the observable
+            Obs = obj['Observable']
+            
+            SPECS = {}
+            for i in range(Nspec):
+                sp = []
+                for j in list(Obs.keys()):
+                    if j[0:4] == 'spec':
+                        out = numpy.array(Obs[j])
+                        sp.append(out)
 
-            SPECS['%s'%str(i+1)] = sp[::-1]
-        
-        ## extract the templates
-        Temp = obj['Template']
+                SPECS['%s'%str(i+1)] = sp[::-1]
+            
+            ## extract the templates
+            Temp = obj['Template']
 
-        BFtemp = numpy.array(Temp['Best_template_full'])
-        BFtemp_wave = numpy.array(Temp['Best_template_wave'])
-        BF_regrid = numpy.array(Temp['Bestfit_newgrid'])
+            BFtemp = numpy.array(Temp['Best_template_full'])
+            BFtemp_wave = numpy.array(Temp['Best_template_wave'])
+            BF_regrid = numpy.array(Temp['Bestfit_newgrid'])
 
+        else:
+            BFtemp_wave = [1,2]
+            BFtemp = [1,2]
+            BF_regrid = [1,2]
+            SPECS = {}
+            
 
-    fit = [BFtemp_wave, BFtemp, BF_regrid, SPECS]    
+    fit = [status, BFtemp_wave, BFtemp, BF_regrid, SPECS]    
     return fit
 
 

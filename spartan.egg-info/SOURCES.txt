@@ -48,6 +48,7 @@ spartan/photometry_Compute_photo.py
 spartan/photometry_Mag_abs.py
 spartan/photometry_filters.py
 spartan/photometry_prepare_photo_fit.py
+spartan/plot_clean.py
 spartan/plot_specfit.py
 spartan/read_data_file.py
 spartan/spectroscopy_clean_regions.py

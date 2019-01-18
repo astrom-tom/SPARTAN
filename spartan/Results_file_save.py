@@ -26,6 +26,7 @@ def save_to_file_fail(resfile, galaxy, CONF):
     ---------
     ID          str, ID of the object
     resfile     str, path/and/name of the result file
+    CONF        obj, configuration from the user
 
     Return
     ------
@@ -42,7 +43,10 @@ def save_to_file_fail(resfile, galaxy, CONF):
          
     ##open the result file and save the status as 'FAIL'
     with h5py.File(resfile) as Res:
-        del Res['%s'%galaxy.ID]
+        try:
+            del Res['%s'%galaxy.ID]
+        except:
+            pass
         obj = Res.create_group(galaxy.ID)
         gen = Res.create_group('%s/General'%galaxy.ID)
         gen.create_dataset('Fitted', data=numpy.string_('FAIL'))

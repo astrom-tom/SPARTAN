@@ -48,7 +48,11 @@ Contents
    :maxdepth: 1
 
    Home <self>
+   installation
    usage
+   spectroscopy
+   GUI
+   Conferences
 
 
 News

@@ -11,6 +11,7 @@ in SPARTAN
 '''
 
 ####Python Standard Library
+import warnings
 import time
 ###########################
 
@@ -21,6 +22,9 @@ import numpy
 ### Local imports#####################
 from .units import Phys_const, length
 ######################################
+
+warnings.filterwarnings("ignore")
+
 
 def array_template_to_phot_init(Bands,Templates_hz, wave_at_z, freqTemp):
     '''
@@ -115,7 +119,6 @@ def integ(Templates_hz, TranfreqNormed, freqTemp):
         integ = numpy.concatenate(integ)
     else:
         integ = numpy.trapz(A, freqTemp[::-1])
-
 
     return integ
 

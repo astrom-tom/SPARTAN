@@ -114,6 +114,17 @@ class Tabfit(QTabWidget):
         self.tab1.setLayout(grid)
 
     def specplot(self, toplot):
+        '''
+        This method plot the spectral fit
+        Parameters
+        ----------
+        toplot
+            list, of data to plot
+
+        Return
+        ------
+        None
+        '''
 
         ###unpack
         status, BFtemp_wave, BFtemp, BF_regrid, SPECS = toplot
@@ -144,39 +155,59 @@ class Tabfit(QTabWidget):
             self.fitplot.axhline(0, lw=0.5, ls='--', color='yellow')
             self.fitplot.legend(ncol = 3)
             self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
-            self.fitplot.set_ylabel('Flux Density')
-            self.fitplot.set_xlabel('Wavelength')
-            self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
         else:
             self.fitplot.text(0.25,0.5,'Failed fit')
-            self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
+
+        self.fitplot.set_ylabel('Flux Density')
+        self.fitplot.set_xlabel('Wavelength')
+        self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
 
     def photplot(self, toplot):
+        '''
+        Method that plots a photometric fit
+
+        Parameters
+        ----------
+        toplot,
+                list with data to plot
+
+        Return
+        ------
+        None        (It is a plot!!!!) 
+        '''
 
         ###unpack
-        wavelength, flux, fluxerr, obsmag, BFtemp, BFtemp_wave, Bestfit_flux, Bestfit_mag = toplot
+        status, wavelength, flux, fluxerr, obsmag, BFtemp, \
+                BFtemp_wave, Bestfit_flux, Bestfit_mag = toplot
 
-        ##and plot fit
-        self.fitplot.clear()
-        self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template', zorder=0)
-        self.fitplot.scatter(wavelength, Bestfit_flux, s = 20, color = 'lime', \
-                label='Best fit magnitudes', zorder=1)
+        if status == 'Fitted':
+            ##and plot fit
+            self.fitplot.clear()
+            self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template', zorder=0)
+            self.fitplot.scatter(wavelength, Bestfit_flux, s = 20, color = 'lime', \
+                    label='Best fit magnitudes', zorder=1)
 
-        self.fitplot.scatter(wavelength, flux, marker = '*', s=20, \
-                facecolor = 'none', edgecolor='fuchsia', lw=0.5, zorder=2,\
-                label='Observed Magnitude')
+            self.fitplot.scatter(wavelength, flux, marker = '*', s=20, \
+                    facecolor = 'none', edgecolor='fuchsia', lw=0.5, zorder=2,\
+                    label='Observed Magnitude')
 
-        self.fitplot.errorbar(wavelength, flux, yerr = [fluxerr,fluxerr],\
-                fmt='none', marker = '*', lw=1. ,color='blue',label = 'Observed error', \
-                zorder=3, capsize=5, elinewidth=0.5,)
+            self.fitplot.errorbar(wavelength, flux, yerr = [fluxerr,fluxerr],\
+                    fmt='none', marker = '*', lw=1. ,color='blue',label = 'Observed error', \
+                    zorder=3, capsize=5, elinewidth=0.5,)
 
-        self.fitplot.tick_params(labelbottom = 'off')
-        self.fitplot.axhline(0, lw=0.5, ls='--', color='b')
-        self.fitplot.legend()
-        ##axis
-        self.fitplot.set_ylim(min(flux) - min(flux)*1.5, 1.5*max(flux))
+            self.fitplot.axhline(0, lw=0.5, ls='--', color='b')
+            self.fitplot.legend()
+            ##axis
+            self.fitplot.set_ylim(min(flux) - min(flux)*1.5, 1.5*max(flux))
+            self.fitplot.set_xlim(min(wavelength)-1000, max(wavelength)+1000)
+
+
+        else:
+            self.fitplot.text(0.25,0.5,'Failed fit')
+
         self.fitplot.set_ylabel('Flux Density')
-        self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=12)
+        self.fitplot.set_xlabel('Wavelength')
+        self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
 
 
 

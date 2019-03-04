@@ -48,8 +48,11 @@ Contents
    :maxdepth: 1
 
    Home <self>
+   installation
    usage
+   TUI
    spectroscopy
+   GUI
    Conferences
 
 

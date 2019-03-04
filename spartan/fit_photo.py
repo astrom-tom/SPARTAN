@@ -133,7 +133,7 @@ class Fit_photo:
                     MTU.Info('Object %s: %s'%(gal.ID, gal.status), 'No')
                 else:
                     MTU.Error('Object %s could not be fitted: %s' %(gal.ID,  gal.status), 'No')
-                    save.save_to_file_fail(self.Resfile, gal, self.CONF.FIT['OverFit'])
+                    save.save_to_file_fail(self.Resfile, gal, self.CONF)
 
             MTU.Info('the %s objects were fitted in %s seconds'%(int(self.CONF.CONF['NCPU']),\
                     timeafter_loop-timebefore_loop), 'Yes')
@@ -369,7 +369,7 @@ class Fit_photo:
             MTU.Info('Galaxy %s fitted in %s seconds'%(galaxy.ID, fit_end-fit_start), 'No')
             return galaxy
         except:
-            galaxy.status = 'No evident resaon could be found'
+            galaxy.status = 'No evident reason could be found'
             return galaxy
 
 

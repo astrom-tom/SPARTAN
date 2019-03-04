@@ -84,67 +84,70 @@ def discrete_param(param_list, proba):
     distribution
     '''
     rawgrid = numpy.unique(param_list)
-    ##we copute the bin
-    ##to do so we create an array where all the elements are shifted by one position
-    ##and compute the difference between the original array
-    raw_roll = numpy.roll(rawgrid,1)
-    dif = rawgrid-raw_roll
-    meanbin = numpy.mean(dif[numpy.where(dif>0)[0]])
+    if len(rawgrid) > 1:
+        ##we copute the bin
+        ##to do so we create an array where all the elements are shifted by one position
+        ##and compute the difference between the original array
+        raw_roll = numpy.roll(rawgrid,1)
+        dif = rawgrid-raw_roll
+        meanbin = numpy.mean(dif[numpy.where(dif>0)[0]])
 
-    ##we add an extra bin at the end and at the beginning
-    if min(rawgrid)-meanbin < 0:
-        Xgrid = [0]
-    else: 
-        Xgrid = [min(rawgrid)-meanbin]
-    for i in rawgrid:
-        Xgrid.append(i)
-    Xgrid.append(max(rawgrid)+meanbin)
+        ##we add an extra bin at the end and at the beginning
+        if min(rawgrid)-meanbin < 0:
+            Xgrid = [0]
+        else: 
+            Xgrid = [min(rawgrid)-meanbin]
+        for i in rawgrid:
+            Xgrid.append(i)
+        Xgrid.append(max(rawgrid)+meanbin)
 
-    ##create the 1d array for Proba values
-    values_PDF = numpy.zeros((len(Xgrid)))
-    for i in enumerate(Xgrid):
-        index = numpy.where(param_list==Xgrid[i[0]])
-        values_PDF[i[0]] = numpy.sum(proba[index]) 
-  
-    ####if very bad fit --> no PDF can be computed
-    if sum(values_PDF) == 0.0:
-        return -99.9, -99.9, -99.9, [], [], []
+        ##create the 1d array for Proba values
+        values_PDF = numpy.zeros((len(Xgrid)))
+        for i in enumerate(Xgrid):
+            index = numpy.where(param_list==Xgrid[i[0]])
+            values_PDF[i[0]] = numpy.sum(proba[index]) 
+      
+        ####if very bad fit --> no PDF can be computed
+        if sum(values_PDF) == 0.0:
+            return -99.9, -99.9, -99.9, [], [], []
 
-    ##then normalize the PDF 
-    values_PDF = values_PDF / sum(values_PDF)
-    ##Make the CDF
-    CDF = numpy.cumsum(values_PDF)
+        ##then normalize the PDF 
+        values_PDF = values_PDF / sum(values_PDF)
+        ##Make the CDF
+        CDF = numpy.cumsum(values_PDF)
 
-    ##if we just have a peak
-    if len(numpy.where(values_PDF==1.0)[0]) == 1:
-            idxpeak = numpy.where(values_PDF==1.0)[0][0]
-            X = Xgrid[idxpeak]
-            minus = Xgrid[idxpeak-1]
-            plus = Xgrid[idxpeak+1]
+        ##if we just have a peak
+        if len(numpy.where(values_PDF==1.0)[0]) == 1:
+                idxpeak = numpy.where(values_PDF==1.0)[0][0]
+                X = Xgrid[idxpeak]
+                minus = Xgrid[idxpeak-1]
+                plus = Xgrid[idxpeak+1]
 
+        else:
+            #And compute values
+            idx = (numpy.abs(CDF-0.5)).argmin()
+            X = Xgrid[idx]
+
+            idxl = (numpy.abs(CDF-0.05)).argmin()
+            minus = Xgrid[idxl]
+
+            idxh = (numpy.abs(CDF-0.95)).argmin()
+            plus = Xgrid[idxh]
+         
+        ##For plot CDF and PDF
+        #plot().plot_PDF_CDF(Xgrid, values_PDF, Xgrid, CDF )        
+        '''
+        fig = plt.figure()
+        aa = fig.add_subplot(121)
+        aa.plot(Xgrid, values_PDF)
+        ab = fig.add_subplot(122)
+        ab.plot(Xgrid, CDF)
+        plt.show()
+        '''
+        
+        return float(X), float(plus), float(minus), Xgrid, values_PDF, CDF
     else:
-        #And compute values
-        idx = (numpy.abs(CDF-0.5)).argmin()
-        X = Xgrid[idx]
-
-        idxl = (numpy.abs(CDF-0.05)).argmin()
-        minus = Xgrid[idxl]
-
-        idxh = (numpy.abs(CDF-0.95)).argmin()
-        plus = Xgrid[idxh]
-     
-    ##For plot CDF and PDF
-    #plot().plot_PDF_CDF(Xgrid, values_PDF, Xgrid, CDF )        
-    '''
-    fig = plt.figure()
-    aa = fig.add_subplot(121)
-    aa.plot(Xgrid, values_PDF)
-    ab = fig.add_subplot(122)
-    ab.plot(Xgrid, CDF)
-    plt.show()
-    '''
-    
-    return float(X), float(plus), float(minus), Xgrid, values_PDF, CDF
+        return rawgrid[0], -99.9, -99.9, [], [], []
 
 
 def continuous_param(param_list, proba, name):

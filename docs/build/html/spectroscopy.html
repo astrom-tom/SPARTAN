@@ -24,13 +24,12 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Conferences" href="Conferences.html" />
-    <link rel="prev" title="Getting started" href="usage.html" /> 
+    <link rel="next" title="Graphical User interface: Visualizing results" href="GUI.html" />
+    <link rel="prev" title="Text Based User interface: configuration of a fitting run" href="TUI.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,7 +83,9 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spectroscopy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-data-files">Configuration: Data Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#associated-photometry">Associated photometry</a></li>
@@ -103,7 +104,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#results-final-catalog-production-and-gui-vizualization">Results: Final catalog production and GUI vizualization</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
 
             
@@ -172,7 +174,6 @@
 <a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
 <div class="section" id="spectroscopy">
 <h1>Spectroscopy<a class="headerlink" href="#spectroscopy" title="Permalink to this headline">¶</a></h1>
-<hr class="docutils" />
 <div class="section" id="configuration-data-files">
 <h2>Configuration: Data Files<a class="headerlink" href="#configuration-data-files" title="Permalink to this headline">¶</a></h2>
 <p>To run the fit of single or multi-λ spectroscopy you need to provide SPARTAN with a catalog of data containing all the necessary informations. The spectra that you provide to SPARTAN must be either in ascii or in fits file. If you choose the ascii format the spectra have to be in the following 3-column format:</p>
@@ -280,8 +281,8 @@ Then you</p>
 <p>We describe in detail each parts below in the following paragraphs.</p>
 <div class="section" id="the-initialization">
 <h3>The Initialization<a class="headerlink" href="#the-initialization" title="Permalink to this headline">¶</a></h3>
-<p>Here SPARTAN load the library that was computed from the configuration of the user. It loads both the table of parameters (and their names) and the table of templates. Everything is loaded from the <a href="#id1"><span class="problematic" id="id2">*</span></a>.hdf5 library file.
-Then the code takes the <a href="#id3"><span class="problematic" id="id4">*</span></a>dat.hdf5 that eas created from the configuration and the catalog of data that was given. He will make a quick loop over the full sample to check if some objects were already fitted. If so they will be skipped (unless the user allow the overfit, c.f. configuration above and TUI.)</p>
+<p>Here SPARTAN load the library that was computed from the configuration of the user. It loads both the table of parameters (and their names) and the table of templates. Everything is loaded from the .hdf5 library file.
+Then the code takes the dat.hdf5 that eas created from the configuration and the catalog of data that was given. He will make a quick loop over the full sample to check if some objects were already fitted. If so they will be skipped (unless the user allow the overfit, c.f. configuration above and TUI.)</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">This first check is important. It means you can stop a fitting run at any moment and start it again from where you stopped, without needing to start all the run over from the beginning.</p>
@@ -291,7 +292,7 @@ Then the code takes the <a href="#id3"><span class="problematic" id="id4">*</spa
 <div class="section" id="the-main-function">
 <h3>The main function<a class="headerlink" href="#the-main-function" title="Permalink to this headline">¶</a></h3>
 <p>We describe here the main loop for a given object.
-The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the <a href="#id5"><span class="problematic" id="id6">*</span></a>dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).</p>
+The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the _dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).</p>
 <p>Then SPARTAN will adjust the library. It will start by checking if one of the line in the line file is present by performing a quick-and-dirty estimation of the EW on the spectrum itself (particularly usefull for lines that can be in absorption or in emission). If some of those lines are absent then it will create a list of absent line. After this pre-check SPARTAN will add the emission lines to the library, skipping the lines that are absents. Then SPARTAN will adjust the resolution of the templates (see resolution). Once this is done,  SPARTAN will apply the extinction: the Dust and IGM extinction (see Extinction) . At this point SPARTAN will check if some template have to be ignored. It is the case when templates ages are older than the age of the universe at the redshift we are fitting. The left over templates are then redshifted to the observed redshift and the templates wavelength grid is adjusted to the observed wavelength grid. This library is then used to compute the chi2.</p>
 </div>
 <div class="section" id="the-result-module">
@@ -307,8 +308,7 @@ The main function start by checking again if  the object have to be fitted. If y
 <li>The PDF parameters (measurement and errors)</li>
 <li>The Parameters from the best fit template (no errors in this case)</li>
 </ul>
-<p>An example is given here.</p>
-<p>After the fit you can also load the result file (<a href="#id7"><span class="problematic" id="id8">*</span></a>_Res.hdf5) into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the GUI documentation for more information.</p>
+<p>After the fit you can also load the result file into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the <a class="reference internal" href="GUI.html"><span class="doc">Graphical User interface: Visualizing results</span></a> GUI documentation for more information.</p>
 </div>
 </div>
 
@@ -320,10 +320,10 @@ The main function start by checking again if  the object have to be fitted. If y
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Conferences.html" class="btn btn-neutral float-right" title="Conferences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="GUI.html" class="btn btn-neutral float-right" title="Graphical User interface: Visualizing results" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="usage.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="TUI.html" class="btn btn-neutral" title="Text Based User interface: configuration of a fitting run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -332,7 +332,7 @@ The main function start by checking again if  the object have to be fitted. If y
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, R. THOMAS.
+        &copy; Copyright 2018, R. THOMAS
 
     </p>
   </div>
@@ -351,28 +351,18 @@ The main function start by checking again if  the object have to be fitted. If y
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

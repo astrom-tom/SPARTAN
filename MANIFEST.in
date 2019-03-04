@@ -1,4 +1,6 @@
 include README.md
 include LICENSE
 recursive-include spartan/docs *
+recursive-include spartan/GUI_styles *
+recursive-include spartan/GUI_styles/plot_style *
 

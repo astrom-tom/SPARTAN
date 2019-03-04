@@ -31,7 +31,6 @@
 
 Spectroscopy
 ============
-============
 
 Configuration: Data Files
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -130,8 +129,8 @@ We describe in detail each parts below in the following paragraphs.
 The Initialization
 ------------------
 
-Here SPARTAN load the library that was computed from the configuration of the user. It loads both the table of parameters (and their names) and the table of templates. Everything is loaded from the *.hdf5 library file.
-Then the code takes the *dat.hdf5 that eas created from the configuration and the catalog of data that was given. He will make a quick loop over the full sample to check if some objects were already fitted. If so they will be skipped (unless the user allow the overfit, c.f. configuration above and TUI.)
+Here SPARTAN load the library that was computed from the configuration of the user. It loads both the table of parameters (and their names) and the table of templates. Everything is loaded from the .hdf5 library file.
+Then the code takes the dat.hdf5 that eas created from the configuration and the catalog of data that was given. He will make a quick loop over the full sample to check if some objects were already fitted. If so they will be skipped (unless the user allow the overfit, c.f. configuration above and TUI.)
 
  
 
@@ -145,7 +144,7 @@ The main function
 -----------------
 
 We describe here the main loop for a given object.
-The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the *dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).
+The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the _dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).
 
 Then SPARTAN will adjust the library. It will start by checking if one of the line in the line file is present by performing a quick-and-dirty estimation of the EW on the spectrum itself (particularly usefull for lines that can be in absorption or in emission). If some of those lines are absent then it will create a list of absent line. After this pre-check SPARTAN will add the emission lines to the library, skipping the lines that are absents. Then SPARTAN will adjust the resolution of the templates (see resolution). Once this is done,  SPARTAN will apply the extinction: the Dust and IGM extinction (see Extinction) . At this point SPARTAN will check if some template have to be ignored. It is the case when templates ages are older than the age of the universe at the redshift we are fitting. The left over templates are then redshifted to the observed redshift and the templates wavelength grid is adjusted to the observed wavelength grid. This library is then used to compute the chi2. 
 
@@ -166,9 +165,7 @@ At the end of the fitting run, SPARTAN creates automatically the final catalog. 
 * The PDF parameters (measurement and errors)
 * The Parameters from the best fit template (no errors in this case)
 
-An example is given here.
-
-After the fit you can also load the result file (*_Res.hdf5) into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the GUI documentation for more information.
+After the fit you can also load the result file into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the :doc:`GUI` GUI documentation for more information.
 
 
 

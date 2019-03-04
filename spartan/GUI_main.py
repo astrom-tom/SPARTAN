@@ -19,7 +19,7 @@ from functools import partial
 ####Third party
 import  numpy
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QLabel, QComboBox,
-        QPushButton, QTabWidget, QShortcut)
+        QPushButton, QTabWidget, QShortcut, QMenu, QToolBar, QAction)
 from PyQt5.QtGui import QIcon, QPixmap, QKeySequence
 import PyQt5.QtCore as QtCore
 import PyQt5.QtGui as QtGui
@@ -49,18 +49,22 @@ class Main_window(QWidget):
         self.index = 0
         self.indexmax = 0
         self.initUI() 
-        self.setWindowTitle('SPARTAN Results graphical interface')
+        self.setWindowTitle('SPARTAN GUI: %s'%os.path.basename(self.resfile))
 
     def initUI(self):
              
-        ### 1 we create the grid
+        ### 0 we create the grid
         grid = QGridLayout()
         self.setLayout(grid)
 
-        #### 2 -LOGO
+        #### 1 -LOGO
         label = QLabel(self)
         pixmap = QPixmap(logos.Logo())
-        pixmap4 = pixmap.scaled(712, 712, QtCore.Qt.KeepAspectRatio)
+        pixmap4 = pixmap.scaled(800, 800, QtCore.Qt.KeepAspectRatio) 
+        label.setToolTip('Useful keyboard shortcuts:\n'+\
+                'f --> show fit\n' + 'n --> show next fit\n' + 'b --> show previous fit\n' + \
+                'Ctrl + w --> close current tab\n' + 'Ctrl + Page Up --> see previous tab\n' + \
+                'Ctrl + Page Down --> see next tab\n' + 's --> save plotted data to disk')
         label.setScaledContents(True)
         label.setPixmap(pixmap4)
         grid.addWidget(label, 0, 1, 1, 8)
@@ -164,7 +168,7 @@ class Main_window(QWidget):
 
         ### 7- set keyboard shortcuts
         #Close tab
-        self.shortcut = QShortcut(QKeySequence("Ctrl+W"), self)
+        self.shortcut = QShortcut(QKeySequence("Ctrl+w"), self)
         self.shortcut.activated.connect(partial(self.closeTab_keyboard, self.index))
 
         #Close tab

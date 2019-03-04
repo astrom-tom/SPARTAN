@@ -149,16 +149,7 @@ class Fit_spectro:
 
     def fit(self, run): 
         '''
-        Fitting function. It takes a pack in arguments containing:
-        k
-        photo
-        lib
-        template_emline
-        DUST
-        CONF
-        Datafile
-        COSMOS
-        Nobj
+        Fitting function. It takes a pack
         '''
         try:
             ##unpack
@@ -267,6 +258,7 @@ class Fit_spectro:
                             CHI2min = CHI2[index_chi]
                             CHI2array[n*ntemp:(n+1)*ntemp] = CHI2
                             Normarray[n*ntemp:(n+1)*ntemp] = Norm 
+                            #print(CHI2min)
                             ##update the results
                             if CHI2min<galaxy.bestchi2red:
                                 #print(CHI2min, galaxy.bestchi2red)
@@ -364,7 +356,7 @@ class Fit_spectro:
 
             return galaxy
         except:
-            galaxy.status = 'No evident resaon could be found'
+            galaxy.status = 'No evident reason could be found'
             return galaxy
 
     def process_template(self, lib, Photofit, temp_with_ext, galaxy):

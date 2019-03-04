@@ -24,11 +24,12 @@
 
   
 
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Spectroscopy" href="spectroscopy.html" />
+    <link rel="prev" title="Getting started" href="usage.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,10 +81,23 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Text Based User interface: configuration of a fitting run</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#start-the-tui">Start the TUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#general-configuration">General Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spectroscopic-configuration">Spectroscopic configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#photometric-configuration">Photometric configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-configuration">Template configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cosmological-configuration">Cosmological configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fitting-and-output-configuration">Fitting and output configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
 
             
@@ -166,13 +180,72 @@
 <div class="figure align-center">
 <a class="reference internal image-reference" href="_images/TUI_fron.png"><img alt="_images/TUI_fron.png" src="_images/TUI_fron.png" style="width: 750px;" /></a>
 </div>
-<p>To navigate through the TUI you need the arrow keys of your keyboard to move from on element to another and the carriage return to enter a new element. The space bar is used to select a choice in a multiple choice element (see below).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To navigate through the TUI you need the arrow keys of your keyboard to move from on element to another and the carriage return to enter a new element. The space bar is used to select a choice in a multiple choice element (see below).</p>
+</div>
 <p>This frame contains the SPARTAN logo and the welcome message. These are fixed components. Then you haves an area with 6 entries: Project general Configuration, Spectroscopy, Photometry, Library, Cosmology, Fit &amp; output. Each section corresponds to a TUI-frame that will help you through the configuration of your fitting run. On the same line as the section,  a keyword is displayed. If it is green (like for the Cosmology section in the screenshot above), it means that the section is correctly configured.  In green you can have  ‘Default’ or ‘Done’. Once each section status is in green you can start a fitting run. If you made a mistake during the configuration (or something is missing), the status will be displayed in red. The red status keywords should be clear enough by themselves. Each one will be reviewed in the next sections so you have a more detailed description of the error and a work around.</p>
 <p>Below this sections you have a choice to start the fitting run from the TUI or not. Select your choise with the space bar. If you choose not to start it from the TUI you can still do it from the Command Line Interface.</p>
 <p>Finally, to Leave the TUI you must go to the ‘OK’ at the bottom right and press enter.</p>
 </div>
 <div class="section" id="general-configuration">
 <h2>General Configuration<a class="headerlink" href="#general-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/TUI_genconf.png"><img alt="_images/TUI_genconf.png" src="_images/TUI_genconf.png" style="width: 750px;" /></a>
+</div>
+<p>To start configuring a fitting run, you enter the <strong>Project General Configuration</strong> page of the TUI (you can see it above). This frame deal with general information:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Project Name</strong>: This is how you call your fitting run/project. This name must note contain spaces.</li>
+<li><strong>Author</strong>: Well, you…. It is worth noting that this value is not used anywhere in the code. So you can write whatever you want here (e.g. date). It will be written in the configuration file.</li>
+<li><strong>Project Directory</strong>: This is where the data will be saved (the current directory). To modify the value you must press enter and navigate.</li>
+<li><strong>CPU</strong>: SPARTAN has been coded to do parallel processing. Here you tell SPARTAN how much CPU’s you want to use at the same time (i.e., how much object can be fitted in parallel).</li>
+<li><strong>Spectroscopy</strong>: Yes or no if you use spectroscopy</li>
+<li><strong>NSpec</strong>: in case the previous field was ‘yes’, tell how many spectra per object you have.</li>
+<li><strong>Photometry</strong>: Yes or not to use the photometry (no if you want to fit spectra only).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="spectroscopic-configuration">
+<h2>Spectroscopic configuration<a class="headerlink" href="#spectroscopic-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/tui_spec.png"><img alt="_images/tui_spec.png" src="_images/tui_spec.png" style="width: 750px;" /></a>
+</div>
+<p>If you have spectroscopic data, you must then tell SPARTAN where they are and what is your configuration.</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Spectra Directory</strong>: This is where your spectra are stored (in ascii format!! and with a .spec extension).</li>
+<li><strong>Resolution</strong>: This is the average reoslution (R=l/dl) of your spectra.</li>
+<li><strong>Units (flux)</strong> and <strong>Units (wavelength)</strong>: Here you can choose the units of your spectra. Both for the flux density and the wavelength.</li>
+<li><strong>Skip Edges</strong>: It can happen that the edges of your spectra are not well cleaned. SPARTAN offers you the opportunity to remove them from the fit. If you say yes, here you must also give the size to skip at the edged with <strong>Size to skip (AA, obs-f)</strong>. You must give it in angstrom and in the observed frame.</li>
+<li><strong>Bad regions</strong>: Also, you might want to mask out some part of the spectrum (e.g. emission lines). You can also do it SPARTAN putting yes at this choice. Then you must give the regions you want to mask out in <strong>If Yes, list (rest-f, AA)</strong>. In that case you must give the two external wavelength of each region you want to mask out (ex: 3700-3750; 1200-1240)</li>
+<li><strong>Nor Dat/Mod</strong>: This is where you tell SPARTAN how to normalize the templates to the data. You can do it with the photometric point you give in the catalog or with a restframe region that will be taken into account for the normalization. In the latter case you must give this the wavelengths of this restframe region (l1-l2) in Angstrom.</li>
+<li><strong>Fit multi-spec calib</strong>: This applies only if you fit multi-spectroscopic data. In this case you can ask SPARTAN to try to fit the relative flux calibration between both spectra (this is rather experimental for the moment).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="photometric-configuration">
+<h2>Photometric configuration<a class="headerlink" href="#photometric-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/tui_phot.png"><img alt="_images/tui_phot.png" src="_images/tui_phot.png" style="width: 750px;" /></a>
+</div>
+<p>This section is for photometric configuration. <strong>You also need to use it for spectroscopy!!!</strong>. You must choose your photometric system (AB of Jansky[Jy]). Then SPARTAN will read the data catalog you gave in the general configuration section and will extract the name of each filter that is in your catalog. For each filter, a line will be created with the name of the filter from the catalog, and 5 fields to complete. First you must select the corresponding filter from the filter library of SPARTAN (if your filter is not yet there, please drop me a mail). Then you must choose if this filter will be used during the fit, if your want the magnitude in this filter to be computed from the best fit template, if you want to compute the absolute magnitude, if you want to use this filter for normalisation (you can selec more than one).</p>
+</div>
+<div class="section" id="template-configuration">
+<h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cosmological-configuration">
+<h2>Cosmological configuration<a class="headerlink" href="#cosmological-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/Tui_cosmo.png"><img alt="_images/Tui_cosmo.png" src="_images/Tui_cosmo.png" style="width: 750px;" /></a>
+</div>
+<p>When doing the fit, you can ask SPARTAN to take into account a cosmological model. This means that at a given redshift, the possible age of the templates will be smaller than the age of the Universe at that redshift. By default, the use is set on Yes with the Lambda-CDM model.</p>
+</div>
+<div class="section" id="fitting-and-output-configuration">
+<h2>Fitting and output configuration<a class="headerlink" href="#fitting-and-output-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/tui_fit.png"><img alt="_images/tui_fit.png" src="_images/tui_fit.png" style="width: 750px;" /></a>
+</div>
 </div>
 </div>
 
@@ -182,12 +255,21 @@
           </div>
           <footer>
   
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="spectroscopy.html" class="btn btn-neutral float-right" title="Spectroscopy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, R. THOMAS.
+        &copy; Copyright 2018, R. THOMAS
 
     </p>
   </div>
@@ -206,28 +288,18 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.1',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
   <script type="text/javascript">
       jQuery(function () {

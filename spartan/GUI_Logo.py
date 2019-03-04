@@ -33,7 +33,7 @@ def Logo():
     methods that return the path to the main Logo of SPARTAN
     '''
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    logo_path = dir_path + '/GUI_styles'+'/SPARTAN_text_SPQR2.jpg'
+    logo_path = dir_path + '/GUI_styles'+'/SPARTAN_front.jpg'
 
     return logo_path
 

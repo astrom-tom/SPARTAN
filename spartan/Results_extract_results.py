@@ -361,24 +361,39 @@ def extract_phot(filename, ident):
     with h5py.File(filename) as ff:
         obj = ff[ident]
 
+
+  
         ##extract the observable
         Obs = obj['Observable']
         
-        wavelength =  numpy.array(Obs['waveband'])
-        flux = numpy.array(Obs['obsflux'])
-        fluxerr = numpy.array(Obs['obsfluxerr'])
-        obsmag = numpy.array(Obs['obsmag'])
+        status = str(numpy.array(obj['General/Fitted']))[2:-1]
+        if status == 'Fitted':
+ 
+            wavelength =  numpy.array(Obs['waveband'])
+            flux = numpy.array(Obs['obsflux'])
+            fluxerr = numpy.array(Obs['obsfluxerr'])
+            obsmag = numpy.array(Obs['obsmag'])
 
-        ## extract the templates
-        Temp = obj['Template']
+            ## extract the templates
+            Temp = obj['Template']
 
-        BFtemp = numpy.array(Temp['Best_template_full'])
-        BFtemp_wave = numpy.array(Temp['Best_template_wave'])
-        Bestfit_flux = numpy.array(Temp['Bestfit_flux'])
-        Bestfit_mag = numpy.array(Temp['Bestfit_mag'])
+            BFtemp = numpy.array(Temp['Best_template_full'])
+            BFtemp_wave = numpy.array(Temp['Best_template_wave'])
+            Bestfit_flux = numpy.array(Temp['Bestfit_flux'])
+            Bestfit_mag = numpy.array(Temp['Bestfit_mag'])
 
+        else:
+            wavelength = []
+            flux = []
+            fluxerr = []
+            obsmag = []
+            BFtemp = []
+            BTtemp_wave = []
+            Bestfit_flux = []
+            Bestfit_mag = []
+ 
 
-    fit = [wavelength, flux, fluxerr, obsmag, BFtemp, BFtemp_wave, Bestfit_flux, Bestfit_mag]    
+    fit = [status, wavelength, flux, fluxerr, obsmag, BFtemp, BFtemp_wave, Bestfit_flux, Bestfit_mag]    
     return fit
 
         

@@ -24,7 +24,8 @@ import h5py
 ###########################
 
 ###Local imports##########
-from .units import  Phys_const
+from .units import Phys_const
+from .      import messages as MTU
 ######################
 
 #----------------------------------------------------------------------
@@ -91,6 +92,7 @@ class LIB:
         '''
         ##first we check if we must use the cosmology
         if COSMO_conf['UseCo'].lower() == 'no':
+            print('ok')
             MTU.Info('No cosmological constraints applied', 'No')
             self.Cosmo_templates = T_emline
             self.Cosmo_param = self.Parameter_array

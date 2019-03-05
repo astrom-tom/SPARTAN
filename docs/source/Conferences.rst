@@ -43,7 +43,7 @@ Conferences
 * ADASS conference, Santiago de Chile, 2017: Proceeding: :download:`ADASS_proceeding.pdf <./conferences/ADASS_proceeding.pdf>`
 
 SPARTAN was used in the following papers:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Thomas et al, in prep, Intergalactic medium extinction in galaxies at z>4 in VANDELS
 * Thomas et al, in prep, Spectroscopic selection of passive galaxies at 0.5<z<2.1.

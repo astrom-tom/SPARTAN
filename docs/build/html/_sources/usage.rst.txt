@@ -44,7 +44,7 @@ This command will display the help of the program::
 
       usage: sp_v1 [-h] [-f [FILE]] [-t [TUI]] [-c] [-fo [OBJ]] [-r] [-v] [-s]
 
-      SPARTAN V1.0, R. Thomas, 2017, ESO, This program comes with ABSOLUTELY NO
+      SPARTAN V1.0, R. Thomas, 2019, ESO, This program comes with ABSOLUTELY NO
       WARRANTY; and is distributed under the GPLv3.0 Licence terms. See the version
       of this Licence distributed along this code for details.
 

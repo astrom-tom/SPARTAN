@@ -29,6 +29,7 @@ SPARTAN has started in python 3.6 and isnow developped in python 3.7. The follow
 * h5py  v2.9.0: hdf5 file creation and handling
 * tqdm  v4.29.1: progress bar
 * astropy v3.1.1: some useful astronomical functions
+* catscii 1.1: catalog managing.
 * npyscreen v4.10.5: Terminal based interface
 * PyQt5 v5.11.3: Graphical Interface
 * matplotlib 3.0.2: fit display in the GUI.

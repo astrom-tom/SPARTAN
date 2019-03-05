@@ -51,8 +51,10 @@ Contents
    installation
    usage
    TUI
-   spectroscopy
    GUI
+   photometry
+   spectroscopy
+   templates
    Conferences
 
 

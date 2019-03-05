@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Spectroscopic fitting &mdash; SPARTAN 0.1 documentation</title>
+  <title>Photometric fitting &mdash; SPARTAN 0.1 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Templates" href="templates.html" />
-    <link rel="prev" title="Photometric fitting" href="photometry.html" /> 
+    <link rel="next" title="Spectroscopic fitting" href="spectroscopy.html" />
+    <link rel="prev" title="Graphical User interface: Visualizing results" href="GUI.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -89,24 +89,19 @@
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
-<li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Spectroscopic fitting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#spectral-file">Spectral file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#associated-photometry">Associated photometry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#final-spectroscopic-catalog-for-fitting-run">Final spectroscopic catalog for fitting run</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Photometric fitting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fitting-procedure-generalities">Fitting procedure: generalities</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#the-initialization">The Initialization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-main-function">The main function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-result-module">The result module</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#data-template-normalization-in-the-case-of-spectroscopy">Data/Template Normalization in the case of Spectroscopy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-template-normalization">Data/Template Normalization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#results-final-catalog-production-and-gui-vizualization">Results: Final catalog production and GUI vizualization</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
@@ -154,13 +149,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Spectroscopic fitting</li>
+      <li>Photometric fitting</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/spectroscopy.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/photometry.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,38 +168,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p id="spectroscopic"><a class="reference external" href="https://www.python.org/downloads/release/python-360/"><img alt="python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" /></a> <img alt="Python36" src="https://img.shields.io/badge/python-3.6-blue.svg" /> <a class="reference external" href="http://perso.crans.org/besson/LICENSE.html"><img alt="Licence" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
+  <p id="photometry"><a class="reference external" href="https://www.python.org/downloads/release/python-360/"><img alt="python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" /></a> <img alt="Python36" src="https://img.shields.io/badge/python-3.6-blue.svg" /> <a class="reference external" href="http://perso.crans.org/besson/LICENSE.html"><img alt="Licence" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
 <a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
-<div class="section" id="spectroscopic-fitting">
-<h1>Spectroscopic fitting<a class="headerlink" href="#spectroscopic-fitting" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="photometric-fitting">
+<h1>Photometric fitting<a class="headerlink" href="#photometric-fitting" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="spectral-file">
-<h3>Spectral file<a class="headerlink" href="#spectral-file" title="Permalink to this headline">¶</a></h3>
-<p>To run the fit of single or multi-λ spectroscopy you need to provide SPARTAN with a catalog of data containing all the necessary informations. The spectra that you provide to SPARTAN must be either in ascii or in fits file. If you choose the ascii format the spectra have to be in the following 3-column format:</p>
-<p class="centered">
-<strong>Wavelength - Flux density - error</strong></p><p>The name of each spectrum must end with the ‘.spec’ extension, example: <strong>spectrum_1.spec</strong>
-At the moment the only units allowed in SPARTAN are angstrom for the wavelength and erg/s/cm2/AA for the flux density.</p>
-</div>
-<div class="section" id="associated-photometry">
-<h3>Associated photometry<a class="headerlink" href="#associated-photometry" title="Permalink to this headline">¶</a></h3>
-<p>For each spectrum you need to associate a photometric band which will serve as flux calibration of the spectroscopy. Of course this band must be in the wavelength domain of the spectrum (the filter must be entirely in the wavelength domain). For example, using VIMOS data (3600Å to 9500Å) you can provide the r-band. During the preparation of the data SPARTAN will normalize each spectrum to that band. If you do not have any available band you can create a fake one. Nevertheless, when fitting multiple spectrum at once (for the same galaxy), it can not be a fake band because the fit is gonna use the relative calibration between the multiple spectra.</p>
-</div>
-<div class="section" id="final-spectroscopic-catalog-for-fitting-run">
-<h3>Final spectroscopic catalog for fitting run<a class="headerlink" href="#final-spectroscopic-catalog-for-fitting-run" title="Permalink to this headline">¶</a></h3>
 <p>The catalog that you need to give to SPARTAN is an ascii file. When SPARTAN opens it, it will read the header. Whatever you want to fit the header of the catalog must start with two columns: ID and redshift with an hash(#) at the beginning of the line. THIS IS MANDATORY:</p>
 <p class="centered">
-<strong>#ident     redshift</strong></p><p>Then you must add the columns with the following rules:</p>
-<ul class="simple">
-<li><strong>For single spectroscopy</strong>: When you just have one spectrum in ascii format you must add three columns after ‘#ident     redshift’. One for the spectrum name and two for the associated magnitude (measurement and error). Therefore you will have:</li>
-</ul>
+<strong>#ident     redshift</strong></p><p>Then you must add the columns with the following rules. When you want to fit multi wavelength photometry, you have to  add as many 2 columns sets as you have photometric points. Therefore you will have (for 5 photometric points):</p>
 <p class="centered">
-<strong>#ident     redshift  spec   mag    mag_err</strong></p><ul class="simple">
-<li><strong>For multi-spectroscopy</strong>: When you want to fit multi-spectroscopy, you have to follow the same method and add as many 3 columns set as you have spectra. Therefore you will have (for three spectra):</li>
-</ul>
-<p class="centered">
-<strong>#ident     redshift  spec1   mag1    mag1_err   spec2   mag2    mag2_err  spec3   mag3    mag3_err</strong></p></div>
-</div>
+<strong>#ident     redshift  mag1    mag1_err   mag2    mag2_err  mag3    mag3_err  mag4  mag4_err mag5 mag5_err</strong></p></div>
 <div class="section" id="fitting-procedure-generalities">
 <h2>Fitting procedure: generalities<a class="headerlink" href="#fitting-procedure-generalities" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center">
@@ -229,19 +203,15 @@ Then the code takes the _dat.hdf5 file that was created from the configuration a
 </div>
 <div class="section" id="the-main-function">
 <h3>The main function<a class="headerlink" href="#the-main-function" title="Permalink to this headline">¶</a></h3>
-<p>We describe here the main loop for a given object.
-The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the _dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).</p>
-<p>Then SPARTAN will adjust the library. It will start by checking if one of the line in the line file is present by performing a quick-and-dirty estimation of the EW on the spectrum itself (particularly usefull for lines that can be in absorption or in emission). If some of those lines are absent then it will create a list of absent line. After this pre-check SPARTAN will add the emission lines to the library, skipping the lines that are absents. Then SPARTAN will adjust the resolution of the templates (see resolution). Once this is done,  SPARTAN will apply the extinction: the Dust and IGM extinction (see Extinction) . At this point SPARTAN will check if some template have to be ignored. It is the case when templates ages are older than the age of the universe at the redshift we are fitting. The left over templates are then redshifted to the observed redshift and the templates wavelength grid is adjusted to the observed wavelength grid. This library is then used to compute the chi2.</p>
 </div>
 <div class="section" id="the-result-module">
 <h3>The result module<a class="headerlink" href="#the-result-module" title="Permalink to this headline">¶</a></h3>
 <p>From the library of chi2, SPARTAN computes the PDF and the CDF for each parameter (see statistic). This will give access to the parameter measurements and their errors. If the user ask for it, the parameters from the best fit template (therefore without error) can be saved as well (see below). Aditionnaly, SPARTAN saves the best fit template (both original and resampled templates).</p>
 </div>
 </div>
-<div class="section" id="data-template-normalization-in-the-case-of-spectroscopy">
-<h2>Data/Template Normalization in the case of Spectroscopy<a class="headerlink" href="#data-template-normalization-in-the-case-of-spectroscopy" title="Permalink to this headline">¶</a></h2>
-<p>As explained above, a step of the fitting procedure is the normalisation of the models to the observations. When dealing with photometry only, this normalisation is done with one or few passbands (see <a class="reference internal" href="photometry.html"><span class="doc">Photometric fitting</span></a>). For the spectroscopy it can be done as well using the same method. That’s also why the spectroscopic data catalog must include a magnitude measurement so all the template (and the data) will be normalize to that band (see above). In this case, the normalization of the spectroscopy will be done in the same band at all redshift. If the data catalog contains the <em>i</em>-band, then all the spectra will be normalize to that band. This leads to a difference of treatment between galaxies. For example, if in my catalog, I fit 3 galaxies, one at z=1, one at z=2 and the third at z=4, the <em>i</em>-band will correspond to different rest-frame regions. For the first galaxy, it will corresponds to a restframe region around 4200Å, for the second galaxy it will correpond to a region around 2800Å and for the last one the restframe region will be around 1700Å. Therefore all the galaxies are not treated in the same way. For photometry we do not have other option but for spectroscopy there is another way that we called the <em>redshift-dependent</em> normalisation. In this case, we consider a restframe region that is <strong>ideally free of emission line and wide enough to be independent of the noise</strong>. During the fit, SPARTAN is redshifting this regions and creating a box filter in the redshifted region. The spectrum is then convolved through this box filter and a magnitude is computed. Finally all the template are normalised to that magnitude. Going to the next object, at a different redshift, the redshifted region will be at another place of the spectrum observed window and the box filter will be at different wavelength.</p>
-<p>With this method, all the galaxies are normalized in the same restframe region. Moreover, as the user is free to select whatever restframe region it is more reliable to choose emission line free area and which make the fit more stable as it does not rely on the emission line models.</p>
+<div class="section" id="data-template-normalization">
+<h2>Data/Template Normalization<a class="headerlink" href="#data-template-normalization" title="Permalink to this headline">¶</a></h2>
+<p>As explained in (<span class="xref std std-doc">photo</span>)</p>
 </div>
 <div class="section" id="results-final-catalog-production-and-gui-vizualization">
 <h2>Results: Final catalog production and GUI vizualization<a class="headerlink" href="#results-final-catalog-production-and-gui-vizualization" title="Permalink to this headline">¶</a></h2>
@@ -263,10 +233,10 @@ The main function start by checking again if  the object have to be fitted. If y
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="templates.html" class="btn btn-neutral float-right" title="Templates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="spectroscopy.html" class="btn btn-neutral float-right" title="Spectroscopic fitting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="photometry.html" class="btn btn-neutral float-left" title="Photometric fitting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="GUI.html" class="btn btn-neutral float-left" title="Graphical User interface: Visualizing results" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

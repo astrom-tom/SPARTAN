@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installation.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -84,8 +86,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
 
@@ -166,8 +171,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
 </div>
@@ -175,6 +183,11 @@
 <div class="section" id="news">
 <h2>News<a class="headerlink" href="#news" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><strong>30-04-2018</strong> : Paper about Mg galaxies submitted.</li>
+<li><strong>12-12-2018</strong> : Paper presenting SPARTAN in preparation</li>
+<li><strong>10-10-2018</strong> : Two paper in preparation using SPARTAN (indpendent modes)</li>
+<li><strong>03-03-2018</strong> : Start to use the code</li>
+<li><strong>02-03-2018</strong> : Cleaning the code</li>
 <li><strong>01-10-2017</strong> : New website ! Combined fit (multi-spectro + multi-photo) is done. Simulations are on-going. Paper of presentation of SPARTAN is being written in parallel. Slide and Poster for the ADASS conference can be found here.</li>
 <li><strong>08-08-2017</strong> : Short Talk accepted (with poster and proceedings) at the ADASS conference in Santiago (late october 2017)</li>
 <li><strong>19-06-2017</strong> : The fit on the spectroscopy is done, working on the joined analysis of photometry ans spectroscopy. A graphical user interface (GUI) have been created to allow the user to look at the results (HERE) A decision to create a SPARTAN-SIM (Simulation) module have been taken. It allows to simulate Galaxy data (Photometry and/or spectroscopy). SPARTAN will be presented at the EWASS conference (Prague) at the end of the month and an abstract to the ADASS conference will be submitted (Santiago, late 2017). SUMMER time will be dedicated to Simulations to study the parameter estimation of different kind of fits:  photometry vs single spectroscopy vs multi-spectroscopy vs multi-spectroscopy + photometry</li>
@@ -187,7 +200,7 @@
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p><strong>Copyright</strong></p>
-<p>ATACAMA is a free software: you can redistribute it and/or modify it under
+<p>SPARTAN is a free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software Foundation,
 version 3 of the License.</p>
 <p>Photon is distributed without any warranty; without even the implied warranty of merchantability
@@ -234,26 +247,16 @@ If not, see <a class="reference external" href="http://www.gnu.org/licenses/">ht
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

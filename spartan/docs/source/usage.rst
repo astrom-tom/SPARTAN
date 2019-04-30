@@ -31,7 +31,6 @@
 
 Getting started
 ===============
-===============
 
 Command Line Interface
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -44,7 +43,7 @@ This command will display the help of the program::
 
       usage: sp_v1 [-h] [-f [FILE]] [-t [TUI]] [-c] [-fo [OBJ]] [-r] [-v] [-s]
 
-      SPARTAN V1.0, R. Thomas, 2017, ESO, This program comes with ABSOLUTELY NO
+      SPARTAN V1.0, R. Thomas, 2019, ESO, This program comes with ABSOLUTELY NO
       WARRANTY; and is distributed under the GPLv3.0 Licence terms. See the version
       of this Licence distributed along this code for details.
 
@@ -72,6 +71,7 @@ This command will display the help of the program::
 
 SPARTAN has 8 optionnal arguments. You **can not** start SPARTAN without any argument. 
 Few arguments can be used:	
+
  * -h: Display this help in the terminal.
  * -f or --file + file.conf: This is used when you already have a SPARTAN configuration file ready.  
  * -t or --tui: This will display, in the terminal, the text-based interface. This helps you to configurate a fitting project. If you do not use it with '-f', it will load an empty project file.
@@ -80,7 +80,8 @@ Few arguments can be used:
  * -v or --visua: **To be used after '-f'**. This open the graphical interface to display all the result of a given fit.
  * -fo or --OBJ + object ID: **To be used after '-f'**. This look on the result file and give you the results for a given object.
  * - -docs: Will display the documentation of SPARTAN in browser.
- * - -verbose: Will use the verbose mode of sextractor and display information in the terminal.
+ * - -version: It will display the version of SPARTAN you are using.
+
 The command line interface is made using the argparse library (part of the standard python library).
 
 Terminal User Interface

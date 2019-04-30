@@ -50,13 +50,21 @@ Contents
    Home <self>
    installation
    usage
-   spectroscopy
+   TUI
    GUI
+   photometry
+   spectroscopy
+   templates
    Conferences
 
 
 News
 ^^^^
+* **30-04-2018** : Paper about Mg galaxies submitted.
+* **12-12-2018** : Paper presenting SPARTAN in preparation
+* **10-10-2018** : Two paper in preparation using SPARTAN (indpendent modes)
+* **03-03-2018** : Start to use the code
+* **02-03-2018** : Cleaning the code
 * **01-10-2017** : New website ! Combined fit (multi-spectro + multi-photo) is done. Simulations are on-going. Paper of presentation of SPARTAN is being written in parallel. Slide and Poster for the ADASS conference can be found here.
 * **08-08-2017** : Short Talk accepted (with poster and proceedings) at the ADASS conference in Santiago (late october 2017)
 * **19-06-2017** : The fit on the spectroscopy is done, working on the joined analysis of photometry ans spectroscopy. A graphical user interface (GUI) have been created to allow the user to look at the results (HERE) A decision to create a SPARTAN-SIM (Simulation) module have been taken. It allows to simulate Galaxy data (Photometry and/or spectroscopy). SPARTAN will be presented at the EWASS conference (Prague) at the end of the month and an abstract to the ADASS conference will be submitted (Santiago, late 2017). SUMMER time will be dedicated to Simulations to study the parameter estimation of different kind of fits:  photometry vs single spectroscopy vs multi-spectroscopy vs multi-spectroscopy + photometry
@@ -71,7 +79,7 @@ News
  
 	**Copyright**
  
-	ATACAMA is a free software: you can redistribute it and/or modify it under 
+	SPARTAN is a free software: you can redistribute it and/or modify it under 
 	the terms of the GNU General Public License as published by the Free Software Foundation, 
 	version 3 of the License.
  

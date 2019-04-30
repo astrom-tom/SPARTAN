@@ -37,7 +37,7 @@ SPARTAN has started in python 3.6 and isnow developped in python 3.7. The follow
 
 Other libraries are used but they are all part of the standard python library. As such no extra installations are needed.
 
-The last SPARTAN version is v0.4.2 and will be available in pip when the first version will be released.If you want to try a development version (that is already used in some papers in preparation) you can go in the *dist* directory in GITHUB and download the last version. Then you install it with 
+The last SPARTAN version is v0.4.4 and allows for independent fir of photometry and spectroscopy. If you want to try a this version (that is already used in some papers in preparation) you can go in the *dist* directory in GITHUB and download the last version. Then you install it with 
 
 .. code-block:: shell
      :linenos:

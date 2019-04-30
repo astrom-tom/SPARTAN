@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Spectroscopy" href="spectroscopy.html" />
+    <link rel="next" title="Text Based User interface: configuration of a fitting run" href="TUI.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -90,8 +92,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#graphical-user-interface">Graphical User Interface</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
 
             
@@ -160,7 +166,6 @@
 <a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
 <div class="section" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<hr class="docutils" />
 <div class="section" id="command-line-interface">
 <h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
 <p>You start SPARTAN from a terminal. SPARTAN comes with a command line interface which includes a ‘help’ that you can display in your terminal using the help command. It must be called like this:</p>
@@ -170,7 +175,7 @@
 <p>This command will display the help of the program:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">sp_v1</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="p">[</span><span class="n">FILE</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="p">[</span><span class="n">TUI</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">fo</span> <span class="p">[</span><span class="n">OBJ</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">]</span>
 
-<span class="n">SPARTAN</span> <span class="n">V1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span> <span class="n">Thomas</span><span class="p">,</span> <span class="mi">2017</span><span class="p">,</span> <span class="n">ESO</span><span class="p">,</span> <span class="n">This</span> <span class="n">program</span> <span class="n">comes</span> <span class="k">with</span> <span class="n">ABSOLUTELY</span> <span class="n">NO</span>
+<span class="n">SPARTAN</span> <span class="n">V1</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span> <span class="n">Thomas</span><span class="p">,</span> <span class="mi">2019</span><span class="p">,</span> <span class="n">ESO</span><span class="p">,</span> <span class="n">This</span> <span class="n">program</span> <span class="n">comes</span> <span class="k">with</span> <span class="n">ABSOLUTELY</span> <span class="n">NO</span>
 <span class="n">WARRANTY</span><span class="p">;</span> <span class="ow">and</span> <span class="ow">is</span> <span class="n">distributed</span> <span class="n">under</span> <span class="n">the</span> <span class="n">GPLv3</span><span class="o">.</span><span class="mi">0</span> <span class="n">Licence</span> <span class="n">terms</span><span class="o">.</span> <span class="n">See</span> <span class="n">the</span> <span class="n">version</span>
 <span class="n">of</span> <span class="n">this</span> <span class="n">Licence</span> <span class="n">distributed</span> <span class="n">along</span> <span class="n">this</span> <span class="n">code</span> <span class="k">for</span> <span class="n">details</span><span class="o">.</span>
 
@@ -212,7 +217,7 @@ Few arguments can be used:</p>
 </ul>
 </li>
 <li><ul class="first">
-<li>-verbose: Will use the verbose mode of sextractor and display information in the terminal.</li>
+<li>-version: It will display the version of SPARTAN you are using.</li>
 </ul>
 </li>
 </ul>
@@ -239,10 +244,10 @@ Few arguments can be used:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="spectroscopy.html" class="btn btn-neutral float-right" title="Spectroscopy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="TUI.html" class="btn btn-neutral float-right" title="Text Based User interface: configuration of a fitting run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -268,26 +273,16 @@ Few arguments can be used:</p>
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

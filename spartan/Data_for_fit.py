@@ -27,6 +27,7 @@ import tqdm
 ###########################
 
 ###local libraries#####################
+from . import messages as MTU
 from . import Results_PDF as PDF
 from . import photometry_Mag_abs as Mag_abs
 from . import messages as MTU
@@ -190,6 +191,11 @@ class indiv_obj:
                 for i in NormT:
                     if i[0][0] != 'door':
                         i[0] = str(i[0])[2:-1]
+                    else:
+                        if numpy.isnan(i[1]):
+                            MTU.Warning('The wavelength of the box filter does'+\
+                                    ' not allow to compute a magnitude...please check', 'No')
+
                 self.NormT = NormT
                 self.Magnitudes_spec = self.NormT
 
@@ -204,6 +210,10 @@ class indiv_obj:
                 for i in NormT:
                     if i[0][0] != 'door':
                         i[0] = str(i[0])[2:-1]
+                    else:
+                        if numpy.isnan(i[1]):
+                            MTU.Warning('The wavelength of the box filter does'+\
+                                    ' not allow to compute a magnitude...please check', 'No')
                 self.NormT = NormT
                 self.Magnitudes_spec = self.NormT
                 self.limits = []
@@ -254,10 +264,11 @@ class indiv_obj:
             self.bestchi2red = chi2
             self.besttemplate =  besttemp
             self.regrid_template = bestfitflux 
-            self.bestmags = bestfitmag
+            self.regrid_wave = wave[1]
             self.besttemplate_wave = wave
+            self.bestfit_mag =  bestfitmag
+            self.bestfit_flux = bestfitflux 
             self.bestfit_index = index
-
 
     def create_observable(self, Photofit, fit_type):
         '''
@@ -283,10 +294,7 @@ class indiv_obj:
         self.obsflux = Photofit.flux_all_bands
         self.obsfluxerr = Photofit.fluxerr_all_bands
         self.Names = Photofit.Names
-        self.uppers = Photofit.upper_limits
-        if fit_type == 'comb':
-            self.kept_mags = Photofit.kept
-            
+        self.uppers = Photofit.upper_limits 
 
 
     def create_observable_spec(self, Photofit):
@@ -300,11 +308,6 @@ class indiv_obj:
         specerr       spectrum errors
         mags          normalisation magtnitudes 
         '''
-
-        #print(Photofit.__dict__.keys()) 
-        #print(Photofit.Names)
-        #print(Photofit.photo_conf)
-        #print(Photofit.allbands)
 
         for i in self.SPECS.keys():
             mags = self.SPECS[i][:3]
@@ -375,8 +378,8 @@ class indiv_obj:
         ----------
         chi2param dict, of chi2 parameters
         '''
-        self.chi2p = PDF.main(lib.array_param, lib.Names, \
-                numpy.exp(-(1/2)*(Proba-self.bestchi2red)), Norm, CONF, self.BFparam, self.Redshift)
+        self.chi2p = PDF.main(lib.array_param, lib.Names, Proba, \
+                Norm, CONF, self.BFparam, self.Redshift)
 
     def magabs(self, CONF,COSMOS):
         '''

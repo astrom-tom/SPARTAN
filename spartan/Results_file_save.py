@@ -222,3 +222,103 @@ def save_spec(Results, galaxy, CONF):
             cdf = galaxy.chi2p[i][5]
             ParametersPDF.create_dataset(i, data = numpy.array([m, m1, p1]))
             PDFCDF.create_dataset(i, data = numpy.array([pdf, cdf, grid]))
+
+
+def save_comb(Results, galaxy, CONF):
+    '''
+    This function saves the results of the studied objet
+    into the result file
+    Parameter
+    ---------
+    Results     dict, of the results
+    galaxy      obj, galaxy object with results
+    CONF        dict, configuration of the user
+
+    Return
+    ------
+    '''
+
+    ###first we have to check if some data where already in the result file
+    deleted = 0
+    with h5py.File(Results, 'a') as Res:
+        ## we look for the fitting status
+        Fitted = str(numpy.array(Res['%s/General/Fitted'%galaxy.ID]))[2:-1]
+        ## We update the result file accordingly to the status reported
+        ## in the result file and the overfit choice.
+        if galaxy.status == 'Fitted' and CONF.FIT['OverFit'].lower() == 'yes':
+            del Res['%s'%galaxy.ID]
+            deleted = 1
+
+    ##open the result file and save the results
+    with h5py.File(Results) as Res:
+       
+        if deleted == 0:
+            del Res['%s'%galaxy.ID]
+
+        #-1-# general information
+        obj = Res.create_group(galaxy.ID)
+        gen = Res.create_group('%s/General'%galaxy.ID)
+        gen.create_dataset('Fitted', data=numpy.string_(galaxy.status))
+
+        #-2-# Observable directory
+        Obs = Res.create_group('%s/Observable'%galaxy.ID)
+        Obs.create_dataset('Redshift', data = numpy.array(galaxy.Redshift))
+        Obs.create_dataset('Nspec', data = numpy.array(int(CONF.CONF['NSpec'])))
+        Obs.create_dataset('Kept_phot', data = numpy.array(galaxy.kept_phot))
+
+        specs = ['specwave', 'specflux', 'specerr', 'mags', 'mags_flux', 'mags_Leff', 'mags_Tran'] 
+        Npoints_spec = 0
+
+        for i in galaxy.SPECS.keys():
+            for j in specs:
+                if j == 'mags':
+                    Obs.create_dataset('%s_%s'%(j,i),\
+                            data = [numpy.string_(i) for i \
+                            in numpy.array(galaxy.__dict__['%s_%s'%(j,i)])]) 
+                else:
+                    Obs.create_dataset('%s_%s'%(j,i), \
+                            data = numpy.array(galaxy.__dict__['%s_%s'%(j,i)]))
+
+            ###number of point / spec
+            Npoints_spec += len(numpy.array(galaxy.__dict__['specwave_%s'%(i)]))
+
+        Obs.create_dataset('Npoints_spec', data = numpy.array(Npoints_spec))
+        Obs.create_dataset('Npoints_mags', data = numpy.array(galaxy.Nband))
+        Obs.create_dataset('waveband', data = numpy.array(galaxy.waveband))
+        Obs.create_dataset('obsmag', data = numpy.array(galaxy.obsmag))
+        Obs.create_dataset('obserr', data = numpy.array(galaxy.obserr))
+        Obs.create_dataset('obsflux', data = numpy.array(galaxy.obsflux))
+        Obs.create_dataset('obsfluxerr', data = numpy.array(galaxy.obsfluxerr))
+        Obs.create_dataset('Names_mag', data = [numpy.string_(i) for i in galaxy.Names])
+        Obs.create_dataset('Upper_limits', data = [numpy.string_(i) for i in galaxy.uppers])
+
+
+        #-2-# Template directory 
+        Temp = Res.create_group('%s/Template'%galaxy.ID)
+        Temp.create_dataset('Bestchi2', data = galaxy.bestchi2red) 
+        Temp.create_dataset('Best_template_full', data = galaxy.besttemplate)
+        Temp.create_dataset('Best_template_wave', data = galaxy.besttemplate_wave)
+        Temp.create_dataset('Bestfit_newgrid', data = galaxy.regrid_template)
+        Temp.create_dataset('Bestfit_newgrid_wave', data = galaxy.regrid_wave)
+        Temp.create_dataset('Bestfit_mag', data = galaxy.bestfit_mag[0])
+        Temp.create_dataset('Bestfit_flux', data = galaxy.bestfit_flux)
+
+        #-3-# BF Parameter directory 
+        ParametersBF = Res.create_group('%s/Parameters_BF'%galaxy.ID) 
+        for i in list(galaxy.BFparam.keys()):
+            ParametersBF.create_dataset(i, data = numpy.array(galaxy.BFparam[i]))
+
+        #-4-# PDF Parameter directory 
+        ParametersPDF = Res.create_group('%s/Parameters_PDF'%galaxy.ID) 
+        PDFCDF = Res.create_group('%s/PDF_CDF'%galaxy.ID) 
+
+        for i in list(galaxy.chi2p.keys()):
+            m   = galaxy.chi2p[i][0]
+            m1  = galaxy.chi2p[i][2]
+            p1  = galaxy.chi2p[i][1]
+            #print(m, m1, p1)
+            grid = galaxy.chi2p[i][3]
+            pdf = galaxy.chi2p[i][4]
+            cdf = galaxy.chi2p[i][5]
+            ParametersPDF.create_dataset(i, data = numpy.array([m, m1, p1]))
+            PDFCDF.create_dataset(i, data = numpy.array([pdf, cdf, grid]))

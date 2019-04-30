@@ -287,7 +287,7 @@ def extract_fit(CONF, ident, resfile):
         toplot = extract_spec(resfile, ident, int(CONF.CONF['NSpec']))
 
     if CONF.CONF['UsePhot'].lower() == 'yes' and CONF.CONF['UseSpec'].lower() == 'yes':
-        print('Comb')
+        toplot = extract_comb(resfile, ident, int(CONF.CONF['NSpec']))
 
     return toplot
 
@@ -311,13 +311,12 @@ def extract_spec(filename, ident, Nspec):
         status = str(numpy.array(obj['General/Fitted']))[2:-1]
         if status == 'Fitted':
             ##extract the observable
-            Obs = obj['Observable']
-            
+            Obs = obj['Observable'] 
             SPECS = {}
             for i in range(Nspec):
                 sp = []
                 for j in list(Obs.keys()):
-                    if j[0:4] == 'spec':
+                    if j[0:4] == 'spec' and j[-2:] == '_%s'%str(i+1):
                         out = numpy.array(Obs[j])
                         sp.append(out)
 
@@ -325,12 +324,12 @@ def extract_spec(filename, ident, Nspec):
             
             ## extract the templates
             Temp = obj['Template']
-
             BFtemp = numpy.array(Temp['Best_template_full'])
             BFtemp_wave = numpy.array(Temp['Best_template_wave'])
             BF_regrid = numpy.array(Temp['Bestfit_newgrid'])
 
         else:
+
             BFtemp_wave = [1,2]
             BFtemp = [1,2]
             BF_regrid = [1,2]
@@ -360,9 +359,7 @@ def extract_phot(filename, ident):
 
     with h5py.File(filename) as ff:
         obj = ff[ident]
-
-
-  
+ 
         ##extract the observable
         Obs = obj['Observable']
         
@@ -376,7 +373,6 @@ def extract_phot(filename, ident):
 
             ## extract the templates
             Temp = obj['Template']
-
             BFtemp = numpy.array(Temp['Best_template_full'])
             BFtemp_wave = numpy.array(Temp['Best_template_wave'])
             Bestfit_flux = numpy.array(Temp['Bestfit_flux'])
@@ -396,5 +392,34 @@ def extract_phot(filename, ident):
     fit = [status, wavelength, flux, fluxerr, obsmag, BFtemp, BFtemp_wave, Bestfit_flux, Bestfit_mag]    
     return fit
 
-        
+def extract_comb(filename, ident, Nspec):
+    '''
+    Function that extracts the photometric fit oif the given ID
 
+    Parameters
+    ----------
+    filename    str, path/and/name.hdf5 of the result file
+    ident       str, ID of the galaxy to extract
+    NSPecs      int, number of spec 
+
+    Return
+    ------
+    fit         list, of fitting data (wavelength, flux, fluxerr, obsmag, 
+                       BFtemp, BFtemp_wave, Bestfit_flux, Bestfit_mag)
+    '''
+    toplot_phot = extract_phot(filename, ident)
+    toplot_spec = extract_spec(filename, ident, Nspec)
+ 
+    with h5py.File(filename) as ff:
+        obj = ff[ident]
+ 
+        ##extract the observable
+        Obs = obj['Observable']
+        
+        status = str(numpy.array(obj['General/Fitted']))[2:-1]
+        if status == 'Fitted':
+            kept_phot = numpy.array(Obs['Kept_phot'])
+
+    return toplot_spec+toplot_phot+[kept_phot]
+
+ 

@@ -66,10 +66,8 @@ class Photo_for_fit:
             toiterate = galaxy.Magnitudes
         else:
             toiterate = galaxy.Magnitudes_spec
-            #print(galaxy.Magnitudes_spec)
             #print(self.photo_conf)
 
-        
         for b in range(len(toiterate)):
             if b>=self.Nskip:
                 band = toiterate[b]

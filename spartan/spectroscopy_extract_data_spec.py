@@ -133,6 +133,7 @@ def extract_datasets(datasets, obj, CONF, redshift):
 
     ###we choose the first band for normalization of templates
     for i in data:
+        print(i)
         if data[i][-1] == 'yes':
             Norm.append(data[i][0:3])
 
@@ -172,7 +173,6 @@ def emission_line_free(obj, wave_reg, wave, flux, redshift):
         ###check with plot
         #plot().spec_porte(wave, flux, [band['Tran'][2]], F[0],\
         #       self.redshift, rectangular_limit)
-
         name = ['door', wave_reg[0]*(1+redshift), wave_reg[1]*(1+redshift)]
         Meas = M[0][0]
         errm = float(obj[0][2])

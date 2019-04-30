@@ -56,7 +56,6 @@ def final(CONF, Res):
     
     #for each object we look at the parameters
     #in each group
-    print(CONF.CONF['UseSpec'], CONF.CONF['UsePhot'])
     for i in R:
         obj = R[i]
         Fitted = str(numpy.array(obj['General/Fitted']))[2:-1].lower() 
@@ -152,8 +151,10 @@ def final(CONF, Res):
             Redshift = float(numpy.array(obj['Observable/Redshift']))
 
             if CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'yes':
-                Npoints_spec = int(float(numpy.array(obj['Observable/Npoints_spec'])))
-                Npoints_mags = int(float(numpy.array(obj['Observable/Npoints_mags'])))
+                #Npoints_spec = int(float(numpy.array(obj['Observable/Npoints_spec'])))
+                #Npoints_mags = int(float(numpy.array(obj['Observable/Npoints_mags'])))
+                Npoints_spec = -99
+                Npoints_mags = -99
                 line = '%s\t%s\t%s\t%s\t'%(i, Redshift, Npoints_spec, Npoints_mags)
 
             elif CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'no':

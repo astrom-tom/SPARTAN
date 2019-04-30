@@ -46,6 +46,7 @@ Then you must add the columns with the following rules. When you want to fit mul
 .. centered:: 
  	#ident     redshift  mag1    mag1_err   mag2    mag2_err  mag3    mag3_err  mag4  mag4_err mag5 mag5_err
 
+Magnitudes can be provided in AB or in Jy. The only constraints is to not mix up the different system in a given configuration (all AB or all Jy).
 
 Fitting procedure: generalities
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

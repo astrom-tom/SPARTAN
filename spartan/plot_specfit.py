@@ -34,11 +34,12 @@ def specfit(tempwave, template, regrid, SPECS):
         miny.append(min(SPECS[i][4]))
         maxy.append(max(SPECS[i][4]))
 
-        aa.plot(SPECS[i][3], SPECS[i][4], color='k')
+        aa.plot(SPECS[i][3], SPECS[i][4], color='k', lw=0.5, alpha=0.5)
 
     #aa.plot(SPECS[1][3], regrid[0], color='r')
     aa.plot(tempwave, template, label='Template-chi2', color='b', lw=1.)
     print(len(tempwave))
+    aa.set_title('spec')
     
     ##formatting
     aa.set_ylabel('Flux density (erg/s/cm2/AA)', fontsize =8)

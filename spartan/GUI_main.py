@@ -183,8 +183,6 @@ class Main_window(QWidget):
         self.shortcut_prevfit = QShortcut(QKeySequence("b"), self)
         self.shortcut_prevfit.activated.connect(self.prevfit)
 
-
-
         #next Tab
         self.shortcut_nextTab = QShortcut(QKeySequence("Ctrl+PgDown"), self)
         self.shortcut_nextTab.activated.connect(self.nextTab)
@@ -196,8 +194,6 @@ class Main_window(QWidget):
         #save files
         self.shortcut_savefiles = QShortcut(QKeySequence("s"), self)
         self.shortcut_savefiles.activated.connect(self.savedata)
-
-
  
         ###icon
         icon = QtGui.QIcon()
@@ -410,7 +406,30 @@ def save_to_disk(conf, ident, resfile):
 
     toplot = data.extract_fit(conf, ident, resfile)
     if conf.CONF['UsePhot'].lower() == 'yes' and conf.CONF['UseSpec'].lower() == 'no':
-        print('phot')
+        status, wavelength, flux, fluxerr, obsmag, BFtemp, \
+                BFtemp_wave, Bestfit_flux, Bestfit_mag = toplot
+
+        if status == 'Fitted':
+            ##check if save directory exist
+            savedir = os.path.join(conf.CONF['PDir'] , 'save_ascii_fits', ident)
+            if not os.path.isdir(savedir):
+                os.makedirs(savedir)
+
+            ##save_data
+            savedata = os.path.join(savedir, 'data.txt')
+            numpy.savetxt(savedata, numpy.array([wavelength, flux, fluxerr]).T)
+
+            ##save_fit
+            savefit_orig = os.path.join(savedir, 'fit.txt')
+            numpy.savetxt(savefit_orig, numpy.array([BFtemp_wave, BFtemp]).T)
+
+            MTU.Info('Plotting data for %s saved in %s'%(ident, savedir), 'No')
+
+        else:
+            MTU.Info('Plotting data not saved for failed fit: obj %s '%(ident), 'No')
+
+
+
 
     if conf.CONF['UsePhot'].lower() == 'no' and conf.CONF['UseSpec'].lower() == 'yes':
         ###unpack
@@ -424,10 +443,11 @@ def save_to_disk(conf, ident, resfile):
                 waveall.append(SPECS[i][0])
                 fluxall.append(SPECS[i][1])
                 errall.append(SPECS[i][2])
+
             if len(waveall) != 1:
                 waveall = numpy.concatenate(waveall)
-                fluxall = numpy.concatenate(waveall)
-                errall = numpy.concatenate(waveall)
+                fluxall = numpy.concatenate(fluxall)
+                errall = numpy.concatenate(errall)
             else:
                 waveall = SPECS['1'][0]
                 fluxall = SPECS['1'][1]
@@ -455,5 +475,51 @@ def save_to_disk(conf, ident, resfile):
             MTU.Info('Plotting data not saved for failed fit: obj %s '%(ident), 'No')
 
 
-    #if conf.CONF['UsePhot'].lower() == 'yes' and conf.CONF['UseSpec'].lower() == 'yes':
+    if conf.CONF['UsePhot'].lower() == 'yes' and conf.CONF['UseSpec'].lower() == 'yes':
+        ###unpack
+        status, BFtemp_wave, BFtemp, BF_regrid, SPECS, status2, wavelength, \
+                flux_phot, fluxerr_phot, obsmag, BFtemp_phot, BFtemp_wave_phot,\
+                Bestfit_flux_phot, Bestfit_mag_phot,kept_phot = toplot
+
+        if status == 'Fitted':
+            ###spectro
+            waveall = []
+            fluxall = []
+            errall = []
+            for i in list(SPECS.keys()):
+                waveall.append(SPECS[i][0])
+                fluxall.append(SPECS[i][1])
+                errall.append(SPECS[i][2])
+
+            if len(waveall) != 1:
+                waveall = numpy.concatenate(waveall)
+                fluxall = numpy.concatenate(fluxall)
+                errall = numpy.concatenate(errall)
+            else:
+                waveall = SPECS['1'][0]
+                fluxall = SPECS['1'][1]
+                errall = SPECS['1'][2]
+
+            ##check if save directory exist
+            savedir = os.path.join(conf.CONF['PDir'] , 'save_ascii_fits', ident)
+            if not os.path.isdir(savedir):
+                os.makedirs(savedir)
+
+            ##save_data
+            savedata = os.path.join(savedir, 'data.txt')
+            numpy.savetxt(savedata, numpy.array([waveall, fluxall, errall]).T)
+            savedata_phot = os.path.join(savedir, 'data_phot.txt')
+            numpy.savetxt(savedata_phot, numpy.array([wavelength[kept_phot], \
+                    flux_phot[kept_phot], fluxerr_phot[kept_phot]]).T)
+
+            ##save_fit
+            savefit_orig = os.path.join(savedir, 'fit.txt')
+            numpy.savetxt(savefit_orig, numpy.array([BFtemp_wave, BFtemp]).T)
+
+
+            MTU.Info('Plotting data for %s saved in %s'%(ident, savedir), 'No')
+
+        else:
+            MTU.Info('Plotting data not saved for failed fit: obj %s '%(ident), 'No')
+
 

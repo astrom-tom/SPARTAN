@@ -1,15 +1,23 @@
 from setuptools import setup  # Always prefer setuptools over distutils
-import spartan.__info__ as spartan
+
+__author__ = "Romain Thomas"
+__credits__ = "Romain Thomas"
+__license__ = "GNU GPL v3"
+__version__ = "0.4.4"
+__maintainer__ = "Romain Thomas"
+__email__ = "the.spartan.proj@gmail.com"
+__status__ = "Development"
+__website__ = "https://astrom-tom.github.io/SPARTAN/build/html/index.html"
 
 setup(
    name = 'spartan',
-   version = spartan.__version__,
-   author = spartan.__author__,
-   author_email = spartan.__email__,
+   version = __version__,
+   author = __author__,
+   author_email = __email__,
    packages = ['spartan'],
    entry_points = {'gui_scripts': ['spartan = spartan.__main__:main',],},
-   url = spartan.__website__,
-   license = spartan.__license__,
+   url = __website__,
+   license = __license__,
    description = 'Python tool for easy data plotting',
    python_requires = '>=3.6',
    install_requires = [

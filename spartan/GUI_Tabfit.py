@@ -109,9 +109,92 @@ class Tabfit(QTabWidget):
             self.specplot(toplot)
 
         if self.CONF.CONF['UsePhot'].lower() == 'yes' and self.CONF.CONF['UseSpec'].lower() == 'yes':
-            print('Comb')
+            self.combplot(toplot)
 
         self.tab1.setLayout(grid)
+
+
+    def combplot(self, toplot):
+        '''
+        This method plot the spectral fit
+        Parameters
+        ----------
+        toplot
+            list, of data to plot
+
+        Return
+        ------
+        None
+        '''
+
+        ###unpack
+        status, BFtemp_wave, BFtemp, BF_regrid, SPECS, status2, wavelength, \
+                flux_phot, fluxerr_phot, obsmag, BFtemp_phot, BFtemp_wave_phot,\
+                Bestfit_flux_phot, Bestfit_mag_phot,kept_phot = toplot
+
+        
+        ##and plot fit
+        self.fitplot.clear()
+
+        if status == status2 == 'Fitted':
+            ###start by spectro
+            mins = []
+            maxs = []
+            for i in list(SPECS.keys()):
+                if i == '1':
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='deepskyblue', \
+                            lw=0.3, label='Observed')
+                    self.fitplot.fill_between(SPECS[i][0], 0, SPECS[i][1], color='0.3', lw=0.0)
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='Orange', lw=0.3, label='Error')
+                else:
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='g', lw=0.8)
+                    self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='g', lw=0.8)
+                    self.fitplot.fill_between(SPECS[i][0], 0, SPECS[i][1], color='0.3', lw=0.0)
+
+                mins.append(min(SPECS[i][0]))
+                maxs.append(max(SPECS[i][0]))
+
+            self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template')
+
+            mins.append(min(wavelength))
+            maxs.append(max(wavelength))
+                
+            self.fitplot.scatter(wavelength[kept_phot], flux_phot[kept_phot], marker = '*', s=20, \
+                    facecolor = 'none', edgecolor='fuchsia', lw=0.5, zorder=2,\
+                    label='Observed Magnitude')
+
+            self.fitplot.scatter(wavelength[kept_phot], Bestfit_mag_phot[kept_phot], s = 20, color = 'lime', \
+                    label='Best fit magnitudes', zorder=1)
+
+
+            self.fitplot.errorbar(wavelength[kept_phot], flux_phot[kept_phot], \
+                    yerr = [fluxerr_phot[kept_phot],fluxerr_phot[kept_phot]],\
+                    fmt='none', marker = '*', lw=1. ,color='blue',label = 'Observed error', \
+                    zorder=3, capsize=5, elinewidth=0.5,)
+            ##axis
+
+            #self.fitplot.set_ylim(min(flux) - min(flux)*1.5, 1.5*max(flux))
+            self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
+
+
+
+            
+            self.fitplot.axhline(0, lw=0.5, ls='--', color='yellow')
+            self.fitplot.legend(ncol = 3)
+            self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
+
+
+
+
+        else:
+            self.fitplot.text(0.25,0.5,'Failed fit')
+
+        self.fitplot.set_ylabel('Flux Density')
+        self.fitplot.set_xlabel('Wavelength')
+        self.fitplot.set_title('Galaxy #%s'%self.ident, fontsize=4)
+
+
+
 
     def specplot(self, toplot):
         '''
@@ -136,6 +219,8 @@ class Tabfit(QTabWidget):
         if status == 'Fitted':
             mins = []
             maxs = []
+            miny = []
+            maxy = []
             for i in list(SPECS.keys()):
                 if i == '1':
                     self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='deepskyblue', \
@@ -145,16 +230,19 @@ class Tabfit(QTabWidget):
                 else:
                     self.fitplot.plot(SPECS[i][0], SPECS[i][1], color='g', lw=0.8)
                     self.fitplot.plot(SPECS[i][0], SPECS[i][2], color='g', lw=0.8)
+                    self.fitplot.fill_between(SPECS[i][0], 0, SPECS[i][1], color='0.3', lw=0.0)
 
+                miny.append(min(SPECS[i][1]))
+                maxy.append(max(SPECS[i][1]))
                 mins.append(min(SPECS[i][0]))
                 maxs.append(max(SPECS[i][0]))
 
             self.fitplot.plot(BFtemp_wave, BFtemp, color='r', label='Best fit template')
 
-            #self.fitplot.tick_params(labelbottom = 'off')
             self.fitplot.axhline(0, lw=0.5, ls='--', color='yellow')
             self.fitplot.legend(ncol = 3)
             self.fitplot.set_xlim(min(mins)-1000, max(maxs)+1000)
+            self.fitplot.set_ylim(min(miny), max(maxy))
         else:
             self.fitplot.text(0.25,0.5,'Failed fit')
 
@@ -179,6 +267,9 @@ class Tabfit(QTabWidget):
         ###unpack
         status, wavelength, flux, fluxerr, obsmag, BFtemp, \
                 BFtemp_wave, Bestfit_flux, Bestfit_mag = toplot
+        
+        if len(Bestfit_flux)>1:
+            Bestfit_flux = Bestfit_flux[0]
 
         if status == 'Fitted':
             ##and plot fit
@@ -271,6 +362,7 @@ class Tabfit(QTabWidget):
             
             for i in range(len(PDF)):
                 self.pdfcdf = self.figure.add_subplot(Rows, Column, i+1)
+                self.pdfcdf.tick_params(pad=1)
                 gr, PDFfull, CDFfull = extract.extract_PDF_CDF(self.filename, self.ident, PDF[i])
                 self.pdfcdf.plot(gr, PDFfull/max(PDFfull), color='fuchsia')
                 self.pdfcdf.fill_between(gr, 0, PDFfull/max(PDFfull), color='fuchsia', alpha=0.2, lw=0.2 )

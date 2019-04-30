@@ -68,6 +68,8 @@ def array_template_to_phot_init(Bands,Templates_hz, wave_at_z, freqTemp):
         ####Make the ingration for each template
         #integration = numpy.trapz(Templates_hz*TranfreqNormed, freqTemp[::-1])
         integration = integ(Templates_hz, TranfreqNormed, freqTemp)
+
+
         ##and compute the magnitude for all of them at the same time
         if integration.size == 1 and integration[0]<0:
             M[m] =  -99.9
@@ -107,6 +109,7 @@ def integ(Templates_hz, TranfreqNormed, freqTemp):
     '''
     
     A = Templates_hz*TranfreqNormed 
+
     if len(A) < 100:
         N = 10
     else:

@@ -74,7 +74,7 @@ def main(Parameter, Name, Proba, Norm, CONF, paramBF, Redshift):
             A = Parameter.T[i]
             Xd, plusd, minusd, gridd, PDFd, CDFd = discrete_param(A,Proba)
             result[Name[i]] = (Xd, plusd, minusd, gridd, PDFd, CDFd)
-        
+
     return result
 
 
@@ -105,8 +105,8 @@ def discrete_param(param_list, proba):
         values_PDF = numpy.zeros((len(Xgrid)))
         for i in enumerate(Xgrid):
             index = numpy.where(param_list==Xgrid[i[0]])
-            values_PDF[i[0]] = numpy.sum(proba[index]) 
-      
+            values_PDF[i[0]] = numpy.sum(proba[index])  
+
         ####if very bad fit --> no PDF can be computed
         if sum(values_PDF) == 0.0:
             return -99.9, -99.9, -99.9, [], [], []

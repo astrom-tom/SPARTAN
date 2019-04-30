@@ -12,8 +12,7 @@ This short module select the right fit to do from the user informations
 from .             import messages as MTU
 from .fit_photo    import Fit_photo
 from .fit_spectro  import Fit_spectro
-#from fit.fit_spectro import Fit_spectro
-#from fit.fit_combined import Fit_combined
+from .fit_combined import Fit_combined
 #----------------------------------------------------------
 
 def selector(config):
@@ -44,11 +43,10 @@ def selector(config):
         Init = Fit_spectro(config)
         Init.main()
 
-    '''
     if config.CONF['UsePhot'].lower() == 'yes' \
             and config.CONF['UseSpec'].lower() == 'yes':
 
-        MTU.Info('Start the fit on the COMBINED data', 'Yes')
-        Init = Fit_combined(config)
-        Init.main()
-    '''
+
+        MTU.Info('Soon to be released', 'Yes')
+        #Init = Fit_combined(config)
+        #Init.main()

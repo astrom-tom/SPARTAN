@@ -97,6 +97,16 @@ def file_comb(CONF):
         for i in range(Nspec):
             spec_cols.append(c+2)
             c+=3
+        
+        ###get the magnitudes column
+        phot_cols = []
+        ncol = Cat.shape[0]
+        nmag = Magfile.shape[0]
+        for i in range(ncol):
+            if i not in spec_cols+[0,1]:
+                phot_cols.append(i)
+
+        
 
         for i in tqdm.tqdm(range(len(ID))):
             #try:
@@ -118,15 +128,13 @@ def file_comb(CONF):
                             data_dico.append([mag_name, mag_meas, mag_err])
 
                     else:
-                        ##first we check if we have to skip edges, this is
-                        ##for later
                         for j in range(len(Magfile)):
                             if Magfile[j][2].lower() == 'yes':
                                 n = 0
                                 mag_name = numpy.string_(Magfile[j][0])
                                 if system == 'AB':
-                                    mag_meas = str(Cat[spec_cols[0]+j*2+1][i])
-                                    mag_err = str(Cat[spec_cols[0]+j*2+2][i]) 
+                                    mag_meas = str(Cat[phot_cols[2*j]][i])
+                                    mag_err = str(Cat[phot_cols[2*j+1]][i]) 
                                 else:
                                     mag_meas, mag_err = systemphot.Jy_to_AB(Cat[Nspec+2][i], \
                                             Cat[Nspec+3][i], 'yes') 
@@ -175,7 +183,6 @@ def file_comb(CONF):
                                         g[1] = gal.Magnitudes_spec[0][1]
                                         g[2] = gal.Magnitudes_spec[0][2]
 
-
                         prepare_data = prepare.Photo_for_fit(CONF.PHOT['Photo_config'], 0, 'spec')
                         prepare_data.match(gal)
                         ###normalise the spectrum to the corresponding photometric point
@@ -190,6 +197,7 @@ def file_comb(CONF):
                         #--> and apply it to the spectrum
                         ratio = MagFlux/F[0][0]
                         Final_spec[1] = Final_spec[1]*ratio
+                        Final_spec[2] = Final_spec[2]*ratio
                         '''
                         #####check we recompute the magnitude from the normalized spectrum
                         #####

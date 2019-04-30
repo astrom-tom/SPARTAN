@@ -81,9 +81,9 @@ def Warning(message, toline):
     """
 
     if toline == 'Yes':
-        print('\n'+ '\033[1m' + '[WAR]:\t' + message + '\033[0m')
+        print('\n'+ '\033[93m' + '\033[1m' + '[WAR]:\t' + message + '\033[0m')
     else:
-        print('\033[1m' + '[WAR]:\t' + message + '\033[0m')
+        print('\033[93m' + '\033[1m' + '[WAR]:\t' + message + '\033[0m')
 
 def Info(message, toline):
     """

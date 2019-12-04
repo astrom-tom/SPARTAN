@@ -175,6 +175,9 @@ def continuous_param(param_list, proba, name):
     ##then we create the grid of the parameter
     ##first the step
     s = (maximum-minimum) / Nbin
+    if maximum == numpy.inf or minimum == numpy.inf:
+        return -99.9, -99.9, -99.9, [], [], []
+
     grid = numpy.arange(minimum, maximum, s)
     values_PDF = numpy.zeros(grid.shape)
 

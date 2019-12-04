@@ -19,6 +19,7 @@ import multiprocessing
 ###third party#####################
 import tqdm
 import numpy
+numpy.set_printoptions(threshold=sys.maxsize)
 import copy
 import scipy.interpolate as interp
 ###################################
@@ -150,106 +151,133 @@ class Fit_spectro:
         '''
         Fitting function. It takes a pack
         '''
-        #try:
-        ##unpack
-        k, spec, lib, DUST, CONF, Datafile, COSMOS, Nobj = run
+        try:
+            ##unpack
+            k, spec, lib, DUST, CONF, Datafile, COSMOS, Nobj = run
 
-        ###start time counting####
-        fit_start = time.time()
+            ###start time counting####
+            fit_start = time.time()
 
-        ###################################
-        ###        Initialization       ###
-        ###################################
-        ##we retrieve the data for the object
-        galaxy = Data_for_fit.indiv_obj(Datafile, spec, 'spec', CONF)
+            ###################################
+            ###        Initialization       ###
+            ###################################
+            ##we retrieve the data for the object
+            galaxy = Data_for_fit.indiv_obj(Datafile, spec, 'spec', CONF)
 
-        ####################################
-        ###  edges and BR cleaning #########
-        ####################################
-        galaxy_copy = copy.deepcopy(galaxy)
-        cleaning.main(galaxy, CONF)
-        #plot_clean.cleaning_plot(galaxy_copy, galaxy)
+            ####################################
+            ###  edges and BR cleaning #########
+            ####################################
+            galaxy_copy = copy.deepcopy(galaxy)
+            cleaning.main(galaxy, CONF)
+            #plot_clean.cleaning_plot(galaxy_copy, galaxy)
 
-        ###################################
-        ###     Photometry ################
-        ###################################
-        Photofit = photo_fit.Photo_for_fit(CONF.PHOT['Photo_config'], 0, 'spec')
-        Photofit.match(galaxy)
-        Photofit.extract_from_data(Photofit.allbands)
+            ###################################
+            ###     Photometry ################
+            ###################################
+            Photofit = photo_fit.Photo_for_fit(CONF.PHOT['Photo_config'], 0, 'spec')
+            Photofit.match(galaxy)
+            Photofit.extract_from_data(Photofit.allbands)
 
-        ####################################
-        ###     Check redshift           ###
-        ####################################
-        if galaxy.Redshift <= 0 : 
-            galaxy.status =  'Negative or null Redshift'
-            return galaxy
- 
-        ##we have to add the emission lines to the templates
-        ##But first we look if some have to be skipped or 
-        ##some are not detected in the spectra
-        lines_to_skip = lines.check(galaxy, self.CONF.LIB['Emline_skipped'].split(';'))
-        ##then we add the list to the one given by the user
-        all_lines_to_skip = lines_to_skip + self.CONF.LIB['Emline_skipped'].split(';')
-        ###and finally add the emission lines to the templates
-        MTU.Info('Addition of Emission line', 'No')
-        Template_emLine = Emline.Apply(lib, self.CONF, all_lines_to_skip).Template
+            ####################################
+            ###     Check redshift           ###
+            ####################################
+            if galaxy.Redshift <= 0 : 
+                galaxy.status =  'Negative or null Redshift'
+                return galaxy
+     
+            ##we have to add the emission lines to the templates
+            ##But first we look if some have to be skipped or 
+            ##some are not detected in the spectra
+            lines_to_skip = lines.check(galaxy, self.CONF.LIB['Emline_skipped'].split(';'))
+            ##then we add the list to the one given by the user
+            all_lines_to_skip = lines_to_skip + self.CONF.LIB['Emline_skipped'].split(';')
+            ###and finally add the emission lines to the templates
+            MTU.Info('Addition of Emission line', 'No')
+            Template_emLine = Emline.Apply(lib, self.CONF, all_lines_to_skip).Template
 
-        #####################################
-        ###### Adjust spectral Resolution ###
-        #####################################
-        lib.change_resolution(CONF, galaxy, Template_emLine)
+            #####################################
+            ###### Adjust spectral Resolution ###
+            #####################################
+            lib.change_resolution(CONF, galaxy, Template_emLine)
 
-        ######################################
-        ###### Retrieve IGM Inform  ##########
-        ######################################
-        ### We check if we will use some IGM and if Yes, we prepare it
-        IGM = extinction.IGMlib(CONF, galaxy, lib)
+            ######################################
+            ###### Retrieve IGM Inform  ##########
+            ######################################
+            ### We check if we will use some IGM and if Yes, we prepare it
+            IGM = extinction.IGMlib(CONF, galaxy, lib)
 
-        #####################################
-        ##### Adjust for cosmology ##########
-        #####################################
-        COSMO_obj = {'AgeUniverse':COSMOS.Age_Universe(galaxy.Redshift),  \
-                         'DL':length.mpc_to_cm(COSMOS.dl(galaxy.Redshift))}
-        lib.Make_cosmological_Lib(COSMO_obj, lib.Template_res, CONF.COSMO)
-        ntemp = len(lib.Cosmo_templates)
+            #####################################
+            ##### Adjust for cosmology ##########
+            #####################################
+            COSMO_obj = {'AgeUniverse':COSMOS.Age_Universe(galaxy.Redshift),  \
+                             'DL':length.mpc_to_cm(COSMOS.dl(galaxy.Redshift))}
+            lib.Make_cosmological_Lib(COSMO_obj, lib.Template_res, CONF.COSMO)
+            ntemp = len(lib.Cosmo_templates)
 
-        ###and redshift the whole library
-        lib.prepare_lib_at_z(galaxy, COSMO_obj) 
+            ###and redshift the whole library
+            lib.prepare_lib_at_z(galaxy, COSMO_obj) 
 
-        ####################################
-        ######final parameter array########
-        ####################################
-        lib.adjust_par_ext(DUST, IGM)
-        NTEMP = len(lib.array_param)
+            ####################################
+            ######final parameter array########
+            ####################################
+            lib.adjust_par_ext(DUST, IGM)
+            NTEMP = len(lib.array_param)
 
-        #####################################
-        ##### Term Communication ############
-        #####################################
-        MTU.Info('We start to fit object with ID %s'%(galaxy.ID), 'Yes')
-        MTU.Info('Redshift: %s '%galaxy.Redshift, 'No')
-        MTU.Info('Number of templates (!No extinction applied): %s'%ntemp, 'No')
-        MTU.Info('Number of templates with all extinctions: %s' %NTEMP, 'No')
-        MTU.Info('Start fitting!', 'No')
+            #####################################
+            ##### Term Communication ############
+            #####################################
+            MTU.Info('We start to fit object with ID %s'%(galaxy.ID), 'Yes')
+            MTU.Info('Redshift: %s '%galaxy.Redshift, 'No')
+            MTU.Info('Number of templates (!No extinction applied): %s'%ntemp, 'No')
+            MTU.Info('Number of templates with all extinctions: %s' %NTEMP, 'No')
+            MTU.Info('Start fitting!', 'No')
 
-        ####################################
-        ######## start the fit #############
-        ####################################
-        ###innitialize array
-        CHI2array = numpy.zeros((NTEMP))
-        Normarray = numpy.zeros((NTEMP))
-        galaxy.bestchi2red = 1e20
-        galaxy.template_wave = lib.Wave_at_z
+            ####################################
+            ######## start the fit #############
+            ####################################
+            ###innitialize array
+            CHI2array = numpy.zeros((NTEMP))
+            Normarray = numpy.zeros((NTEMP))
+            galaxy.bestchi2red = 1e20
+            galaxy.template_wave = lib.Wave_at_z
 
-        n = 0 
+            n = 0 
 
-        if DUST.use == 'Yes' and IGM.dict['Use'] == 'Yes':
-            for i in range(len(DUST.Dustfile_list)): 
-                curve = DUST.coef[i]
-                for igm in IGM.dict['Curves']:
-                    temp_with_igm = IGM.Make_IGM_library(lib.Temp_at_z, \
-                                igm, lib.Wave_at_z)
+            if DUST.use == 'Yes' and IGM.dict['Use'] == 'Yes':
+                for i in range(len(DUST.Dustfile_list)): 
+                    curve = DUST.coef[i]
+                    for igm in IGM.dict['Curves']:
+                        temp_with_igm = IGM.Make_IGM_library(lib.Temp_at_z, \
+                                    igm, lib.Wave_at_z)
+                        for ebv in DUST.values:
+                            temp_with_ext = DUST.Make_dusted_template(temp_with_igm, curve, ebv)
+                            ##and process them
+                            CHI2, Norm, Flux_mag_all_template, regrid_template, index_chi, waveobs =\
+                                    self.process_template(lib, Photofit, temp_with_ext, galaxy)
+                            ##populate arrays
+                            CHI2min = CHI2[index_chi]
+                            CHI2array[n*ntemp:(n+1)*ntemp] = CHI2
+                            Normarray[n*ntemp:(n+1)*ntemp] = Norm 
+                            if len(CHI2min)>1:
+                                CHI2min = CHI2min[0]
+                            ##update the results
+                            if CHI2min<galaxy.bestchi2red:
+                                #print(CHI2min, galaxy.bestchi2red)
+                                galaxy.best_chi2(numpy.min(CHI2), \
+                                        temp_with_ext[index_chi][0]*Norm[index_chi][0], \
+                                        regrid_template[index_chi], Flux_mag_all_template.T[index_chi],\
+                                        [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
+                                galaxy.Bf_param(lib, Norm[index_chi][0])
+                            n += 1
+            
+
+            elif DUST.use == 'Yes' and IGM.dict['Use'] == 'No':     
+                for i in range(len(DUST.Dustfile_list)):
+                    ###extract curve
+                    curve = DUST.coef[i]
                     for ebv in DUST.values:
-                        temp_with_ext = DUST.Make_dusted_template(temp_with_igm, curve, ebv)
+                        ###apply the extinction
+                        temp_with_ext = DUST.Make_dusted_template(lib.Temp_at_z,curve,ebv)       
                         ##and process them
                         CHI2, Norm, Flux_mag_all_template, regrid_template, index_chi, waveobs =\
                                 self.process_template(lib, Photofit, temp_with_ext, galaxy)
@@ -259,6 +287,7 @@ class Fit_spectro:
                         Normarray[n*ntemp:(n+1)*ntemp] = Norm 
                         if len(CHI2min)>1:
                             CHI2min = CHI2min[0]
+     
                         ##update the results
                         if CHI2min<galaxy.bestchi2red:
                             #print(CHI2min, galaxy.bestchi2red)
@@ -268,15 +297,11 @@ class Fit_spectro:
                                     [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
                             galaxy.Bf_param(lib, Norm[index_chi][0])
                         n += 1
-        
-
-        elif DUST.use == 'Yes' and IGM.dict['Use'] == 'No':     
-            for i in range(len(DUST.Dustfile_list)):
-                ###extract curve
-                curve = DUST.coef[i]
-                for ebv in DUST.values:
-                    ###apply the extinction
-                    temp_with_ext = DUST.Make_dusted_template(lib.Temp_at_z,curve,ebv)       
+         
+            if DUST.use == 'No' and IGM.dict['Use'] == 'Yes':
+                for igm in IGM.dict['Curves']:
+                    ###apply IGM
+                    temp_with_ext = IGM.Make_IGM_library(lib.Temp_at_z, igm, lib.Wave_at_z)
                     ##and process them
                     CHI2, Norm, Flux_mag_all_template, regrid_template, index_chi, waveobs =\
                             self.process_template(lib, Photofit, temp_with_ext, galaxy)
@@ -286,7 +311,7 @@ class Fit_spectro:
                     Normarray[n*ntemp:(n+1)*ntemp] = Norm 
                     if len(CHI2min)>1:
                         CHI2min = CHI2min[0]
- 
+     
                     ##update the results
                     if CHI2min<galaxy.bestchi2red:
                         #print(CHI2min, galaxy.bestchi2red)
@@ -296,12 +321,13 @@ class Fit_spectro:
                                 [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
                         galaxy.Bf_param(lib, Norm[index_chi][0])
                     n += 1
-     
-        if DUST.use == 'No' and IGM.dict['Use'] == 'Yes':
-            for igm in IGM.dict['Curves']:
-                ###apply IGM
-                temp_with_ext = IGM.Make_IGM_library(lib.Temp_at_z, igm, lib.Wave_at_z)
+
+            elif DUST.use == 'No' and IGM.dict['Use'] == 'No':
+                ###no extinction is used, we go directly with the 'naked'
+                ###library of template
+                temp_with_ext = lib.Temp_at_z
                 ##and process them
+                #M_final, Norm, Flux_mag_all_template, CHI2, index_chi \
                 CHI2, Norm, Flux_mag_all_template, regrid_template, index_chi, waveobs =\
                         self.process_template(lib, Photofit, temp_with_ext, galaxy)
                 ##populate arrays
@@ -310,7 +336,7 @@ class Fit_spectro:
                 Normarray[n*ntemp:(n+1)*ntemp] = Norm 
                 if len(CHI2min)>1:
                     CHI2min = CHI2min[0]
- 
+     
                 ##update the results
                 if CHI2min<galaxy.bestchi2red:
                     #print(CHI2min, galaxy.bestchi2red)
@@ -320,62 +346,41 @@ class Fit_spectro:
                             [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
                     galaxy.Bf_param(lib, Norm[index_chi][0])
                 n += 1
+            
+            if 'BFparam' not in list(galaxy.__dict__.keys()):
+                galaxy.status = 'FAIL'
+                return  galaxy
 
-        elif DUST.use == 'No' and IGM.dict['Use'] == 'No':
-            ###no extinction is used, we go directly with the 'naked'
-            ###library of template
-            temp_with_ext = lib.Temp_at_z
-            ##and process them
-            #M_final, Norm, Flux_mag_all_template, CHI2, index_chi \
-            CHI2, Norm, Flux_mag_all_template, regrid_template, index_chi, waveobs =\
-                    self.process_template(lib, Photofit, temp_with_ext, galaxy)
-            ##populate arrays
-            CHI2min = CHI2[index_chi]
-            CHI2array[n*ntemp:(n+1)*ntemp] = CHI2
-            Normarray[n*ntemp:(n+1)*ntemp] = Norm 
-            if len(CHI2min)>1:
-                CHI2min = CHI2min[0]
- 
-            ##update the results
-            if CHI2min<galaxy.bestchi2red:
-                #print(CHI2min, galaxy.bestchi2red)
-                galaxy.best_chi2(numpy.min(CHI2), \
-                        temp_with_ext[index_chi][0]*Norm[index_chi][0], \
-                        regrid_template[index_chi], Flux_mag_all_template.T[index_chi],\
-                        [lib.Wave_at_z, waveobs], n*ntemp + index_chi[0], 'spec')
-                galaxy.Bf_param(lib, Norm[index_chi][0])
-            n += 1
-        
-        if 'BFparam' not in list(galaxy.__dict__.keys()):
-            galaxy.status = 'FAIL'
-            return  galaxy
+            ####instead of taking the probability from the chi2
+            ####we subtract the chi2min. 
+            ###the resulting PDF_final will just be equal
+            ###to constant*true_PDF which will not change the
+            ###error and measurement estimates
+            scales = numpy.array(CHI2array) - min(CHI2array)
 
-        ####instead of taking the probability from the chi2
-        ####we subtract the chi2min. 
-        ###the resulting PDF_final will just be equal
-        ###to constant*true_PDF which will not change the
-        ###error and measurement estimates
-        scales = numpy.array(CHI2array) - min(CHI2array)
+            P_CHI2 = []
+            #for k in range(len(scales)):
+            #    P_CHI2.append(numpy.exp(-(scales[k])/2))
 
-        P_CHI2 = []
-        for k in range(len(scales)):
-            P_CHI2.append(numpy.exp(-(scales[k])/2))
- 
-        galaxy.create_observable_spec(Photofit) 
-        galaxy.chi2param(lib, numpy.array(P_CHI2), Normarray, CONF)
-        galaxy.status = 'Fitted'
+            P_CHI2 = numpy.exp(-(scales)/2)
+     
+            galaxy.create_observable_spec(Photofit) 
+            galaxy.chi2param(lib, numpy.array(P_CHI2), Normarray, CONF)
+            galaxy.status = 'Fitted'
 
-        ###########on the fly visualisation
-        #plot_specfit.specfit(galaxy.besttemplate_wave, galaxy.besttemplate, galaxy.regrid_template \
-        #         ,galaxy.SPECS)
- 
-        fit_end = time.time()
-        MTU.Info('Galaxy %s fitted in %s seconds'%(galaxy.ID, fit_end-fit_start), 'No')
+            ###########on the fly visualisation
+            #plot_specfit.specfit(galaxy.besttemplate_wave, galaxy.besttemplate, galaxy.regrid_template \
+            #         ,galaxy.SPECS)
+     
+            fit_end = time.time()
+            MTU.Info('Galaxy %s fitted in %s seconds'%(galaxy.ID, fit_end-fit_start), 'No')
 
-        return galaxy
-        #except:
-        #    galaxy.status = 'No evident reason could be found'
-        #    return galaxy
+            return galaxy
+
+        except:
+
+            galaxy.status = 'No evident reason could be found'
+            return galaxy
 
     def process_template(self, lib, Photofit, temp_with_ext, galaxy):
         '''
@@ -398,6 +403,7 @@ class Fit_spectro:
         '''
         ###  we convert the array of templates, in erg/s/cm2/AA
         ##    to erg/s/cm2/Hz
+        #print(temp_with_ext[0])
         freqTemp, Templates_hz = Comp_phot.convert_wave_to_freq(lib.Wave_at_z, temp_with_ext)
 
         ## We normalize the templates to the observed photometry
@@ -432,6 +438,7 @@ class Fit_spectro:
 
         ##We compute the CHI2 
         CHI2 =  numpy.sum((fluxs - regrid_templates)**2    / errs**2, axis=1) 
+        #print(CHI2)
         ##and find the minimum    
         index_chi  = numpy.where(CHI2 == numpy.min(CHI2))
         

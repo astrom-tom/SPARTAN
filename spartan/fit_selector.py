@@ -48,5 +48,5 @@ def selector(config):
 
 
         MTU.Info('Soon to be released', 'Yes')
-        #Init = Fit_combined(config)
+        Init = Fit_combined(config)
         #Init.main()

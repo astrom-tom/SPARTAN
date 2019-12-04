@@ -135,8 +135,9 @@ def save_phot(Results, galaxy, CONF):
         for i in range(len(galaxy.MagAbs['Name'])):
             M = galaxy.MagAbs['Meas'][i]
             Magabs.create_dataset(galaxy.MagAbs['Name'][i], data = numpy.array(M))
-        #[print(numpy.array(Magabs[i])) for i in list(Magabs.keys())]
 
+    del galaxy
+    del Magabs, ParametersPDF, PDFCDF, ParametersBF, Temp, gen
 
 def save_spec(Results, galaxy, CONF):
     '''

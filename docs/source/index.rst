@@ -60,7 +60,11 @@ Contents
 
 News
 ^^^^
-* **30-04-2018** : Paper about Mg galaxies submitted.
+* **01-12-2019** : Paper about SPARTAN in preparation
+* **21-11-2019** : Paper about IGM in galaxies accepted in A&A
+* **26-08-2019** : Paper about MG galaxies accepted in A&A
+* **21-05-2019** : Paper about IGM with VANDELS submitted.
+* **30-04-2019** : Paper about Mg galaxies submitted.
 * **12-12-2018** : Paper presenting SPARTAN in preparation
 * **10-10-2018** : Two paper in preparation using SPARTAN (indpendent modes)
 * **03-03-2018** : Start to use the code

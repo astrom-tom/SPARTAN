@@ -140,4 +140,5 @@ Fitting and output configuration
     :width: 750px
     :align: center
 
+Finally, you can choose what kinf of fit and output you want. In the panel (see above) you can choose the type of fitting. **As for now the MCMC is not implemented yet** so you can only choose the CHI2 minimization. When fitting both photometry and spectroscopy you can choose to either fit all the data (Combined = Full)
 

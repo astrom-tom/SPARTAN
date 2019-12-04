@@ -93,7 +93,6 @@ class Fit_photo:
         MTU.Info('Addition of Emission line', 'No')
         Templates_emLine = Emline.Apply(Library, self.CONF, toskip = []).Template
 
-
         ##prepare dust extinction
         MTU.Info('Preparation of the Dust extinction', 'No')
         DUST  = extinction.Dust(self.CONF, Library.Wave_final) 
@@ -120,8 +119,8 @@ class Fit_photo:
 
             ##3-And start parallel processing
             timebefore_loop = time.time()
-            pool = multiprocessing.Pool(processes = len(Toparallel))
-            Results_pool=pool.map(self.fit, Toparallel)
+            pool = multiprocessing.Pool(processes = len(Toparallel), maxtasksperchild=1000)
+            Results_pool=pool.imap(self.fit, Toparallel)
             pool.close()
             pool.join()
             timeafter_loop = time.time()
@@ -143,6 +142,10 @@ class Fit_photo:
             if len(sample)-i >= 0:
                 MTU.Info('%s objects left'%(len(sample)-i), 'No')
 
+            del Results_pool
+            del gal
+            del pool
+            gc.collect()
 
         MTU.Info('Full sample fitted in %s seconds'%( time.time() - Time_INITIAL), 'Yes')
         MTU.Info('Start creation of the final catalog', 'Yes')
@@ -217,6 +220,7 @@ class Fit_photo:
         ###and redshift the whole library
         lib.prepare_lib_at_z(galaxy, COSMO_obj) 
 
+
         ####################################
         ######final parameter array########
         ####################################
@@ -250,7 +254,7 @@ class Fit_photo:
         galaxy.bestchi2red = 1e10
         galaxy.template_wave = lib.Wave_at_z
         n = 0 
-
+        
         if DUST.use == 'Yes' and IGM.dict['Use'] == 'Yes':
             for i in range(len(DUST.Dustfile_list)): 
                 curve = DUST.coef[i]
@@ -311,6 +315,7 @@ class Fit_photo:
 
                         galaxy.Bf_param(lib, Norm[index_chi][0])
 
+                    del temp_with_ext
                     n += 1
 
         if DUST.use == 'No' and IGM.dict['Use'] == 'Yes':
@@ -394,9 +399,9 @@ class Fit_photo:
         fit_end = time.time()
         MTU.Info('Galaxy %s fitted in %s seconds'%(galaxy.ID, fit_end-fit_start), 'No')
 
-        print(gc.get_count())
+        del lib
         del CHI2array, P_CHI2, scales, Probarray, Normarray, M_final, Norm, Flux_mag_all_template, CHI2,
-        gc.garbage
+        del k, photo, Template_emLine,  DUST, CONF, Datafile, COSMOS, Nobj
 
         return galaxy
 #        except:

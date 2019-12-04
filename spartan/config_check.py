@@ -860,6 +860,7 @@ class check_main:
             MTU.Warning('Section: PHOT: %s\t ...Continue...'%(Photo_status), 'No')
 
         ###check Library section
+        Lib_status = 'Incomplete'
         if self.INPUT_CONF.LIB['Type'].lower() == 'provided':
             Lib_status = check().check_LibP(self.INPUT_CONF.LIB)[0]
 
@@ -877,7 +878,7 @@ class check_main:
         else:
             ###If not, we display the Cosmo status that
             ###returned an information
-            MTU.Warning('Section Library: %s\t ...Continue...'%(Lib_status), 'No')
+            MTU.Warning('Section: Library: %s\t ...Continue...'%(Lib_status), 'No')
 
 
         ###Check the cosmo section

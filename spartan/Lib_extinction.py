@@ -25,6 +25,7 @@ import matplotlib.pyplot as plt
 ####Local Modules#########################
 from .input_spartan_files import sp_input_files as PIF
 from .                    import messages as MTU
+from .                    import plot_specfit as plotigm
 from .units               import Phys_const, length
 #import check_plots.igmapplied as plotigm
 ############################################
@@ -177,6 +178,7 @@ class IGMlib:
             typeIGM = 'mean'
         elif IGMtype == 'free_meiksin':
             IGMfile = os.path.join(Input_dir, 'IGM/SPARTAN_Meiksin_Free_7curves.hdf5')
+            #IGMfile = os.path.join(Input_dir, 'IGM/SPARTAN_Meiksin_Free_mega.hdf5')
             typeIGM = 'free'
         elif IGMtype == 'free_madau':
             IGMfile = os.path.join(Input_dir, 'IGM/SPARTAN_Madau_Free_7curves.hdf5')
@@ -238,6 +240,10 @@ class IGMlib:
             ##if the user uses the free prescription
             ## so 5
             for i in range(len(Curves)):
+                ###to avoid the fact where the normalization is done in
+                ###an igm part where the transmission is at 0 we replace
+                ###the 0s be 1e-10
+                Curves[Curves==0] = 1e-10
                 ##we interpolate each curve to the model grid
                 ##and add it to To_Use with the transmissions
                 To_Use.append(numpy.interp(wave_model, Wave, Curves[i]))
@@ -264,6 +270,8 @@ class IGMlib:
         ------
         igmtemplates    numpy.array, with igm-applied templates
         '''
+        
+        #plotigm.igm(wave, igmcurve)        
         igmtemplates = templates * igmcurve
         return igmtemplates
 

@@ -13,6 +13,9 @@
 
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+import numpy
+import sys
+numpy.set_printoptions(threshold=sys.maxsize)
 
 def specfit(tempwave, template, regrid, SPECS):
     '''
@@ -38,7 +41,6 @@ def specfit(tempwave, template, regrid, SPECS):
 
     #aa.plot(SPECS[1][3], regrid[0], color='r')
     aa.plot(tempwave, template, label='Template-chi2', color='b', lw=1.)
-    print(len(tempwave))
     aa.set_title('spec')
     
     ##formatting
@@ -52,3 +54,15 @@ def specfit(tempwave, template, regrid, SPECS):
     #aa.set_xscale('log')
 
     plt.show() 
+
+def igm(wave, igmcurve):
+
+    fig = plt.figure()
+    aa = fig.add_subplot(111)
+    aa.plot(wave, igmcurve, label='igm_template', color='b', lw=1.)
+    aa.set_title('spec')
+    aa.set_xlim(500, 6000)
+    plt.show()
+ 
+
+

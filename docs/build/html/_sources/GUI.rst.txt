@@ -35,7 +35,7 @@ Graphical User interface: Visualizing results
 Start the GUI
 ^^^^^^^^^^^^^
 
-As desribed in :doc:`usage`, spartan comes with a command line interface that allows you to access different parts of the code. One of the argument allows you to start the graphical user interface (GUI).
+As described in :doc:`usage`, spartan comes with a command line interface that allows you to access different parts of the code. One of the argument allows you to start the graphical user interface (GUI).
 To start it you must have a project configuration defined. To start it you use::
 
       spartan -f your_project.conf -v

@@ -8,10 +8,12 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Text Based User interface: configuration of a fitting run &mdash; SPARTAN 0.1 documentation</title>
+  <title>Configuration of a fitting run &mdash; SPARTAN 0.1 documentation</title>
   
 
   
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
   
   
   
@@ -36,7 +38,9 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Graphical User interface: Visualizing results" href="GUI.html" />
-    <link rel="prev" title="Getting started" href="usage.html" /> 
+    <link rel="prev" title="Getting started" href="usage.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,7 +91,8 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Text Based User interface: configuration of a fitting run</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration of a fitting run</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-concept">General concept</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-the-tui">Start the TUI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#general-configuration">General Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spectroscopic-configuration">Spectroscopic configuration</a></li>
@@ -100,6 +105,7 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
@@ -147,7 +153,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Text Based User interface: configuration of a fitting run</li>
+      <li>Configuration of a fitting run</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -168,11 +174,80 @@
             
   <p id="tui"><a class="reference external" href="https://www.python.org/downloads/release/python-360/"><img alt="python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" /></a> <img alt="Python36" src="https://img.shields.io/badge/python-3.6-blue.svg" /> <a class="reference external" href="http://perso.crans.org/besson/LICENSE.html"><img alt="Licence" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
 <a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
-<div class="section" id="text-based-user-interface-configuration-of-a-fitting-run">
-<h1>Text Based User interface: configuration of a fitting run<a class="headerlink" href="#text-based-user-interface-configuration-of-a-fitting-run" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="configuration-of-a-fitting-run">
+<h1>Configuration of a fitting run<a class="headerlink" href="#configuration-of-a-fitting-run" title="Permalink to this headline">¶</a></h1>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p><strong>Input Files</strong></p>
+<p>SPARTAN relies on numerous input files that are pre-computed (e.g. stellar population, IGM extinction, etc). To make use of SPARTAN you must download them at this <a class="reference external" href="https://drive.google.com/drive/folders/1AVjhedoHhyt_eKd9wvZ_4CtX9DLC5_Sk?usp=sharing">link</a>.
+These are not being computed on the fly which saves a lot of time in the fitting process. See detail below on how to use them.</p>
+</div>
+<div class="section" id="general-concept">
+<h2>General concept<a class="headerlink" href="#general-concept" title="Permalink to this headline">¶</a></h2>
+<p>The configuration of SPARTAN contains all the information required to make SPARTAN works for any type of fitting. To create it you have two solutions:</p>
+<ul class="simple">
+<li><p>Using the <em>Text-based User-Interface</em> (Hereafter <strong>TUI</strong>): This is an interface that is displayed in the terminal itself. It will guide you through each part of the configuration make sure (as much as possible) that the configuration make sense (there are a lot of checks). This TUI is filling for you a configuration file that is needed to run a fit.</p></li>
+<li><p>Direclty editing the configuration file that looks like this:</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>General<span class="o">]</span>
+<span class="nv">project_name</span> <span class="o">=</span>
+<span class="nv">author</span> <span class="o">=</span> romain
+<span class="nv">project_directory</span> <span class="o">=</span>
+<span class="nv">ncpu</span> <span class="o">=</span>
+<span class="nv">data_cat</span> <span class="o">=</span>
+<span class="nv">use_spec</span> <span class="o">=</span>
+<span class="nv">use_phot</span> <span class="o">=</span>
+<span class="nv">nspec</span> <span class="o">=</span>
+
+<span class="o">[</span>Spectroscopy<span class="o">]</span>
+<span class="nv">spectra_directory</span> <span class="o">=</span>
+<span class="nv">resolution</span> <span class="o">=</span>
+<span class="nv">flux_units</span> <span class="o">=</span>
+<span class="nv">wave_units</span> <span class="o">=</span>
+<span class="nv">skip_edges</span> <span class="o">=</span>
+<span class="nv">size_skipped</span> <span class="o">=</span>
+<span class="nv">bad_regions</span> <span class="o">=</span>
+<span class="nv">bad_regions_list</span> <span class="o">=</span>
+<span class="nv">normalisation_type</span> <span class="o">=</span>
+<span class="nv">norm_region</span> <span class="o">=</span>
+<span class="nv">multi_spec_calibration</span> <span class="o">=</span>
+
+<span class="o">[</span>Photo<span class="o">]</span>
+<span class="nv">system</span> <span class="o">=</span>
+<span class="nv">photofile</span> <span class="o">=</span>
+
+<span class="o">[</span>Cosmo<span class="o">]</span>
+<span class="nv">ho</span> <span class="o">=</span>
+<span class="nv">omega_m</span> <span class="o">=</span>
+<span class="nv">omega_l</span> <span class="o">=</span>
+<span class="nv">use_cosmo</span> <span class="o">=</span>
+
+<span class="o">[</span>Library<span class="o">]</span>
+<span class="nb">type</span> <span class="o">=</span>
+<span class="nv">basessp</span> <span class="o">=</span>
+<span class="nv">dustuse</span> <span class="o">=</span>
+<span class="nv">ebvlist</span> <span class="o">=</span>
+<span class="nv">igmtype</span> <span class="o">=</span>
+<span class="nv">emline</span> <span class="o">=</span>
+<span class="nv">emline_skipped</span> <span class="o">=</span>
+<span class="nv">age</span> <span class="o">=</span>
+<span class="nv">tau</span> <span class="o">=</span>
+<span class="nv">met</span> <span class="o">=</span>
+
+<span class="o">[</span>Fit<span class="o">]</span>
+<span class="nv">algorithm</span> <span class="o">=</span>
+<span class="nv">overfit</span> <span class="o">=</span>
+<span class="nv">pdf_values</span> <span class="o">=</span>
+<span class="nv">best_fit_values</span> <span class="o">=</span>
+<span class="nv">keep_full_pdf</span> <span class="o">=</span>
+<span class="nv">combined</span> <span class="o">=</span>
+</pre></div>
+</div>
+<p>It is worth noting that it is recommended to use the TUI to avoid mistakes in the configuration. Through the next section we will guide you through the configuration process. We will each time provide a screenshot of the TUI and the corresponding section of the configuration file. We will place ourself in the case we fit both photometry and spectroscopy, the most general case SPARTAN accepts.</p>
+</div>
 <div class="section" id="start-the-tui">
 <h2>Start the TUI<a class="headerlink" href="#start-the-tui" title="Permalink to this headline">¶</a></h2>
-<p>As said in <a class="reference internal" href="usage.html"><span class="doc">Getting started</span></a>, you start SPARTAN using the command line. Here we document the text based user interface that is used to configure a fitting run. For a brand new project, you start in the terminal:</p>
+<p>As said in <a class="reference internal" href="usage.html"><span class="doc">Getting started</span></a>, you start SPARTAN using the command line. For a brand new project, you write in the terminal:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>user@machine<span class="o">]</span>$ spartan -t <span class="o">(</span>or --tui<span class="o">)</span>
 </pre></div>
 </div>
@@ -184,8 +259,8 @@
 <div class="figure align-center">
 <a class="reference internal image-reference" href="_images/TUI_fron.png"><img alt="_images/TUI_fron.png" src="_images/TUI_fron.png" style="width: 750px;" /></a>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
 <p>To navigate through the TUI you need the arrow keys of your keyboard to move from on element to another and the carriage return to enter a new element. The space bar is used to select a choice in a multiple choice element (see below).</p>
 </div>
 <p>This frame contains the SPARTAN logo and the welcome message. These are fixed components. Then you haves an area with 6 entries: Project general Configuration, Spectroscopy, Photometry, Library, Cosmology, Fit &amp; output. Each section corresponds to a TUI-frame that will help you through the configuration of your fitting run. On the same line as the section,  a keyword is displayed. If it is green (like for the Cosmology section in the screenshot above), it means that the section is correctly configured.  In green you can have  ‘Default’ or ‘Done’. Once each section status is in green you can start a fitting run. If you made a mistake during the configuration (or something is missing), the status will be displayed in red. The red status keywords should be clear enough by themselves. Each one will be reviewed in the next sections so you have a more detailed description of the error and a work around.</p>
@@ -194,8 +269,24 @@
 </div>
 <div class="section" id="general-configuration">
 <h2>General Configuration<a class="headerlink" href="#general-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/TUI_genconf.png"><img alt="_images/TUI_genconf.png" src="_images/TUI_genconf.png" style="width: 750px;" /></a>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="_images/TUI_genconf.png"><img alt="_images/TUI_genconf.png" src="_images/TUI_genconf.png" style="width: 550px;" /></a>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--&gt; This corresponds to this section in the configuration file</span>
+
+
+
+
+<span class="o">[</span>General<span class="o">]</span>
+<span class="nv">project_name</span> <span class="o">=</span> SPARTAN_paper_comb
+<span class="nv">author</span> <span class="o">=</span> romain
+<span class="nv">project_directory</span> <span class="o">=</span> /home/romain/Science/SPARTAN_paper/fit
+<span class="nv">ncpu</span> <span class="o">=</span> <span class="m">4</span>
+<span class="nv">data_cat</span> <span class="o">=</span> /home/romain/Science/SPARTAN_paper/run/SPARTAN_paper1_Combined_file_final.txt
+<span class="nv">use_spec</span> <span class="o">=</span> Yes
+<span class="nv">use_phot</span> <span class="o">=</span> Yes
+<span class="nv">nspec</span> <span class="o">=</span> <span class="m">1</span>
+</pre></div>
 </div>
 <p>To start configuring a fitting run, you enter the <strong>Project General Configuration</strong> page of the TUI (you can see it above). This frame deal with general information:</p>
 <blockquote>
@@ -209,13 +300,35 @@
 <li><p><strong>Photometry</strong>: Yes or not to use the photometry (no if you want to fit spectra only).</p></li>
 </ul>
 </div></blockquote>
+<p>This part of the TUI translated into the section <em>General</em> in the configuration file. For the configuration of the above screenshot we have the configuration file section that is displayed next to the screenshot.</p>
 </div>
 <div class="section" id="spectroscopic-configuration">
 <h2>Spectroscopic configuration<a class="headerlink" href="#spectroscopic-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/tui_spec.png"><img alt="_images/tui_spec.png" src="_images/tui_spec.png" style="width: 750px;" /></a>
-</div>
 <p>If you have spectroscopic data, you must then tell SPARTAN where they are and what is your configuration.</p>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="_images/tui_spec.png"><img alt="_images/tui_spec.png" src="_images/tui_spec.png" style="width: 650px;" /></a>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--&gt; This corresponds to this section in the configuration file</span>
+
+
+
+
+
+<span class="o">[</span>Spectroscopy<span class="o">]</span>
+<span class="nv">spectra_directory</span> <span class="o">=</span> /home/romain/Science/SPARTAN_paper/run/spectra
+<span class="nv">resolution</span> <span class="o">=</span> <span class="m">230</span>
+<span class="nv">flux_units</span> <span class="o">=</span> erg/s/cm2/A
+<span class="nv">wave_units</span> <span class="o">=</span> Ang
+<span class="nv">skip_edges</span> <span class="o">=</span> Yes
+<span class="nv">size_skipped</span> <span class="o">=</span> <span class="m">200</span>
+<span class="nv">bad_regions</span> <span class="o">=</span> Yes
+<span class="nv">bad_regions_list</span> <span class="o">=</span> <span class="m">1200</span>-1240<span class="p">;</span><span class="m">3700</span>-3740
+<span class="nv">normalisation_type</span> <span class="o">=</span> region
+<span class="nv">norm_region</span> <span class="o">=</span> <span class="m">3500</span>-3700
+<span class="nv">multi_spec_calibration</span> <span class="o">=</span> No
+</pre></div>
+</div>
+<p>We detail here each entry of the TUI:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>Spectra Directory</strong>: This is where your spectra are stored (in ascii format!! and with a .spec extension).</p></li>
@@ -224,33 +337,139 @@
 <li><p><strong>Skip Edges</strong>: It can happen that the edges of your spectra are not well cleaned. SPARTAN offers you the opportunity to remove them from the fit. If you say yes, here you must also give the size to skip at the edged with <strong>Size to skip (AA, obs-f)</strong>. You must give it in angstrom and in the observed frame.</p></li>
 <li><p><strong>Bad regions</strong>: Also, you might want to mask out some part of the spectrum (e.g. emission lines). You can also do it SPARTAN putting yes at this choice. Then you must give the regions you want to mask out in <strong>If Yes, list (rest-f, AA)</strong>. In that case you must give the two external wavelength of each region you want to mask out (ex: 3700-3750; 1200-1240)</p></li>
 <li><p><strong>Nor Dat/Mod</strong>: This is where you tell SPARTAN how to normalize the templates to the data. You can do it with the photometric point you give in the catalog or with a restframe region that will be taken into account for the normalization. In the latter case you must give this the wavelengths of this restframe region (l1-l2) in Angstrom.</p></li>
-<li><p><strong>Fit multi-spec calib</strong>: This applies only if you fit multi-spectroscopic data. In this case you can ask SPARTAN to try to fit the relative flux calibration between both spectra (this is rather experimental for the moment).</p></li>
+<li><p><strong>Fit multi-spec calib</strong>: This applies only if you fit multi-spectroscopic data. In this case you can ask SPARTAN to try to fit the relative flux calibration between both spectra (this is rather experimental for the moment and not offered in the current version of the software).</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="photometric-configuration">
 <h2>Photometric configuration<a class="headerlink" href="#photometric-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/tui_phot.png"><img alt="_images/tui_phot.png" src="_images/tui_phot.png" style="width: 750px;" /></a>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="_images/tui_phot.png"><img alt="_images/tui_phot.png" src="_images/tui_phot.png" style="width: 650px;" /></a>
 </div>
-<p>This section is for photometric configuration. <strong>You also need to use it for spectroscopy!!!</strong>. You must choose your photometric system (AB of Jansky[Jy]). Then SPARTAN will read the data catalog you gave in the general configuration section and will extract the name of each filter that is in your catalog. For each filter, a line will be created with the name of the filter from the catalog, and 5 fields to complete. First you must select the corresponding filter from the filter library of SPARTAN (if your filter is not yet there, please drop me a mail). Then you must choose if this filter will be used during the fit, if your want the magnitude in this filter to be computed from the best fit template, if you want to compute the absolute magnitude, if you want to use this filter for normalisation (you can selec more than one).</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--&gt; This corresponds to this section in the configuration file</span>
+<span class="o">[</span>Photo<span class="o">]</span>
+<span class="nv">system</span> <span class="o">=</span> AB
+<span class="nv">photofile</span> <span class="o">=</span> /home/romain/Science/SPARTAN_paper/fit/SPARTAN_paper_comb.mag
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">##This is the magnitude configuration file.</span>
+<span class="c1">##It is called here SPARTAN_paper_comb.mag</span>
+
+<span class="c1">#Mag            Filter          Fit     Out     Abs     Norm</span>
+i-megacam       i-megacam       yes     yes     yes     yes
+u-megacam       u-megacam       yes     yes     yes     no
+g-megacam       g-megacam       yes     yes     yes     no
+r-megacam       r-megacam       yes     yes     yes     no
+i-megacam       i-megacam       yes     yes     yes     yes
+z-megacam       z-megacam       yes     yes     yes     no
+J-wircam        J-wircam        yes     yes     yes     no
+H-wircam        H-wircam        yes     yes     yes     no
+K-wircam        K-wircam        yes     yes     yes     no
+</pre></div>
+</div>
+<p>This section is for photometric configuration. <strong>You also need to use it for spectroscopy!!!</strong>. You must choose your photometric system (AB of Jansky[Jy]). Then SPARTAN will read the data catalog you gave in the general configuration section and will extract the name of each filter that is in your catalog. For each filter, a line will be created with the name of the filter from the catalog, and 5 fields to complete. First you must select the corresponding filter from the filter library of SPARTAN (if your filter is not yet there, please drop me a mail). Then you must choose if this filter will be used during the fit, if your want the magnitude in this filter to be computed from the best fit template, if you want to compute the absolute magnitude, if you want to use this filter for normalisation (you can selec more than one).
+All this photometric configuration will be written in a magnitude file (<em>project_name.mag</em>) that you can see above next to the screenshot. The path and name of this file will be written in the global configuration file (see above).</p>
 </div>
 <div class="section" id="template-configuration">
 <h2>Template configuration<a class="headerlink" href="#template-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/TUI_tot.png"><img alt="_images/TUI_tot.png" src="_images/TUI_tot.png" style="width: 1150px;" /></a>
+</div>
+<p>The configuration of the template that will be used during the fit is done through a 3 windows process (see the screenshot above with the three windows).</p>
+<ul>
+<li><p>First You must choose the type of construction. <strong>For the moment you can only choose the Provided models option</strong>. In the future version of SPARTAN we will implement the option to provide your own library of template or to create your own template. The option currently offers a lot of possibilities (see <a class="reference internal" href="templates.html"><span class="doc">Templates</span></a> for more information).</p></li>
+<li><p>Once you pass that selection, you enter a window where you can select:</p>
+<blockquote>
+<div><ul>
+<li><p><strong>The SSP Base</strong>: Currently four choices are available with different IMF and SFH.</p></li>
+<li><p><strong>The Dust and IGM extinction</strong>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>For dust, you must choose the prescription and give a list of E(B-V) values. You can also give choose ‘none’.</p></li>
+<li><p>For IGM, you must choose between the 4 possibilities.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><strong>Emission lines</strong>. You choose to add them or not in the templates. You can also skip some that will not be added during the fit. The list of available emission lines is available in the input files Emline/Anders_Fritze_2003.dat. To ignore one of them you just need to write its name.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>After this first parameters to select you must select the parameter range of the SSP based you choosed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Metallicity</strong> [in solar metallicity]: This is the stellar metallicity of the template. You can not add any of them but you can remove some if you are willing to.</p></li>
+<li><p><strong>TAU</strong> [in Gyr]: For this parameter you put any value between 0.1 Gyr and 10.0 Gyr.</p></li>
+<li><p><strong>Age</strong> [in yr]: For this parameter you can also put any value between 1e6yr and 1.5e10yr.</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>The configuration you see in the screenshots above translate to the following block in the configuration file:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>Library<span class="o">]</span>
+<span class="nb">type</span> <span class="o">=</span> provided
+<span class="nv">basessp</span> <span class="o">=</span> BC03_Delayed_LR_Salp_SPARTAN
+<span class="nv">dustuse</span> <span class="o">=</span> calzetti
+<span class="nv">ebvlist</span> <span class="o">=</span> <span class="m">0</span>.1<span class="p">;</span><span class="m">0</span>.15<span class="p">;</span><span class="m">0</span>.2<span class="p">;</span><span class="m">0</span>.25<span class="p">;</span><span class="m">0</span>.35<span class="p">;</span><span class="m">0</span>.4<span class="p">;</span><span class="m">0</span>.45<span class="p">;</span><span class="m">0</span>.5
+<span class="nv">igmtype</span> <span class="o">=</span> none
+<span class="nv">emline</span> <span class="o">=</span> yes
+<span class="nv">emline_skipped</span> <span class="o">=</span>
+<span class="nv">age</span> <span class="o">=</span> <span class="m">5</span>.00e+07<span class="p">;</span><span class="m">6</span>.00e+07<span class="p">;</span><span class="m">7</span>.00e+07<span class="p">;</span><span class="m">8</span>.00e+07<span class="p">;</span><span class="m">9</span>.00e+07<span class="p">;</span><span class="m">1</span>.00e+08<span class="p">;</span><span class="m">1</span>.50e+08<span class="p">;</span><span class="m">2</span>.00e+08<span class="p">;</span><span class="m">2</span>.50e+08<span class="p">;</span><span class="m">3</span>.00e+08<span class="p">;</span><span class="m">3</span>.50e+08<span class="p">;</span><span class="m">4</span>.00e+08<span class="p">;</span><span class="m">4</span>.50e+08<span class="p">;</span><span class="m">5</span>.00e+08<span class="p">;</span><span class="m">5</span>.50e+08<span class="p">;</span><span class="m">6</span>.00e+08<span class="p">;</span><span class="m">6</span>.50e+08<span class="p">;</span><span class="m">7</span>.00e+08<span class="p">;</span><span class="m">7</span>.50e+08<span class="p">;</span><span class="m">8</span>.00e+08<span class="p">;</span><span class="m">8</span>.50e+08<span class="p">;</span><span class="m">9</span>.00e+08<span class="p">;</span><span class="m">9</span>.50e+08<span class="p">;</span><span class="m">1</span>.00e+09<span class="p">;</span><span class="m">1</span>.20e+09<span class="p">;</span><span class="m">1</span>.40e+09<span class="p">;</span><span class="m">1</span>.60e+09<span class="p">;</span><span class="m">1</span>.80e+09<span class="p">;</span><span class="m">2</span>.00e+09<span class="p">;</span><span class="m">2</span>.20e+09<span class="p">;</span><span class="m">2</span>.40e+09<span class="p">;</span><span class="m">2</span>.60e+09<span class="p">;</span><span class="m">2</span>.80e+09<span class="p">;</span><span class="m">3</span>.00e+09<span class="p">;</span><span class="m">3</span>.20e+09<span class="p">;</span><span class="m">3</span>.40e+09<span class="p">;</span><span class="m">3</span>.60e+09<span class="p">;</span><span class="m">3</span>.80e+09<span class="p">;</span><span class="m">4</span>.00e+09<span class="p">;</span><span class="m">4</span>.50e+09<span class="p">;</span><span class="m">5</span>.00e+09<span class="p">;</span><span class="m">5</span>.50e+09<span class="p">;</span><span class="m">6</span>.00e+09
+<span class="nv">tau</span> <span class="o">=</span> <span class="m">0</span>.10<span class="p">;</span><span class="m">0</span>.20<span class="p">;</span><span class="m">0</span>.30<span class="p">;</span><span class="m">0</span>.40<span class="p">;</span><span class="m">0</span>.50<span class="p">;</span><span class="m">0</span>.60<span class="p">;</span><span class="m">0</span>.70<span class="p">;</span><span class="m">0</span>.80<span class="p">;</span><span class="m">0</span>.90<span class="p">;</span><span class="m">1</span>.00
+<span class="nv">met</span> <span class="o">=</span> <span class="m">0</span>.4<span class="p">;</span><span class="m">1</span>.0<span class="p">;</span><span class="m">2</span>.5
+</pre></div>
+</div>
 </div>
 <div class="section" id="cosmological-configuration">
 <h2>Cosmological configuration<a class="headerlink" href="#cosmological-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/Tui_cosmo.png"><img alt="_images/Tui_cosmo.png" src="_images/Tui_cosmo.png" style="width: 750px;" /></a>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="_images/TUI_cosmo.png"><img alt="_images/TUI_cosmo.png" src="_images/TUI_cosmo.png" style="width: 650px;" /></a>
 </div>
-<p>When doing the fit, you can ask SPARTAN to take into account a cosmological model. This means that at a given redshift, the possible age of the templates will be smaller than the age of the Universe at that redshift. By default, the use is set on Yes with the Lambda-CDM model.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--&gt; This corresponds to this section in the configuration file</span>
+
+
+
+<span class="o">[</span>Cosmo<span class="o">]</span>
+<span class="nv">ho</span> <span class="o">=</span> <span class="m">70</span>
+<span class="nv">omega_m</span> <span class="o">=</span> <span class="m">0</span>.27
+<span class="nv">omega_l</span> <span class="o">=</span> <span class="m">0</span>.73
+<span class="nv">use_cosmo</span> <span class="o">=</span> Yes
+</pre></div>
+</div>
+<p>When doing the fit, you can ask SPARTAN to take into account a cosmological model. This means that at a given redshift, the possible age of the templates will be smaller than the age of the Universe at that redshift. By default, the use is set on Yes with the Lambda-CDM model. You must provide here:</p>
+<ul class="simple">
+<li><p>Ho: The HUbble constant</p></li>
+<li><p>Omega_m: matter density</p></li>
+<li><p>Omega_L: Dark Energy density</p></li>
+<li><p>Use Cosmology: If you want to use cosmological constraints during the fit</p></li>
+</ul>
 </div>
 <div class="section" id="fitting-and-output-configuration">
 <h2>Fitting and output configuration<a class="headerlink" href="#fitting-and-output-configuration" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center">
-<a class="reference internal image-reference" href="_images/tui_fit.png"><img alt="_images/tui_fit.png" src="_images/tui_fit.png" style="width: 750px;" /></a>
+<div class="figure align-left">
+<a class="reference internal image-reference" href="_images/tui_fit.png"><img alt="_images/tui_fit.png" src="_images/tui_fit.png" style="width: 650px;" /></a>
 </div>
-<p>Finally, you can choose what kinf of fit and output you want. In the panel (see above) you can choose the type of fitting. <strong>As for now the MCMC is not implemented yet</strong> so you can only choose the CHI2 minimization. When fitting both photometry and spectroscopy you can choose to either fit all the data (Combined = Full)</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1">#--&gt; This corresponds to this section in the configuration file</span>
+
+<span class="o">[</span>Fit<span class="o">]</span>
+<span class="nv">algorithm</span> <span class="o">=</span> CHI2
+<span class="nv">overfit</span> <span class="o">=</span> No
+<span class="nv">pdf_values</span> <span class="o">=</span> Yes
+<span class="nv">best_fit_values</span> <span class="o">=</span> Yes
+<span class="nv">keep_full_pdf</span> <span class="o">=</span> Yes
+<span class="nv">combined</span> <span class="o">=</span> complementary
+</pre></div>
+</div>
+<p>Finally, you can choose what kind of fit and output you want. In the panel (see above) you can:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Choose the type of fitting. <strong>As for now the MCMC is not implemented yet</strong> so you can only choose the CHI2 minimization.</p></li>
+<li><p>When fitting both photometry and spectroscopy <strong>you can choose to either fit all the data (Combined = Full) or only complementary data (Combined = Complementary)</strong>. In the latter case the fit will not take into account data that overlap and the priority will always be given to spectroscopy over photometry. So if you have a photometric point that overlaps with a spectrum this point will be ignored.</p></li>
+<li><p><strong>You can choose to allow overfit</strong>. By default it is set to <strong>NO</strong> which means that if you restart a fit run that was already started but not completed, SPARTAN will not refit the data that are already fitted. If you allow overfit it will fit them again.</p></li>
+<li><p><strong>Output: PDF Values</strong>. You can choose to save (choice by default) or not the PDF values (values and associated errors).</p></li>
+<li><p><strong>Output: Best fit</strong>. You can choose to save (choice by default) or not the values of the best fit template.</p></li>
+<li><p><strong>Output: Keep full PDF</strong>. You can choose to save the full PDFs. Meaning that after you will be able to plot them. <strong>This might take a lot of disk space</strong>.</p></li>
+</ul>
+</div></blockquote>
 </div>
 </div>
 

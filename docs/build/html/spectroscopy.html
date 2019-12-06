@@ -13,6 +13,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
   
   
 
@@ -35,8 +37,10 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Templates" href="templates.html" />
-    <link rel="prev" title="Photometric fitting" href="photometry.html" /> 
+    <link rel="next" title="Combined fitting" href="combined.html" />
+    <link rel="prev" title="Photometric fitting" href="photometry.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -92,7 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Spectroscopic fitting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#spectral-file">Spectral file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spectra-files">Spectra files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#associated-photometry">Associated photometry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#final-spectroscopic-catalog-for-fitting-run">Final spectroscopic catalog for fitting run</a></li>
 </ul>
@@ -107,6 +111,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#results-final-catalog-production-and-gui-vizualization">Results: Final catalog production and GUI vizualization</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
@@ -179,16 +184,22 @@
 <h1>Spectroscopic fitting<a class="headerlink" href="#spectroscopic-fitting" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="spectral-file">
-<h3>Spectral file<a class="headerlink" href="#spectral-file" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="spectra-files">
+<h3>Spectra files<a class="headerlink" href="#spectra-files" title="Permalink to this headline">¶</a></h3>
 <p>To run the fit of single or multi-λ spectroscopy you need to provide SPARTAN with a catalog of data containing all the necessary informations. The spectra that you provide to SPARTAN must be either in ascii or in fits file. If you choose the ascii format the spectra have to be in the following 3-column format:</p>
 <p class="centered">
 <strong>Wavelength - Flux density - error</strong></p><p>The name of each spectrum must end with the ‘.spec’ extension, example: <strong>spectrum_1.spec</strong>
 At the moment the only units allowed in SPARTAN are angstrom for the wavelength and erg/s/cm2/AA for the flux density.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>It is important to note that when fitting multiple spectra for a given object, these spectra MUST NOT overlap.</p>
+</div>
+<p>You can find an example of such file here <a class="reference download internal" download="" href="_downloads/3ad735b54ed07eb4f99742019799c325/Example_Spectro.txt"><code class="xref download docutils literal notranslate"><span class="pre">Spectroscopic</span> <span class="pre">input</span></code></a></p>
 </div>
 <div class="section" id="associated-photometry">
 <h3>Associated photometry<a class="headerlink" href="#associated-photometry" title="Permalink to this headline">¶</a></h3>
-<p>For each spectrum you need to associate a photometric band which will serve as flux calibration of the spectroscopy. Of course this band must be in the wavelength domain of the spectrum (the filter must be entirely in the wavelength domain). For example, using VIMOS data (3600Å to 9500Å) you can provide the r-band. During the preparation of the data SPARTAN will normalize each spectrum to that band. If you do not have any available band you can create a fake one. Nevertheless, when fitting multiple spectrum at once (for the same galaxy), it can not be a fake band because the fit is gonna use the relative calibration between the multiple spectra.</p>
+<p>For each spectrum you need to associate a photometric band which will serve as flux calibration of the spectroscopy. Of course this band must be in the wavelength domain of the spectrum (the filter must be entirely in the wavelength domain). For example, using VIMOS data (3600Å to 9500Å) you can provide the r-band. During the preparation of the data SPARTAN will normalize each spectrum to that band. If you do not have any available band you can create a fake one and keep in mind that paramters based on the normalization will not be correct (e.g. Stellar Mass). Nevertheless, when fitting multiple spectrum at once (for the same galaxy), it can not be a fake band because the fit is gonna use the relative calibration between the multiple spectra.
+It can happen that for few object in the sample, the photometric band is not available. In that case the band should have a negative value (e.g. -99.9). In that case, SPARTAN will compute a photometric point from the spectrum itself using a square filter.</p>
 </div>
 <div class="section" id="final-spectroscopic-catalog-for-fitting-run">
 <h3>Final spectroscopic catalog for fitting run<a class="headerlink" href="#final-spectroscopic-catalog-for-fitting-run" title="Permalink to this headline">¶</a></h3>
@@ -203,14 +214,15 @@ At the moment the only units allowed in SPARTAN are angstrom for the wavelength 
 <li><p><strong>For multi-spectroscopy</strong>: When you want to fit multi-spectroscopy, you have to follow the same method and add as many 3 columns set as you have spectra. Therefore you will have (for three spectra):</p></li>
 </ul>
 <p class="centered">
-<strong>#ident     redshift  spec1   mag1    mag1_err   spec2   mag2    mag2_err  spec3   mag3    mag3_err</strong></p></div>
+<strong>#ident     redshift  spec1   spec1_mag    spec1_mag_err   spec2   spec2_mag    spec2_mag_err  spec3   spec3_mag    spec3_mag_err</strong></p><p>During the preparation of the data, each spectrum will be normalized to it own magnitude. Everything is saved under the data file: <em>Project_name_dat.hdf5</em></p>
+</div>
 </div>
 <div class="section" id="fitting-procedure-generalities">
 <h2>Fitting procedure: generalities<a class="headerlink" href="#fitting-procedure-generalities" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="_images/Fit_spectro.png"><img alt="_images/Fit_spectro.png" src="_images/Fit_spectro.png" style="width: 750px;" /></a>
 </div>
-<p>The flow chart on the left show the detailed procedure of the fit of a sample of  single spectra. It is composed of 3 parts:</p>
+<p>The flow chart shows the detailed procedure of the fit of a sample of  single spectra. It is composed of 3 parts:</p>
 <ul class="simple">
 <li><p>The initialization of the run where we load the library and the sample to fit.</p></li>
 <li><p>The main loop. Where are actually making the fit</p></li>
@@ -225,17 +237,17 @@ Then the code takes the _dat.hdf5 file that was created from the configuration a
 <p class="admonition-title">Warning</p>
 <p>This first check is important. It means you can stop a fitting run at any moment and start it again from where you stopped, without needing to start all the run over from the beginning.</p>
 </div>
-<p>From the left over objects to plot, SPARTAN will take the firsts Ncpu (see TUI) object in the list and will send them to the fitting function. Each object will be fitted in parallel.</p>
+<p>From the left over objects to plot, SPARTAN will take the firsts Ncpu (see <a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a>) object in the list and will send them to the fitting function. Each object will be fitted in parallel.</p>
 </div>
 <div class="section" id="the-main-function">
 <h3>The main function<a class="headerlink" href="#the-main-function" title="Permalink to this headline">¶</a></h3>
 <p>We describe here the main loop for a given object.
-The main function start by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the _dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).</p>
-<p>Then SPARTAN will adjust the library. It will start by checking if one of the line in the line file is present by performing a quick-and-dirty estimation of the EW on the spectrum itself (particularly usefull for lines that can be in absorption or in emission). If some of those lines are absent then it will create a list of absent line. After this pre-check SPARTAN will add the emission lines to the library, skipping the lines that are absents. Then SPARTAN will adjust the resolution of the templates (see resolution). Once this is done,  SPARTAN will apply the extinction: the Dust and IGM extinction (see Extinction) . At this point SPARTAN will check if some template have to be ignored. It is the case when templates ages are older than the age of the universe at the redshift we are fitting. The left over templates are then redshifted to the observed redshift and the templates wavelength grid is adjusted to the observed wavelength grid. This library is then used to compute the chi2.</p>
+The main function starts by checking again if  the object have to be fitted. If yes, SPARTAN extracts, from the _dat.hdf5 file, the spectroscopic informations of the object (wavelength, flux and error). Then it extracts the normalization informations (it can be magnitude or regions, see section 2 above). The redshift is also retrieved. If this redshift is negative SPARTAN will not perform the fitting. If the user asked for some regions to be skipped SPARTAN will do it at this moment (see section 2 above).</p>
+<p>Then SPARTAN will adjust the library. It will start by checking if one of the line in the line file is present by performing a quick-and-dirty estimation of the EW on the spectrum itself (particularly usefull for lines that can be in absorption or in emission). If some of those lines are absent then it will create a list of absent line. After this pre-check SPARTAN will add the emission lines to the library, skipping the lines that are absents. Then SPARTAN will adjust the resolution of the templates (see resolution). Once this is done,  SPARTAN will apply the extinction: the Dust and IGM extinction (see <a class="reference internal" href="templates.html"><span class="doc">Templates</span></a>) . At this point SPARTAN will check if some template have to be ignored. It is the case when templates ages are older than the age of the universe at the redshift we are fitting. The left over templates are then redshifted to the observed redshift and the templates wavelength grid is adjusted to the observed wavelength grid. This library is then used to compute the chi2.</p>
 </div>
 <div class="section" id="the-result-module">
 <h3>The result module<a class="headerlink" href="#the-result-module" title="Permalink to this headline">¶</a></h3>
-<p>From the library of chi2, SPARTAN computes the PDF and the CDF for each parameter (see statistic). This will give access to the parameter measurements and their errors. If the user ask for it, the parameters from the best fit template (therefore without error) can be saved as well (see below). Aditionnaly, SPARTAN saves the best fit template (both original and resampled templates).</p>
+<p>From the library of chi2, SPARTAN computes the PDF and the CDF for each parameter. This will give access to the parameter measurements and their errors. If the user ask for it, the parameters from the best fit template (therefore without error) can be saved as well (see below). Aditionnaly, SPARTAN saves the best fit template (both original and resampled templates).</p>
 </div>
 </div>
 <div class="section" id="data-template-normalization-in-the-case-of-spectroscopy">
@@ -249,7 +261,7 @@ The main function start by checking again if  the object have to be fitted. If y
 <ul class="simple">
 <li><p>The ID, redshift and number of points used during the fitting run</p></li>
 <li><p>The PDF parameters (measurement and errors, ex: PDF_SFR, m1s_SFR, p1s_SFR)</p></li>
-<li><p>The Parameters from the best fit template (no errors in this case, ex: BF_SFR)</p></li>
+<li><p>The Parameters from the best fit template (no errors in this case, ex: BF_SFR).  The best fit template is also saved so you can have a direct comparison between observations and models.</p></li>
 </ul>
 <p>After the fit you can also load the result file into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the <a class="reference internal" href="GUI.html"><span class="doc">Graphical User interface: Visualizing results</span></a> GUI documentation for more information.</p>
 </div>
@@ -263,7 +275,7 @@ The main function start by checking again if  the object have to be fitted. If y
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="templates.html" class="btn btn-neutral float-right" title="Templates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="combined.html" class="btn btn-neutral float-right" title="Combined fitting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="photometry.html" class="btn btn-neutral float-left" title="Photometric fitting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

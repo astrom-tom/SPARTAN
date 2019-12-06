@@ -40,7 +40,7 @@ Welcome to SPARTAN's documentation!
     :alt: logo
 
 
-The SPARTAN program is a project of astronomical tool to fit the spectroscopy and photometry of distant galaxies. It was designed by a survey proposed to ~40 astronomers. As so, it is as close as possible to the needs of the community. This tool is written entirely in python with an heavy use of scientific libraries like numpy,  scipy and multi-processing.
+The SPARTAN program is a project of astronomical tool to fit the spectroscopy and photometry of distant galaxies. It aims at begin an user-friendly tool that ease the fitting of galaxy data. This tool is written entirely in python with an heavy use of scientific libraries like numpy,  scipy and multi-processing. It implements multiple interfaces that are there to help the user in the configuration of the fitting and the inspection of the results.
 
 Contents
 ^^^^^^^^
@@ -54,6 +54,7 @@ Contents
    GUI
    photometry
    spectroscopy
+   combined
    templates
    Conferences
 

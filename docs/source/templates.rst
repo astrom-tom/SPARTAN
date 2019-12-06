@@ -35,8 +35,25 @@ Templates
 SSPs: Basis of template building
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Extinction by dust
-^^^^^^^^^^^^^^^^^^
+Attenuation by dust
+^^^^^^^^^^^^^^^^^^^
+The use of dust attenuation is optionnal in SPARTAN. To use it you must select during the configuration of template at least one dust extinction curve and give a list of color excess values, E(B-V). At the moment, SPARTAN includes four attenuation curves (see plot below):
+
+ * The extinction law of `Calzetti+00 <https://ui.adsabs.harvard.edu/abs/2000ApJ...533..682C/abstract>`_,
+ * The prescription of the Large Magellanic Cloud by `Fitzpatrick+86 <https://ui.adsabs.harvard.edu/abs/1986AJ.....92.1068F/abstract>`_,
+ * The one of the Small Magellanic Cloud by `Prevot+84 <https://ui.adsabs.harvard.edu/abs/1984A%26A...132..389P/abstract>`_,
+ * And the one of the Milky Way by `Allen+76 <https://ui.adsabs.harvard.edu/abs/1976asqu.book.....A/abstract>`_.
+
+.. figure:: ./templates/dust.png
+    :width: 400px
+    :align: center
+    :alt: logo
+
+.. Note::
+
+        If you are willing to use a different dust attenuation prescription **it is possible**. To do that you must go into the *EXT* subdirectory of the SPARTAN input and put your new curve in that directory. You must as well add it to the Dust_SPARTAN.txt list.
+
+
 
 Extinction by the Intergalactic Medium (IGM)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -32,12 +32,29 @@
 Getting started
 ===============
 
+.. Danger:: 
+        
+        **Input Files**
+
+        SPARTAN relies on numerous input files that are pre-computed (e.g. stellar population, IGM extinction, etc). To make use of SPARTAN you must download them at this `link <https://drive.google.com/drive/folders/1AVjhedoHhyt_eKd9wvZ_4CtX9DLC5_Sk?usp=sharing>`_.
+        These are not being computed on the fly which saves a lot of time in the fitting process.
+
+
+
 Command Line Interface
 ^^^^^^^^^^^^^^^^^^^^^^
 
 You start SPARTAN from a terminal. SPARTAN comes with a command line interface which includes a 'help' that you can display in your terminal using the help command. It must be called like this::
 
            [user@machine]$ spartan --help
+
+.. Important::
+        At the first startup of spartan, the code will ask you
+
+        '' where are the input files located?, (give aboslute path)  ''
+
+        To that question you must give the absolute path to the input files of SPARTAN (see *danger* note above). 
+
 
 This command will display the help of the program::
 
@@ -83,6 +100,8 @@ Few arguments can be used:
  * - -version: It will display the version of SPARTAN you are using.
 
 The command line interface is made using the argparse library (part of the standard python library).
+
+
 
 Terminal User Interface
 ^^^^^^^^^^^^^^^^^^^^^^^

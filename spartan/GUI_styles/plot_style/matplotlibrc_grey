@@ -33,9 +33,6 @@
 # the underlying Qt4 toolkit.
 #backend.qt5 : PyQt5        # PyQt4 | PySide
 
-# When True, the figures rendered in the nbagg backend are created with
-# a transparent background.
-#nbagg.transparent : True
 
 # if you are running pyplot inside a GUI and your backend choice
 # conflicts, we will automatically try to find a compatible one for

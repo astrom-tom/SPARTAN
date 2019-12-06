@@ -32,11 +32,9 @@
 Conferences and Papers
 ======================
 
-Here some talk, poster and papers that advertised SPARTAN in some international conferences:
-
-
 Conferences
 ^^^^^^^^^^^
+* EWASS conference, Lyon 2019: Downsizing signature from Magnedium selected galaxies (Contributed talk)
 * EWASS conference, Prague 2017: :download:`SPARTAN-prague-black.pdf <./conferences/SPARTAN-prague-black.pdf>` 
 * ADASS conference, Santiago de Chile, 2017: Poster: :download:`SPARTAN-ADASS-black_final.pdf <./conferences/SPARTAN-ADASS-black_final.pdf>` 
 * ADASS conference, Santiago de Chile, 2017: Short Talk: :download:`Talk_ADASS.pdf <./conferences/Talk_ADASS.pdf>`
@@ -45,7 +43,8 @@ Conferences
 SPARTAN was used in the following papers:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Thomas et al, in prep, Intergalactic medium extinction in galaxies at z>4 in VANDELS
-* Thomas et al, in prep, Spectroscopic selection of passive galaxies at 0.5<z<2.1.
+* Thomas et al, in prep, The less and the most IGM attenuated galaxies at z>2.5.
+* Thomas et al, 2019, Accepted in A&A, The intergalactic medium transmission towards z>4 galaixies with VANDELS and the impact of dust attenuation.
+* Thomas et al, 2019, The most massive, passive and oldest galaxies at 0.5<z<2.1: Downsizing signature from galaxies selected from Mguv index, A&A, 630, A145.
 
 

@@ -13,6 +13,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
   
   
 
@@ -36,7 +38,9 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Spectroscopic fitting" href="spectroscopy.html" />
-    <link rel="prev" title="Graphical User interface: Visualizing results" href="GUI.html" /> 
+    <link rel="prev" title="Graphical User interface: Visualizing results" href="GUI.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -102,6 +106,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
@@ -179,13 +184,14 @@
 <strong>#ident     redshift</strong></p><p>Then you must add the columns with the following rules. When you want to fit multi wavelength photometry, you have to  add as many 2 columns sets as you have photometric points. Therefore you will have (for 5 photometric points):</p>
 <p class="centered">
 <strong>#ident     redshift  mag1    mag1_err   mag2    mag2_err  mag3    mag3_err  mag4  mag4_err mag5 mag5_err</strong></p><p>Magnitudes can be provided in AB or in Jy. The only constraints is to not mix up the different system in a given configuration (all AB or all Jy).</p>
+<p>You can find an example of such file here <a class="reference download internal" download="" href="_downloads/f510bf9fc4993d2ea9c3f4e84f3c0f76/Example_photo.txt"><code class="xref download docutils literal notranslate"><span class="pre">Photometric</span> <span class="pre">input</span> <span class="pre">catalog</span></code></a></p>
 </div>
 <div class="section" id="fitting-procedure-generalities">
 <h2>Fitting procedure: generalities<a class="headerlink" href="#fitting-procedure-generalities" title="Permalink to this headline">¶</a></h2>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="_images/Fit_spectro.png"><img alt="_images/Fit_spectro.png" src="_images/Fit_spectro.png" style="width: 750px;" /></a>
+<a class="reference internal image-reference" href="_images/Fit_photo.png"><img alt="_images/Fit_photo.png" src="_images/Fit_photo.png" style="width: 750px;" /></a>
 </div>
-<p>The flow chart on the left show the detailed procedure of the fit of a sample of  single spectra. It is composed of 3 parts:</p>
+<p>The flow chart shows the detailed procedure of the fit of a sample of single object. It is composed of 3 parts:</p>
 <ul class="simple">
 <li><p>The initialization of the run where we load the library and the sample to fit.</p></li>
 <li><p>The main loop. Where are actually making the fit</p></li>
@@ -200,27 +206,30 @@ Then the code takes the _dat.hdf5 file that was created from the configuration a
 <p class="admonition-title">Warning</p>
 <p>This first check is important. It means you can stop a fitting run at any moment and start it again from where you stopped, without needing to start all the run over from the beginning.</p>
 </div>
-<p>From the left over objects to plot, SPARTAN will take the firsts Ncpu (see TUI) object in the list and will send them to the fitting function. Each object will be fitted in parallel.</p>
+<p>From the left over objects to plot, SPARTAN will take the firsts <em>Ncpu</em> (see TUI) object in the list and will send them to the fitting function. Each object will be fitted in parallel.</p>
 </div>
 <div class="section" id="the-main-function">
 <h3>The main function<a class="headerlink" href="#the-main-function" title="Permalink to this headline">¶</a></h3>
+<p>We discuss here the main loop that is applied to each obect.</p>
+<p>The function starts by checking again if we should fit the object. In that case, SPARTAN extracts, from the <em>_dat.hdf5</em> file, all the photometric infomation needed: measured magnitude with their error, corresponding filter passbands andnormalization informations (see next section), the redshift, etc…</p>
+<p>After this first step, SPARTAN will apply the redshift to the library and add the emission lines to the library (if requested) and apply the attenuation by dust and extinction by the IGM. If the user request the use of a cosmological model, templates that are above the age of the Universe at the considered redshift will be discarded from the library. The template that remain in the library will be used to compute the chi2.</p>
 </div>
 <div class="section" id="the-result-module">
 <h3>The result module<a class="headerlink" href="#the-result-module" title="Permalink to this headline">¶</a></h3>
-<p>From the library of chi2, SPARTAN computes the PDF and the CDF for each parameter (see statistic). This will give access to the parameter measurements and their errors. If the user ask for it, the parameters from the best fit template (therefore without error) can be saved as well (see below). Aditionnaly, SPARTAN saves the best fit template (both original and resampled templates).</p>
+<p>From the library of chi2, SPARTAN computes the PDF and the CDF for each parameter. This will give access to the parameter measurements and their errors. If the user ask for it, the parameters from the best fit template (therefore without error) can be saved as well (see below). Aditionnaly, SPARTAN saves the best fit template (both original and resampled templates).</p>
 </div>
 </div>
 <div class="section" id="data-template-normalization">
 <h2>Data/Template Normalization<a class="headerlink" href="#data-template-normalization" title="Permalink to this headline">¶</a></h2>
-<p>As explained in (<span class="xref std std-doc">photo</span>)</p>
+<p>The fit relies on the ability to normalize the galaxy models to the observations and number of parameters depends on this normalization (e.g. SFR, Mass). In the case of photometry, SPARTAN requires at least one normalization band in which the flux of the model will be matched to the one of photometry. The choice of the normalization is up to the user and can be chosen at the configuration stage (see <a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a> at section ‘photometric configuration’). You need <strong>at least one</strong> band to normalize. You also have the ability to choose multiple bands. In that case, the normalization will be an average of the normalization on each band.</p>
 </div>
 <div class="section" id="results-final-catalog-production-and-gui-vizualization">
 <h2>Results: Final catalog production and GUI vizualization<a class="headerlink" href="#results-final-catalog-production-and-gui-vizualization" title="Permalink to this headline">¶</a></h2>
 <p>At the end of the fitting run, SPARTAN creates automatically the final catalog. Depending on what you asked for, it will contain:</p>
 <ul class="simple">
-<li><p>The ID, redshift and number of points used during the fitting run</p></li>
-<li><p>The PDF parameters (measurement and errors, ex: PDF_SFR, m1s_SFR, p1s_SFR)</p></li>
-<li><p>The Parameters from the best fit template (no errors in this case, ex: BF_SFR)</p></li>
+<li><p>The ID, redshift and number of points used during the fitting run.</p></li>
+<li><p>The PDF parameters (measurement and errors, ex: PDF_SFR, m1s_SFR, p1s_SFR), if requested. You can also ask to save the complete PDF.</p></li>
+<li><p>The Parameters from the best fit template (no errors in this case, ex: BF_SFR), if requested. The best fit model is also save so you can make a direct comparison between model and template. We also save the magitudes based on the best fit model.</p></li>
 </ul>
 <p>After the fit you can also load the result file into the SPARTAN GUI. This will allow you to visualize the individual fits (see below). It can also show you the global result of your sample. Go to the <a class="reference internal" href="GUI.html"><span class="doc">Graphical User interface: Visualizing results</span></a> GUI documentation for more information.</p>
 </div>

@@ -13,6 +13,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
   
   
 
@@ -36,7 +38,9 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Conferences and Papers" href="Conferences.html" />
-    <link rel="prev" title="Spectroscopic fitting" href="spectroscopy.html" /> 
+    <link rel="prev" title="Combined fitting" href="combined.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,9 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Templates</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#ssps-basis-of-template-building">SSPs: Basis of template building</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#extinction-by-dust">Extinction by dust</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attenuation-by-dust">Attenuation by dust</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#extinction-by-the-intergalactic-medium-igm">Extinction by the Intergalactic Medium (IGM)</a></li>
 </ul>
 </li>
@@ -169,8 +174,24 @@
 <div class="section" id="ssps-basis-of-template-building">
 <h2>SSPs: Basis of template building<a class="headerlink" href="#ssps-basis-of-template-building" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="extinction-by-dust">
-<h2>Extinction by dust<a class="headerlink" href="#extinction-by-dust" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="attenuation-by-dust">
+<h2>Attenuation by dust<a class="headerlink" href="#attenuation-by-dust" title="Permalink to this headline">¶</a></h2>
+<p>The use of dust attenuation is optionnal in SPARTAN. To use it you must select during the configuration of template at least one dust extinction curve and give a list of color excess values, E(B-V). At the moment, SPARTAN includes four attenuation curves (see plot below):</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The extinction law of <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2000ApJ...533..682C/abstract">Calzetti+00</a>,</p></li>
+<li><p>The prescription of the Large Magellanic Cloud by <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1986AJ.....92.1068F/abstract">Fitzpatrick+86</a>,</p></li>
+<li><p>The one of the Small Magellanic Cloud by <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1984A%26A...132..389P/abstract">Prevot+84</a>,</p></li>
+<li><p>And the one of the Milky Way by <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1976asqu.book.....A/abstract">Allen+76</a>.</p></li>
+</ul>
+</div></blockquote>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/dust.png"><img alt="logo" src="_images/dust.png" style="width: 400px;" /></a>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you are willing to use a different dust attenuation prescription <strong>it is possible</strong>. To do that you must go into the <em>EXT</em> subdirectory of the SPARTAN input and put your new curve in that directory. You must as well add it to the Dust_SPARTAN.txt list.</p>
+</div>
 </div>
 <div class="section" id="extinction-by-the-intergalactic-medium-igm">
 <h2>Extinction by the Intergalactic Medium (IGM)<a class="headerlink" href="#extinction-by-the-intergalactic-medium-igm" title="Permalink to this headline">¶</a></h2>
@@ -211,7 +232,7 @@ For each of these parameters, the Best fit and PDF estimation are given (so 3+3 
         <a href="Conferences.html" class="btn btn-neutral float-right" title="Conferences and Papers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="spectroscopy.html" class="btn btn-neutral float-left" title="Spectroscopic fitting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="combined.html" class="btn btn-neutral float-left" title="Combined fitting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

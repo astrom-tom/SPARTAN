@@ -29,7 +29,7 @@ def Logo():
     logo3 = """\___ \| |_) / _\ | |_) | | |  / _\ |   \| |"""
     logo4 = """ ___) |  __/ __ \|  _ <  | | / __ \| |\   |"""
     logo5 = """|____/|_| /_/  \_\_| \_| |_ /_/  \_\_| \__|"""
-    logo6 = """R.THOMAS\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t2019"""
+    logo6 = """R.THOMAS -- 2018-19"""
     log = [logo1, logo2, logo3, logo4, logo5, logo6, '']
 
     return log

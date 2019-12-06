@@ -106,7 +106,7 @@ class config_win:
         n = 11 ###The terminal row where we start to draw the widgets
         c = 4
         PName = self.C.add(npyscreen.TitleText, name="Project Name:",\
-                 value=CONF['PName'], relx=c, rely=n, max_width=30, max_heigth=1, labelColor='CAUTION')
+                 value=CONF['PName'], relx=c, rely=n, max_width=37, max_heigth=1, labelColor='CAUTION')
 
         AName = self.C.add(npyscreen.TitleText, name="Author(*):",\
                  relx=c, rely=n+int((y-n)/9), value=Author, max_width=int(x/3), max_heigth=1, labelColor='CAUTION')

@@ -13,6 +13,8 @@
 
   
   
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
   
   
 
@@ -36,7 +38,9 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Text Based User interface: configuration of a fitting run" href="TUI.html" />
-    <link rel="prev" title="Installation" href="installation.html" /> 
+    <link rel="prev" title="Installation" href="installation.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
 </ul>
@@ -166,11 +171,23 @@
 <a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
 <div class="section" id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p><strong>Input Files</strong></p>
+<p>SPARTAN relies on numerous input files that are pre-computed (e.g. stellar population, IGM extinction, etc). To make use of SPARTAN you must download them at this <a class="reference external" href="https://drive.google.com/drive/folders/1AVjhedoHhyt_eKd9wvZ_4CtX9DLC5_Sk?usp=sharing">link</a>.
+These are not being computed on the fly which saves a lot of time in the fitting process.</p>
+</div>
 <div class="section" id="command-line-interface">
 <h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
 <p>You start SPARTAN from a terminal. SPARTAN comes with a command line interface which includes a ‘help’ that you can display in your terminal using the help command. It must be called like this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>[user@machine]$ spartan --help
 </pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>At the first startup of spartan, the code will ask you</p>
+<p>‘’ where are the input files located?, (give aboslute path)  ‘’</p>
+<p>To that question you must give the absolute path to the input files of SPARTAN (see <em>danger</em> note above).</p>
 </div>
 <p>This command will display the help of the program:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">sp_v1</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="p">[</span><span class="n">FILE</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="p">[</span><span class="n">TUI</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">c</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">fo</span> <span class="p">[</span><span class="n">OBJ</span><span class="p">]]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">]</span>

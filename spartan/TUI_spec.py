@@ -82,7 +82,7 @@ class Spec_win:
         #### Create the widgets 
         n=10  ###Terminal row where se start to draw widgets
         SDir=self.S.add(npyscreen.TitleFilenameCombo, name = "Spectra Directory [tab]:",\
-                value=SPEC['SDir'],relx=5,rely=n,max_width=int(x/3), labelColor='CAUTION')
+                value=SPEC['SDir'],relx=5,rely=n,max_width=int(x/2.5), labelColor='CAUTION')
        
         Res=self.S.add(npyscreen.TitleText,name='Resolution(Ang):',\
                 relx=5,rely=n+int((y-n)/6),max_height=3,max_width=int(x/2-10), \

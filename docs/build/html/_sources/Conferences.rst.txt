@@ -43,8 +43,9 @@ Conferences
 SPARTAN was used in the following papers:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Thomas et al, in prep, The less and the most IGM attenuated galaxies at z>2.5.
-* Thomas et al, 2019, Accepted in A&A, The intergalactic medium transmission towards z>4 galaixies with VANDELS and the impact of dust attenuation.
+* Thomas et al, 2020, A&A submitted, The less and the more IGM attenuated galaxies at z>2.5.
+* Hibon et al, 2020, A&A accepted, A Ly-alpha nebula at z~3.3 
+* Thomas et al, 2019, The intergalactic medium transmission towards z>4 galaixies with VANDELS and the impact of dust attenuation., A&A, 634, A110
 * Thomas et al, 2019, The most massive, passive and oldest galaxies at 0.5<z<2.1: Downsizing signature from galaxies selected from Mguv index, A&A, 630, A145.
 
 

@@ -23,10 +23,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -91,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Configuration of a fitting run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Photometric fitting</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
@@ -221,7 +221,7 @@ Then the code takes the _dat.hdf5 file that was created from the configuration a
 </div>
 <div class="section" id="data-template-normalization">
 <h2>Data/Template Normalization<a class="headerlink" href="#data-template-normalization" title="Permalink to this headline">¶</a></h2>
-<p>The fit relies on the ability to normalize the galaxy models to the observations and number of parameters depends on this normalization (e.g. SFR, Mass). In the case of photometry, SPARTAN requires at least one normalization band in which the flux of the model will be matched to the one of photometry. The choice of the normalization is up to the user and can be chosen at the configuration stage (see <a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a> at section ‘photometric configuration’). You need <strong>at least one</strong> band to normalize. You also have the ability to choose multiple bands. In that case, the normalization will be an average of the normalization on each band.</p>
+<p>The fit relies on the ability to normalize the galaxy models to the observations and number of parameters depends on this normalization (e.g. SFR, Mass). In the case of photometry, SPARTAN requires at least one normalization band in which the flux of the model will be matched to the one of photometry. The choice of the normalization is up to the user and can be chosen at the configuration stage (see <a class="reference internal" href="TUI.html"><span class="doc">Configuration of a fitting run</span></a> at section ‘photometric configuration’). You need <strong>at least one</strong> band to normalize. You also have the ability to choose multiple bands. In that case, the normalization will be an average of the normalization on each band.</p>
 </div>
 <div class="section" id="results-final-catalog-production-and-gui-vizualization">
 <h2>Results: Final catalog production and GUI vizualization<a class="headerlink" href="#results-final-catalog-production-and-gui-vizualization" title="Permalink to this headline">¶</a></h2>

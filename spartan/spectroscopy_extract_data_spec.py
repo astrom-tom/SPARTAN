@@ -133,7 +133,6 @@ def extract_datasets(datasets, obj, CONF, redshift):
 
     ###we choose the first band for normalization of templates
     for i in data:
-        print(i)
         if data[i][-1] == 'yes':
             Norm.append(data[i][0:3])
 

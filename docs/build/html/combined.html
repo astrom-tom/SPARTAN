@@ -23,10 +23,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -91,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="TUI.html">Text Based User interface: configuration of a fitting run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Configuration of a fitting run</a></li>
 <li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
 <li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
@@ -215,13 +215,13 @@ Then the code takes the _dat.hdf5 file that was created from the configuration a
 <p class="admonition-title">Note</p>
 <p>This first check is important. It means you can stop a fitting run at any moment and start it again from where you stopped, without needing to start all the run over from the beginning.</p>
 </div>
-<p>From the left over objects to plot, SPARTAN will take the firsts Ncpu (see <a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a>) object in the list and will send them to the fitting function. Each object will be fitted in parallel and Ncpu will be used.</p>
+<p>From the left over objects to plot, SPARTAN will take the firsts Ncpu (see <a class="reference internal" href="TUI.html"><span class="doc">Configuration of a fitting run</span></a>) object in the list and will send them to the fitting function. Each object will be fitted in parallel and Ncpu will be used.</p>
 </div>
 <div class="section" id="the-main-function">
 <h3>The main function<a class="headerlink" href="#the-main-function" title="Permalink to this headline">¶</a></h3>
 <p>For the combined fit the main function is a mainly a combination of both photometric and spectroscopic fitting process and the reader is refered to the corresponding page (<a class="reference internal" href="photometry.html"><span class="doc">Photometric fitting</span></a> and <a class="reference internal" href="spectroscopy.html"><span class="doc">Spectroscopic fitting</span></a>). The two <em>combined fitting</em> specific step are:</p>
 <ul class="simple">
-<li><p><strong>The choice of the data to fit</strong>: As shown in the <a class="reference internal" href="TUI.html"><span class="doc">Text Based User interface: configuration of a fitting run</span></a> page, the user has the choice of fitting the full set of data of only the complementary ones. If you choose the <em>full</em> option then all spectroscopic and photometric data will be used. On the contrary, if you use the <em>complementary</em> option, SPARTAN will retain, the for fitting, only the complementary part. This means that when some data are overlapping SPARTAN will discard some of them, giving priority to the spectroscopy.</p></li>
+<li><p><strong>The choice of the data to fit</strong>: As shown in the <a class="reference internal" href="TUI.html"><span class="doc">Configuration of a fitting run</span></a> page, the user has the choice of fitting the full set of data of only the complementary ones. If you choose the <em>full</em> option then all spectroscopic and photometric data will be used. On the contrary, if you use the <em>complementary</em> option, SPARTAN will retain, the for fitting, only the complementary part. This means that when some data are overlapping SPARTAN will discard some of them, giving priority to the spectroscopy.</p></li>
 <li><p><strong>The way we fit combined data</strong>: As described in the paper presenting SPARTAN, we use a direct approach to fit combined data. Once the preparation of the data is done, we compute the chi2 on both photometry and spectroscopy at once. Which means we do not give any extra weight to the spectroscopy or to the photometry.</p></li>
 </ul>
 </div>

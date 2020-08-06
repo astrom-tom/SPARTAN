@@ -190,7 +190,9 @@ class Fit_spectro:
             ##some are not detected in the spectra
             lines_to_skip = lines.check(galaxy, self.CONF.LIB['Emline_skipped'].split(';'))
             ##then we add the list to the one given by the user
-            all_lines_to_skip = lines_to_skip + self.CONF.LIB['Emline_skipped'].split(';')
+            all_lines_to_skip = lines_to_skip + \
+                    [l.strip() for l in self.CONF.LIB['Emline_skipped'].split(';')]
+
             ###and finally add the emission lines to the templates
             MTU.Info('Addition of Emission line', 'No')
             Template_emLine = Emline.Apply(lib, self.CONF, all_lines_to_skip).Template

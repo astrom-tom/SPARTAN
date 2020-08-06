@@ -522,7 +522,6 @@ class Fit_combined:
         ------
         kept        list of index to keep
         '''
-
         kept = [] 
         for i in enumerate(bands_phot):
             ##get the effective wavelength of the filter

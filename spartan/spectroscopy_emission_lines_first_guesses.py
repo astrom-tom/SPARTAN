@@ -108,9 +108,6 @@ def EWondata(means, meanls, wave, spec, regions):
     return EW, line, gridline
 
 
-
-
-
 def compute_line_median(region, wave, spec):
     '''
     Method that compute the median flux in the region bandpass

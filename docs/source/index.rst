@@ -61,16 +61,15 @@ Contents
 
 News
 ^^^^
-* **01-12-2019** : Paper about SPARTAN in preparation
-* **21-11-2019** : Paper about IGM in galaxies accepted in A&A
-* **26-08-2019** : Paper about MG galaxies accepted in A&A
-* **21-05-2019** : Paper about IGM with VANDELS submitted.
-* **30-04-2019** : Paper about Mg galaxies submitted.
-* **12-12-2018** : Paper presenting SPARTAN in preparation
-* **10-10-2018** : Two paper in preparation using SPARTAN (indpendent modes)
-* **03-03-2018** : Start to use the code
-* **02-03-2018** : Cleaning the code
-* **01-10-2017** : New website ! Combined fit (multi-spectro + multi-photo) is done. Simulations are on-going. Paper of presentation of SPARTAN is being written in parallel. Slide and Poster for the ADASS conference can be found here.
+* **Jan-2020** : Paper about SPARTAN submitted to A&C
+* **Nov-2019** : Paper about IGM in galaxies accepted in A&A
+* **Aug-2019** : Paper about MG galaxies accepted in A&A
+* **May-2019** : Paper about IGM with VANDELS submitted.
+* **Apr-2019** : Paper about Mg galaxies submitted.
+* **Nov-2018** : Two paper in preparation using SPARTAN (indpendent modes)
+* **Mar-2018** : Start to use the code
+* **Feb-2018** : Cleaning the code
+* **Nov-2017** : New website ! Combined fit (multi-spectro + multi-photo) is done. Simulations are on-going. Paper of presentation of SPARTAN is being written in parallel. Slide and Poster for the ADASS conference can be found here.
 * **08-08-2017** : Short Talk accepted (with poster and proceedings) at the ADASS conference in Santiago (late october 2017)
 * **19-06-2017** : The fit on the spectroscopy is done, working on the joined analysis of photometry ans spectroscopy. A graphical user interface (GUI) have been created to allow the user to look at the results (HERE) A decision to create a SPARTAN-SIM (Simulation) module have been taken. It allows to simulate Galaxy data (Photometry and/or spectroscopy). SPARTAN will be presented at the EWASS conference (Prague) at the end of the month and an abstract to the ADASS conference will be submitted (Santiago, late 2017). SUMMER time will be dedicated to Simulations to study the parameter estimation of different kind of fits:  photometry vs single spectroscopy vs multi-spectroscopy vs multi-spectroscopy + photometry
 * **01-04-2017**:  Version 0.2 of the TUI is released (Here). Tests of the fit on the photometry released (Here). The development of the fit on the spectroscopy. It will take into account fit on individual and multiple spectra for a given object.

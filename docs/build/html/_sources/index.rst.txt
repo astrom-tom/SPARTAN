@@ -57,6 +57,7 @@ Contents
    combined
    templates
    Conferences
+   Examples
 
 
 News

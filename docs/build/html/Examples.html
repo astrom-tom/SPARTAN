@@ -1,0 +1,245 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Examples of Data &mdash; SPARTAN 0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Conferences and Papers" href="Conferences.html" />
+    <link href="_static/my_theme.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SPARTAN
+          
+
+          
+            
+            <img src="_static/transparent.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TUI.html">Configuration of a fitting run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GUI.html">Graphical User interface: Visualizing results</a></li>
+<li class="toctree-l1"><a class="reference internal" href="photometry.html">Photometric fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spectroscopy.html">Spectroscopic fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combined.html">Combined fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Conferences.html">Conferences and Papers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples of Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#photometry-only">Photometry only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spectroscopy-only">Spectroscopy only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combined-fit">Combined fit</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SPARTAN</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Examples of Data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/Examples.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p id="gui"><a class="reference external" href="https://www.python.org/downloads/release/python-360/"><img alt="python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" /></a> <img alt="Python36" src="https://img.shields.io/badge/python-3.6-blue.svg" /> <a class="reference external" href="http://perso.crans.org/besson/LICENSE.html"><img alt="Licence" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
+<a class="reference external" href="https://matplotlib.org/"><img alt="matplotlib" src="https://img.shields.io/badge/poweredby-matplotlib-orange.svg" /></a> <a class="reference external" href="https://pypi.python.org/pypi/PyQt5"><img alt="PyQt5" src="https://img.shields.io/badge/poweredby-PyQt5-orange.svg" /></a> <a class="reference external" href="http://www.numpy.org/"><img alt="numpy" src="https://img.shields.io/badge/poweredby-numpy-orange.svg" /></a> <a class="reference external" href="https://www.scipy.org/"><img alt="scipy" src="https://img.shields.io/badge/poweredby-scipy-orange.svg" /></a></p>
+<div class="section" id="examples-of-data">
+<h1>Examples of Data<a class="headerlink" href="#examples-of-data" title="Permalink to this headline">¶</a></h1>
+<p>In this page you can find examples of data (simulated) input that SPARTAN is able to deal with and some examples of configurations.</p>
+<p>Each time we provide the input configuration file, the magnitude configuration file, the input catalog of data, the output catalog of data (with parameter estimation) and, if applicable, the set of spectra that were used during the fit.</p>
+<div class="section" id="photometry-only">
+<h2>Photometry only<a class="headerlink" href="#photometry-only" title="Permalink to this headline">¶</a></h2>
+<p>input files, catalog, filter configuration –&gt; <a class="reference download internal" download="" href="_downloads/bce69b390ea3c21ca6579347034db1df/photo_fit.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p>
+</div>
+<div class="section" id="spectroscopy-only">
+<h2>Spectroscopy only<a class="headerlink" href="#spectroscopy-only" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>With magnitude normalization <a class="reference download internal" download="" href="_downloads/6aed28f5d50395857c878ef7f026c53c/spec_region_norm.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+<li><p>With redshift dependent normalization: <a class="reference download internal" download="" href="_downloads/6aed28f5d50395857c878ef7f026c53c/spec_region_norm.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+<li><p>Input spectra: <a class="reference download internal" download="" href="_downloads/64a67aab6b24b1f513e27dde16616870/spectra_ascii.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="combined-fit">
+<h2>Combined fit<a class="headerlink" href="#combined-fit" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>With magnitude normalization: <a class="reference download internal" download="" href="_downloads/fa490e096bfb20b2ba57287dd9cd195e/comb_norm_mags.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+<li><p>With redshift dependent normalization: <a class="reference download internal" download="" href="_downloads/06075df991ffd91793b25b89baaea34d/comb_norm_region.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+<li><p>Input spectra: <a class="reference download internal" download="" href="_downloads/64a67aab6b24b1f513e27dde16616870/spectra_ascii.tar.gz"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="Conferences.html" class="btn btn-neutral float-left" title="Conferences and Papers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, R. THOMAS
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

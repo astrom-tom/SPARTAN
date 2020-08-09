@@ -95,7 +95,6 @@ class Fit_spectro:
         MTU.Info('Extract the library', 'No')
         Library = Lib.LIB(self.LIBfile)
         
-
         ##prepare dust extinction
         MTU.Info('Preparation of the Dust extinction', 'No')
         DUST  = extinction.Dust(self.CONF, Library.Wave_final) 

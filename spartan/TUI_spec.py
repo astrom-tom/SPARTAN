@@ -150,8 +150,6 @@ class Spec_win:
 
         NormReg = self.S.add(npyscreen.TitleText, name='If Region, give l1 & l2 (rest-f ,AA :l1-l2).',\
                   value=SPEC['Norm_reg'],relx=5,rely=n+5*int((y-n)/6),max_width=int(x/3),color='CAUTION') 
-        
-
 
         ######Multi_spec calibration
         if SPEC['Calib'].lower()=='yes':

@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = 'SPARTAN'
-copyright = '2018, R. THOMAS'
+copyright = '2018-20, R. THOMAS'
 author = 'R. THOMAS'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '0.1'
+release = '20.8.1'
 
 
 # -- General configuration ---------------------------------------------------

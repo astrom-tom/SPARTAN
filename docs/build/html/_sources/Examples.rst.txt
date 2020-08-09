@@ -31,7 +31,7 @@
 Examples of Data
 ================
 
-In this page you can find examples of data (simulated) input that SPARTAN is able to deal with and some examples of configurations.
+In this page you can find examples of data (simulated) input that SPARTAN is able to deal with and some examples of configurations. The data have been simulated with SEDOBS (`link <https://astrom-tom.github.io/SEDobs/build/html/index.html>`_).
 
 Each time we provide the input configuration file, the magnitude configuration file, the input catalog of data, the output catalog of data (with parameter estimation) and, if applicable, the set of spectra that were used during the fit.
 

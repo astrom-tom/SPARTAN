@@ -40,39 +40,36 @@ def final(CONF, Res):
     ###2 - Open result file
     R = h5py.File(Res)
 
-    ####look at all the groups for a given object
-    obj1 = R[list(R.keys())[0]]
-    if 'Parameters_BF' in list(obj1.keys()):
-        all_param_BF = []
-    if 'Parameters_PDF' in list(obj1.keys()):
-        all_param_PDF = []
-    if 'Mag_abs' in list(obj1.keys()):
-        all_magabs = []
-    if 'Template' in list(obj1.keys()):
-        all_Template = []
-    if 'Observable' in list(obj1.keys()):
-        all_Observable = []
-    #print(list(obj1.keys()))
+    ###prepare the list of paramter names
+    all_group = []
+    all_param_BF = []
+    all_param_PDF = []
+    all_magabs = []
+    all_Template = []
+    all_Observable = []
     
     #for each object we look at the parameters
     #in each group
     for i in R:
         obj = R[i]
         Fitted = str(numpy.array(obj['General/Fitted']))[2:-1].lower() 
+        ###add all group names
+        all_group += list(obj.keys())
+        ###then check the 
         if Fitted == 'fitted':
-            if 'Parameters_BF' in list(obj1.keys()):
+            if 'Parameters_BF' in list(obj.keys()):
                 for j in obj['Parameters_BF']:
                     all_param_BF.append('BF_' + j)
-            if 'Parameters_PDF' in list(obj1.keys()):
+            if 'Parameters_PDF' in list(obj.keys()):
                 for j in obj['Parameters_PDF']:
                     all_param_PDF.append('PDF_' + j)
-            if 'Mag_abs' in list(obj1.keys()):
+            if 'Mag_abs' in list(obj.keys()):
                 for j in obj['Mag_abs']:
                     all_magabs.append(j)
-            if 'Template' in list(obj1.keys()):
+            if 'Template' in list(obj.keys()):
                 if 'Bestchi2' in obj['Template']:
                     all_Template.append('Bestchi2')
-            if 'Observable' in list(obj1.keys()):
+            if 'Observable' in list(obj.keys()):
                 ###redshift
                 if 'Redshift' in obj['Observable']:
                     all_Observable.append('Redshift')
@@ -93,23 +90,20 @@ def final(CONF, Res):
                     if 'Npoints' in obj['Observable']:
                         all_Observable.append('Npoints')
 
-    ####then we take all the unique parameters in each list
-    if 'Parameters_BF' in list(obj1.keys()):
-        unique_PDF = numpy.unique(all_param_PDF)
-    if 'Parameters_PDF' in list(obj1.keys()):
-        unique_BF = numpy.unique(all_param_BF)
-    if 'Mag_abs' in list(obj1.keys()):
-        unique_mag = numpy.unique(all_magabs)
-    if 'Template' in list(obj1.keys()):
-        unique_Temp = numpy.unique(all_Template)
-    if 'Observable' in list(obj1.keys()):
-        unique_Obs = numpy.unique(all_Observable)
+    ###unique the group names
+    all_group = numpy.unique(all_group)
 
-    #print(unique_PDF)
-    #print(unique_BF)
-    #print(unique_mag)
-    #print(unique_Temp)
-    #print(unique_Obs)
+    ####then we take all the unique parameters in each list
+    if 'Parameters_BF' in all_group:
+        unique_PDF = numpy.unique(all_param_PDF)
+    if 'Parameters_PDF' in all_group:
+        unique_BF = numpy.unique(all_param_BF)
+    if 'Mag_abs' in all_group:
+        unique_mag = numpy.unique(all_magabs)
+    if 'Template' in all_group:
+        unique_Temp = numpy.unique(all_Template)
+    if 'Observable' in all_group:
+        unique_Obs = numpy.unique(all_Observable)
 
     ###Creates the header: 
     if CONF.CONF['UseSpec'].lower() == 'yes' and CONF.CONF['UsePhot'].lower() == 'yes':
@@ -119,19 +113,19 @@ def final(CONF, Res):
         header = '#Ident\tredshift\tNpoints\tBestchi2\t'
         headers = ['ide', 'z', 'Npoints', 'Chi2min']
 
-    if 'Parameters_PDF' in list(obj1.keys()):
+    if 'Parameters_PDF' in all_group:
         for i in unique_PDF:
             header += '%s\tm1s_%s\tp1s_%s\t'%(i, i, i)
             headers.append(i)
             headers.append(i)
             headers.append(i)
 
-    if 'Parameters_BF' in list(obj1.keys()):
+    if 'Parameters_BF' in all_group:
         for i in unique_BF:
             header += '%s\t'%i
             headers.append(i)
 
-    if 'Mag_abs' in list(obj1.keys()):
+    if 'Mag_abs' in all_group:
         for i in unique_mag:
             header += '%s_Abs\t'%i
             headers.append(i)

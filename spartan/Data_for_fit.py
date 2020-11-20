@@ -105,7 +105,7 @@ def check_sample(IDs, resfile, Overfit):
 
     return Tobefitted
 
-def check_results(ID, resfile, Overfit):
+def check_results(ID, resfile, Overfit, verbose='False'):
     '''
     This methods check if the fit as already been done AND SAVED
     in the result file. If so, we check if the 
@@ -114,6 +114,7 @@ def check_results(ID, resfile, Overfit):
     ID          str, ID of the object
     Overfit     str, if the user allow the overfit or no
     resfile     str, path/and/name of the result file
+    verbose     bool, False by default. If True a comment will be displayed for EACH check
     
     Return
     ------
@@ -132,19 +133,22 @@ def check_results(ID, resfile, Overfit):
             if Fitted == 'Fitted' and Overfit.lower() == 'no':
                 ##if we already fitted the object and the user
                 ## does not allow overfit we won't refit the object
-                MTU.Info('Obj: %s -->Object already fitted'%ID, 'No')
-                MTU.Info('You do not allow overfit...Go to next object', 'No')
+                if verbose == 'True':
+                    MTU.Info('Obj: %s -->Object already fitted'%ID, 'No')
+                    MTU.Info('You do not allow overfit...Go to next object', 'No')
                 ToFit = 'NO'
 
             elif Fitted == 'Fitted' and Overfit.lower() == 'yes':
                 ##if we already fitted the object but the user
                 ## allows overfit we will refit the object
-                #MTU.Info('Obj: %s --> Object already fitted'%ID, 'No')
-                #MTU.Info('You allow overfit...Continue', 'No')
+                if verbose == True:
+                    MTU.Info('Obj: %s --> Object already fitted'%ID, 'No')
+                    MTU.Info('You allow overfit...Continue', 'No')
                 ToFit = 'YES'
 
             elif Fitted == 'FAIL':
-                MTU.Info('Obj: %s -->failed at first pass, we will not refit'%ID, 'No')
+                if verbose == True:
+                    MTU.Info('Obj: %s -->failed at first pass, we will not refit'%ID, 'No')
                 ToFit = 'No'
             
             elif Fitted == 'NO':

@@ -115,14 +115,14 @@ def final(CONF, Res):
 
     if 'Parameters_PDF' in all_group:
         for i in unique_PDF:
-            header += '%s\tm1s_%s\tp1s_%s\t'%(i, i, i)
+            header += '%s\tm1s_%s\tp1s_%s\t'%(i.replace('*', ''), i.replace('*', ''), i.replace('*', ''))
             headers.append(i)
             headers.append(i)
             headers.append(i)
 
     if 'Parameters_BF' in all_group:
         for i in unique_BF:
-            header += '%s\t'%i
+            header += '%s\t'%i.replace('*', '')
             headers.append(i)
 
     if 'Mag_abs' in all_group:

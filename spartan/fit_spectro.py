@@ -137,11 +137,11 @@ class Fit_spectro:
                     MTU.Error('Object %s could not be fitted: %s' %(gal.ID,  gal.status), 'No')
                     save.save_to_file_fail(self.Resfile, gal, self.CONF)
             MTU.Info('the %s objects were fitted in %s seconds'%(int(self.CONF.CONF['NCPU']),\
-                    timeafter_loop-timebefore_loop), 'Yes')
+                    round(timeafter_loop-timebefore_loop,2)), 'Yes')
 
             if len(sample)-i >= 0:
                 MTU.Info('%s objects left'%(len(sample)-i), 'No')
-        MTU.Info('Full sample fitted in %s seconds'%( time.time() - Time_INITIAL), 'Yes')
+        MTU.Info('Full sample fitted in %s seconds'%( round(time.time() - Time_INITIAL,2)), 'Yes')
         MTU.Info('Start creation of the final catalog', 'Yes')
         Cat.final(self.CONF, self.Resfile)
 

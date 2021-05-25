@@ -150,9 +150,6 @@ class Fit_photo:
         MTU.Info('Full sample fitted in %s seconds'%( time.time() - Time_INITIAL), 'Yes')
         MTU.Info('Start creation of the final catalog', 'Yes')
         Cat.final(self.CONF, self.Resfile)
-    
-
-
 
     def fit(self, run): 
         '''
